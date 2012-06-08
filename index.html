@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>flypaper v 0.3.5 - basic</title>
+	
+	<style type="text/css" media="screen">
+		#ctx {
+			border: 1px solid #999;
+		}
+	</style>
+
+<script type="text/javascript" src="paper.js"></script>
+	
+<script type="text/javascript" src="flypaper.js"></script>
+
+<script type="text/javascript">
+
+//---------- INIT ---------------------------------//
+
+    window.onload = function() {
+        var canvas = document.getElementById('ctx');
+        paper.setup(canvas);
+		fly.init({width:1200,height:600});
+		fly.debug = true;
+
+	paper.view.onFrame = function(event) {
+		fly.eventCtrlr.publish("frame",event);
+		paper.view.draw();
+	};
+
+ //---------- this page constructs ---------------------------------//
+
+	var myFly = new fly.StructTemplate(
+							{name:"basic shape",handle:[150,250,300],
+						 	style:{fillColor:fly.colors.main[0]},
+							selectable:true,
+							dragable: true
+						});
+	myFly.handle.visible = true; //<--- DON'T DRAG AND ANANDA WITHOUT!!!!!!
+
+
+ //---------- END this page constructs ---------------------------------//
+
+    }; // END window onLoad
+
+</script>
+
+
+</head>
+<body>
+	<h2>Flypaper for Paper.js : Basic Example</h2>
+	<canvas id="ctx" ></canvas>
+	<p></p>
+</body>
+</html>
+
