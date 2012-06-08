@@ -98,15 +98,14 @@ fly.init = function (args) {
 	fly.layers.info = new paper.Layer();
 	
 	fly.info = function() {
-		// publish flypaper namespace info to fly.infoCtrlr
+		// fly namespace is the first member of fly.infoCtrlr
 			var i = {};
 			i.name = fly.name;
 			i.version = { val: fly.version, type: "version"};
 			i.debug = { val: fly.debug, type: "bool" };
 			i.width = { val: fly.width, type: "val" };
 			i.height = { val: fly.height, type: "val" };
-			i.info = {val: "press i to toggle info panel", type: "string" };
-			i.select = {val: "press s to toggle object selection", type: "string" };
+			i.keys = {val: "[i]nfo, [s]elect, [r]otate", type: "string" };
 			return i;
 	};
 							
@@ -289,7 +288,8 @@ fly.init = function (args) {
 			
 		var name = "infoCtrlr";
 		var version = "0.3.5";
-		var members = [{obj:fly,display:true}]; // infoCtlr is member[1] after infoCtrlr.init();
+		 // fly is members[0], infoCtlr is member[1] after infoCtrlr.init();
+		var members = [{obj:fly,display:false}];
 		var style = {};
 			style.c1 = fly.colors.info.title || 'black';
 			style.c2 = fly.colors.info.val || 'red';
@@ -1267,8 +1267,7 @@ fly.Ananda.prototype.init = function (args){
 	this.buildRecord = iA.bld;
 	this.selectable = args.selectable !== undefined ? args.selectable : false;
 	this.dragable = args.dragable !== undefined ? args.dragable : true;
-	// this.speedFactor = args.speed !== undefined ? args.speed : 5;
-	// this._speed = this.speed();
+	this.rotatable = args.rotatable !== undefined ? args.rotatable : false;
 	this.moving = false;
 	this.group = new paper.Group();
 	if (iA.handle) {
@@ -1303,7 +1302,7 @@ fly.Ananda.prototype.anandaInfo = function () {
 		i.moving = { val: this.moving, type: "bool" };
 		i.selectable = { val: this.selectable, type: "bool" };
 		i.selected = { val: this.group.selected, type: "bool" };
-		i.speed = {val: this.speed, type:"val"};
+		i.rotatable = {val: this.rotatable, type:"val"};
 		// i.speed = {val: this.speed().toFixed(2), type:"val"};
 	};
 	return i;
@@ -1379,8 +1378,10 @@ fly.Ananda.prototype.drop = function (event) {
 };
 
 fly.Ananda.prototype.rotate = function (deg) {
-	// deg = deg || 3;
-	// this.group.rotate(deg,this.handle.bounds.center);
+	if (this.rotatable) {
+		deg = deg || 3;
+		this.group.rotate(deg,this.handle.bounds.center);
+	};
 };
 
 fly.Ananda.prototype.update = function (args) {
@@ -1414,50 +1415,45 @@ fly.Ananda.prototype.eventCall = function (e,args) {
 //--------------------- END Ananda -------------------------//
 
 
-//--------------------- BEGIN StructTemplate --------------//
+//--------------------- BEGIN Template --------------//
 /*					
 *				Template for extending Ananda
 *				v 0.3.4
 */
-//--------------------- BEGIN StructTemplate -------------//
+//--------------------- BEGIN Template -------------//
 
-fly.StructTemplate = function (args){
-	this.version = "0.3.4";
-	var args = args || {};
-	
-	// if your sure args is an obj literal:
-	args.name = args.name || "Template";
-	// else
-	this.name = args.name || "Template";
-	this.style = args.style || 
-		{
-			fillColor: fly.colors.main[0],
-			strokeColor: fly.colors.main[1],
-			strokeWidth: 5
-		};
+fly.Template = function (args){
+	this.version = "0.3.5";
+	var args = args || {};		
 	fly.Ananda.call(this);
-	this.init(args);
+	
+	// example variable, see info()
+	this.foo = "bar";	
+	// initialize from args, see Ananda
+	this.init(args);	
+	// add path consctructions to Template.build
 	this.build();
+	// register with fly.infoCtrlr and fly.eventCtrlr, see Ananda
 	this.register();
 };
 
-fly.StructTemplate.prototype = new fly.Ananda;
+fly.Template.prototype = new fly.Ananda;
 
-fly.StructTemplate.prototype.constructor = fly.StructTemplate;
+fly.Template.prototype.constructor = fly.Template;
 
-fly.StructTemplate.prototype.build = function () {
+fly.Template.prototype.build = function () {
 	// initial build here
 };
 
-fly.StructTemplate.prototype.info = function (){
+fly.Template.prototype.info = function (){
 	// override Ananda info() to add other info,
 	var i = this.anandaInfo();
 	// example varible sent to infoCtrlr
-	i.foo = {val: "bar", type:"val"};
+	i.foo = {val: this.foo, type:"val"};
 	return i;
 }
 
-//--------------------- END StructTemplate ----------------//
+//--------------------- END Template ----------------//
 
 //--------------------- BEGIN Pullbar ---------------------//
 /*					
@@ -1523,7 +1519,7 @@ fly.Pullbar.prototype.info = function (){
 		i.vectorPrevious = {val: this.vectorPrevious, type: "val"};
 	};
 	return i;
-	}
+}
 
 fly.Pullbar.prototype.register = function (display) {
 	display = display || false;

@@ -2,7 +2,7 @@
 <html lang=en>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<title>flypaper v 0.3.5 - basic</title>
+	<title>FlyPaper v 0.3.5 - basic</title>
 	
 	<style type="text/css" media="screen">
 		#ctx {
@@ -16,42 +16,47 @@
 
 <script type="text/javascript">
 
-//---------- INIT ---------------------------------//
+	//---------- INIT ---------------------------------//
 
-    window.onload = function() {
-        var canvas = document.getElementById('ctx');
-        paper.setup(canvas);
-		fly.init({width:1200,height:600});
+	window.onload = function() {
+		// start by initializing Paper.js
+		var canvas = document.getElementById('ctx');
+		paper.setup(canvas);
+		
+		// initialize FlyPaper and set the canvas to 800 x 500 
+		fly.init({width:800,height:500});
+		// when fly.debug is set to true, the info panel is accessible
 		fly.debug = true;
-
-	paper.view.onFrame = function(event) {
+		
+		// mouse events are handles within FlyPaper
+		// the onFrame handler is installed here
+		paper.view.onFrame = function(event) {
 		fly.eventCtrlr.publish("frame",event);
-		paper.view.draw();
-	};
+		};
 
- //---------- this page constructs ---------------------------------//
+		// fly.Template is the most basic object in FlyPaper
+		// use it to create your own FlyPaper constructions
+		var myFly = new fly.Template(
+			// create an object at 100,100 with a draggable handle 300px square 
+			{name:"My Template",handle:[100,100,300],
+			selectable:true, // default: false
+			dragable: true, // default: true
+			rotatable: true // default: false
+		});
+		// if a draggable object has not paths besides the handle, 
+		// you must make the handle visible to drag.
+		myFly.handle.visible = true; 
 
-	var myFly = new fly.StructTemplate(
-							{name:"basic shape",handle:[150,250,300],
-						 	style:{fillColor:fly.colors.main[0]},
-							selectable:true,
-							dragable: true
-						});
-	myFly.handle.visible = true; //<--- DON'T DRAG AND ANANDA WITHOUT!!!!!!
-
-
- //---------- END this page constructs ---------------------------------//
-
-    }; // END window onLoad
+	}; // END window onLoad
 
 </script>
 
 
 </head>
 <body>
-	<h2>Flypaper for Paper.js : Basic Example</h2>
+	<h2>FlyPaper for Paper.js : Basic Example</h2>
 	<canvas id="ctx" ></canvas>
-	<p></p>
+	<p>i key toggles info panel</p>
 </body>
 </html>
 
