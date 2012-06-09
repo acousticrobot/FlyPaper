@@ -1,7 +1,7 @@
 # FlyPaper.js
 version 3.5 author [Jonathan Gabel](http://jonathangabel.com)
 
-FlyPaper.js adds the fly namespace to a project using the [paper.js](http://paperjs.org) framework. It's main purpose is to add communication and animation functionality.  FlyPaper uses JavaScript directly so that it can be used used across multiple files, please see ["using JavaScript directly"](http://paperjs.org/tutorials/getting-started/using-javascript-directly/) for more info on how this differs from using PaperScript.
+FlyPaper.js adds the fly namespace to a project using the [Paper.js](http://paperjs.org) framework. It's main purpose is to add communication and animation functionality.  FlyPaper uses JavaScript directly so that it can be used used across multiple files, please see ["using JavaScript directly"](http://paperjs.org/tutorials/getting-started/using-javascript-directly/) for more info on how this differs from using PaperScript.
 
 *please note:* FlyPaper is still in an experimental stage, I can't say for sure what will be backwards compatible.
 
@@ -28,11 +28,11 @@ index.html contains a basic example of initializing FlyPaper and adding a basic 
 		// fly.Template is the most basic object in FlyPaper
 		// use it to create your own FlyPaper constructions
 		var myFly = new fly.Template(
-		{name:"my template",handle:[100,100,300],
-		style:{fillColor:fly.colors.main[0]},
-		selectable:true, // default: false
-		dragable: true, // default: true
-		rotatable: true // default: false
+			{name:"my template",handle:[100,100,300],
+			style:{fillColor:fly.colors.main[0]},
+			selectable:true, // default: false
+			dragable: true, // default: true
+			rotatable: true // default: false
 		});
 		
 		myFly.handle.visible = true; // This is needed for dragging an object without paths
@@ -45,20 +45,20 @@ If you run this in a browser, you should see a 300 pixel wide square sitting wit
 
 ### fly.init()
 
-fly.init() initializes the drawing space and inits other "smart" objects within the paper.js context. Currently it only looks for two values: the width and height for the canvas.
-Eventually it should take arguments that can control the colors and other aspects of the Flypaper. For now you will have to look for fly.colors, fly.info etc. and change these within the script.  
+fly.init() initializes the drawing space and inits other "smart" objects within the Paper.js context. Currently it only looks for two values: the width and height for the canvas.
+Eventually it should take arguments that can control the colors and other aspects of the FlyPaper. For now you will have to look for fly.colors, fly.info etc. and change these within the script.  
 
-### fly.eventCtrlr
+### The Event Contoller: fly.eventCtrlr
 
-The event controller is the pub/sub object within FlyPaper. New objects can subscribe to receive event announcements,   events can send events through event controller w/o having to know about specific objects. The event controller accepts incoming registrations as objects are created.
+The fly.eventCtrlr is the pub/sub object within FlyPaper. New objects can subscribe to receive event announcements, event contollers and objects can send events information through fly.eventCtrlr w/o having to know about specific objects. The fly.eventCtrlr accepts incoming registrations as objects are created.
 
-### fly.infoCtrlr
+### The Info Controller: fly.infoCtrlr
 
-The info controller keeps track of objects that register with it and collects any information they want to share.  It displays this in the info control panel.  The main purpose of the info controller is debugging.  When fly.debug is set to true, pressing the 'i' key will bring up the info panel.  Additionally, infoController keeps track of time past and frame rates.  This can be used to standardize running speeds across browsers.
+The fly.infoCtrlr keeps track of objects that register with it and collects any information they want to share.  It displays this in the info control panel.  The main purpose of the fly.infoCtrlr is debugging.  When fly.debug is set to true, pressing the 'i' key will bring up the info panel.  Additionally, infoController keeps track of time past and frame rates.  This can be used to standardize running speeds across browsers.
 
 ## FlyPaper Objects
 
-The main purpose of the FlyPaper framework is to allow easy debugging of more complicated systems, quickly adding variables to the canvass so you don't have to console.log them at 50 frames per second.  Additionally is adds basic functionality [ dragging and dropping, rotating, selecting, pull-bars ] and motions [ swing, bob, custom ] to shapes or groups of shapes. Lastly, it allows you to register objects to listen for events, or publish events for other shapes to respond to.
+The main purpose of the FlyPaper framework is to allow easy debugging of more complicated systems, quickly adding variables to the canvas so you don't have to console.log them at 5 - 50 frames per second.  Additionally is adds basic functionality [ dragging and dropping, rotating, selecting, pull-bars ] and motions [ swing, bob, custom ] to shapes or groups of shapes. Lastly, it allows you to register objects to listen for events, or publish events for other shapes to respond to.
 
 	//--------------------- BEGIN Template -------------//
 
@@ -99,7 +99,7 @@ First copy and paste fly.Template into your own javascript file and then find "T
 
 At the heart of Template is the abstract class Ananda. Ananda takes the arguments sent to and tries to initialize an object with them.
 
-### Adding info to the info controller
+### Adding info to the fly.infoCtrlr
 
 On frame events, if the debug panel is visible and the display is opened to your object, fly.infoCtrlr sends a request to your object for info via YourObject.info(). once it has registered values in info packet take form: { name: "name", foo: {val:"bar", type:"var"} }
 
@@ -122,7 +122,7 @@ It can have a number of properties:
 
   * the handle is a paper.Path.Rectangle used for dragging, by default it is invisible
   * the group, initially this.group includes the handle if there is one
-  * selectable (default false, and only when fly.debug is true)
+  * selectable (default false, in effect when fly.debug is false)
   * draggable (default true)
   * rotatable (default false)
 
