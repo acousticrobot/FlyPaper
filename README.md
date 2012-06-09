@@ -1,13 +1,13 @@
-# flypaper.js
+# FlyPaper.js
 version 3.5 author [Jonathan Gabel](http://jonathangabel.com)
 
-FlyPaper.js adds the fly namespace to a project using the [paper.js](http://paperjs.org) framework. It's main purpose is to add communication and animation functionality.  FlyPaper uses js directly so that it can be used used across multiple files, please see ["using JavaScript directly"](http://paperjs.org/tutorials/getting-started/using-javascript-directly/) for more info on how this differs from using paperScript.
+FlyPaper.js adds the fly namespace to a project using the [paper.js](http://paperjs.org) framework. It's main purpose is to add communication and animation functionality.  FlyPaper uses JavaScript directly so that it can be used used across multiple files, please see ["using JavaScript directly"](http://paperjs.org/tutorials/getting-started/using-javascript-directly/) for more info on how this differs from using PaperScript.
 
-*please note:* flypaper is still in an experimental stage, I can't say for sure what will be backwards compatible.
+*please note:* FlyPaper is still in an experimental stage, I can't say for sure what will be backwards compatible.
 
 ## Setting up a scope
 
-index.html contains a basic example of initializing flypaper and adding a basic template object:  
+index.html contains a basic example of initializing FlyPaper and adding a basic template object:  
 
 	window.onload = function() {
 		// start by initializing Paper.js
@@ -50,7 +50,7 @@ Eventually it should take arguments that can control the colors and other aspect
 
 ### fly.eventCtrlr
 
-The event controller is the pub/sub object within FlyPaper. New objects can subscribe to receive event announcements, paperscript events can send events through eventCntrlr w/o having to know about specific objects. The event controller accepts incoming registrations as objects are created.
+The event controller is the pub/sub object within FlyPaper. New objects can subscribe to receive event announcements,   events can send events through event controller w/o having to know about specific objects. The event controller accepts incoming registrations as objects are created.
 
 ### fly.infoCtrlr
 
@@ -58,7 +58,7 @@ The info controller keeps track of objects that register with it and collects an
 
 ## FlyPaper Objects
 
-The main purpose of the FlyPaper framework is to allow easy debugging of more complicated systems, quickly adding variables to the canvass so you don't have to console.log them at 50 frames per second.  Additionally is adds basic functionality [ dragging and dropping, rotating, selecting, pullbars ] and motions [ swing, bob, custom ] to shapes or groups of shapes. Lastly, it allows you to register objects to listen for events, or publish events for other shapes to respond to.
+The main purpose of the FlyPaper framework is to allow easy debugging of more complicated systems, quickly adding variables to the canvass so you don't have to console.log them at 50 frames per second.  Additionally is adds basic functionality [ dragging and dropping, rotating, selecting, pull-bars ] and motions [ swing, bob, custom ] to shapes or groups of shapes. Lastly, it allows you to register objects to listen for events, or publish events for other shapes to respond to.
 
 	//--------------------- BEGIN Template -------------//
 
@@ -101,7 +101,7 @@ At the heart of Template is the abstract class Ananda. Ananda takes the argument
 
 ### Adding info to the info controller
 
-On frame events, if the debug panel is visible and the display is opened to your object, fly.infoCtrlr sends a request to your object for info via YourObject.info(). once it has registered values in infopacket take form: { name: "name", foo: {val:"bar", type:"var"} }
+On frame events, if the debug panel is visible and the display is opened to your object, fly.infoCtrlr sends a request to your object for info via YourObject.info(). once it has registered values in info packet take form: { name: "name", foo: {val:"bar", type:"var"} }
 
 ## Ananda 
 
