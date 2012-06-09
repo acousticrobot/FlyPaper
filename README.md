@@ -103,8 +103,11 @@ At the heart of Template is the abstract class Ananda. Ananda takes the argument
 
 On frame events, if the debug panel is visible and the display is opened to your object, fly.infoCtrlr sends a request to your object for info via YourObject.info(). once it has registered values in info packet take form: { name: "name", foo: {val:"bar", type:"var"} }
 
-## Ananda 
+## Another example: pullbar.html
 
+This file shows an example of a simple object with a pullbar. The object fly.PullGroup included in FlyPaper is one example of how to add multiple shapes using the build function, and define they way they update based on stimuli.  This object creates it's own fly.Pullbar and uses it to resize the shapes in its group. Press the s key to bring up the pullbar, press the i key to watch how the information sent from the objects pullbar is used. 
+
+## Ananda 
 
 The ananda is initialized when the object calls this.init(args).  The args can take a number of forms:
 
