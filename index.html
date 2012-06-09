@@ -10,7 +10,8 @@
 		}
 	</style>
 
-<script type="text/javascript" src="paper.js"></script>
+<!-- Please be kind and replace this with your local copy -->
+<script type="text/javascript" src="http://paperjs.org//static/js/paper.js"></script>
 	
 <script type="text/javascript" src="flypaper.js"></script>
 
@@ -38,12 +39,12 @@
 		// use it to create your own FlyPaper constructions
 		var myFly = new fly.Template(
 			// create an object at 100,100 with a draggable handle 300px square 
-			{name:"My Template",handle:[100,100,300],
+			{name:"My FlyPaper Template",handle:[100,100,300],
 			selectable:true, // default: false
 			dragable: true, // default: true
 			rotatable: true // default: false
 		});
-		// if a draggable object has not paths besides the handle, 
+		// if a draggable object has no paths besides the handle, 
 		// you must make the handle visible to drag.
 		myFly.handle.visible = true; 
 
