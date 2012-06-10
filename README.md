@@ -131,21 +131,27 @@ It can have a number of properties:
 
 ----
 
-## FlyPaper TODO:
-
-  * fly.colors
-    * reorganize current set
-    * add colors to current set
-    * arrange color arrays dark to light (or light to dark?)
-    * ability to add colors during init
-    * ability to swap out color sets
-
+## FlyPaper TODO next up:
+  * color handling cleanup
+  * better organization of layers [background layer | stage layer array [] | info layer ]
   * fly.layers
     * background, stage should be arrays
     * remove front stage, backstage etc. 
 
   * add better timing functionality
-
-	* ability to add information into fly.info
+  * ability to add information into fly.info
 
 ----
+
+## License
+
+Copyright (C) 2012 Jonathan Gabel
+http://jonathangabel.com
+All rights reserved.
+
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
