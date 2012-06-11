@@ -590,7 +590,7 @@ fly.init = function (args) {
 			i.time = { val: _time.time.toFixed(2), type: "val"};
 			i.fpsAve = { val: _time.fps.ave.toFixed(2), type: "val"};
 			i.fpsCurr = {val: _time.fps.curr.toFixed(2), type:"val"};
-			i.moving = { val: moving, type: "bool" };
+			// i.moving = { val: moving, type: "bool" };
 			i.mobile = { val: device.isMobile, type: "bool"};
 			i.ipad = { val: device.isIpad, type: "bool"};
 			return i;

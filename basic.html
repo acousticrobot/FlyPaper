@@ -19,8 +19,6 @@
 
 <script type="text/javascript">
 
-	//---------- INIT ---------------------------------//
-
 	window.onload = function() {
 		// start by initializing Paper.js
 		var canvas = document.getElementById('ctx');
@@ -40,16 +38,12 @@
 		// fly.Template is the most basic object in FlyPaper
 		// use it to create your own FlyPaper constructions
 		var myFly = new fly.Template(
-			// create an object at 100,100 with a draggable handle 300px square 
-			{name:"My FlyPaper Template",handle:[100,100,300],
+			// create an object at 100,100 with a draggable handle 300px x 250px 
+			{name:"My Template",handle:[100,100,300,250],
 			selectable:true, // default: false
 			dragable: true, // default: true
 			rotatable: true // default: false
 		});
-		// if a draggable object has no paths besides the handle, 
-		// you must make the handle visible to drag.
-		myFly.handle.visible = true; 
-
 	}; // END window onLoad
 
 </script>

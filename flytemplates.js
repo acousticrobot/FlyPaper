@@ -1,3 +1,4 @@
+"use strict"
 //-------------- BEGIN FLYPAPER TEMPLATE-------------//
 /*
 *			Namespace FLYPAPER
@@ -22,13 +23,20 @@ fly.Template = function (args){
 	var args = args || {};		
 	fly.Ananda.call(this);
 	
+	// initialize from args (in prototype Ananda)
+	this.init(args);	 
+	
+	// send a name in args, take the one created in init
+	// or add one after init that describes the object type
+	this.name = args.name || "Template Object";
+
 	// example variable, see info()
 	this.foo = "bar";	
-	// initialize from args, see Ananda
-	this.init(args);	
-	// add path consctructions to Template.build
+
+	// add initial drawing to build
 	this.build();
-	// register with fly.infoCtrlr and fly.eventCtrlr, see Ananda
+
+	// register with fly.infoCtrlr and fly.eventCtrlr
 	this.register();
 };
 
@@ -37,7 +45,14 @@ fly.Template.prototype = new fly.Ananda;
 fly.Template.prototype.constructor = fly.Template;
 
 fly.Template.prototype.build = function () {
-	// initial build here
+	// add initial build here:	
+	
+	// for example:
+	if (this.handle !== undefined) {
+		var myShape = paper.Path.Oval(this.handle.bounds);
+		myShape.fillColor = "red";
+	};
+	this.group.addChild(myShape);
 };
 
 fly.Template.prototype.info = function (){
@@ -47,6 +62,10 @@ fly.Template.prototype.info = function (){
 	i.foo = {val: this.foo, type:"val"};
 	return i;
 }
+
+fly.Template.prototype.update = function (args) {
+	// add "on frame" events here
+};
 
 //--------------------- END Template ----------------//
 
@@ -64,9 +83,9 @@ fly.Template.prototype.info = function (){
 fly.PullGroup = function(args){
 	this.version = "0.3.6";
 	var args = args || {};	
-	this.name = args.name || "PullGroup";
 	fly.Ananda.call(this);
 	this.init(args);
+	this.name = args.name || "PullGroup";
 	this.reset = false; // trigger attached to pullbar, refresh on release
 	this.selected = false; // needed because group.selection lost on draw()
 	this.style = args.style || 
@@ -90,9 +109,9 @@ fly.PullGroup.prototype = new fly.Ananda;
 fly.PullGroup.prototype.constructor = fly.PullGroup;
 
 fly.PullGroup.prototype.toggleSelected = function() {
-	this.selected = !this.selected;
+		this.selected = !this.selected;
 	this.pullbar.toggleSelected(this.selected);
-	if (fly.debug) {
+	if (this.selectable === true) {
 		this.group.selected = this.selected;		
 	};
 }
@@ -123,19 +142,16 @@ fly.PullGroup.prototype.draw = function() {
 	this.bones[0].style = this.style[0];
 	this.bones[1].style = this.style[1];
 	this.group.addChildren(this.bones);
-	if (fly.debug && this.selected) {
+	if (this.selectable === true) {
 		this.group.selected = true;
 	};
 };
 
 fly.PullGroup.prototype.update = function() {
-	if (this.pullbar.moving == true) {
+	if (this.pullbar.moving === true) {
 		this.reset = true;
 		this.updateHandle(this.pullbar.group.bounds);
 		this.draw();
-		if (fly.debug == true) {
-			this.group.selected = true;
-		};
 	};
 	if (this.reset == true && !this.pullbar.moving ) {
 		this.reset = false;
