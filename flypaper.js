@@ -2,7 +2,7 @@
 /*
 *			Namespace FLYPAPER
 *			abbreviated: fly
-*				v 0.3.5.5
+*				v 0.3.6
 *								
 * flypaper init() creates a drawing and animation context
 * using the paper.js library
@@ -27,7 +27,7 @@ if (typeof fly !== "object") {
 
 //--------------------- BEGIN FLYPAPER INIT -----------------//
 /*
-*						FLYPAPER INIT v0.3.5
+*						FLYPAPER INIT v0.3.6
 *	inits the canvas for all drawing
 *	contains eventCtrlr and infoCtrlr	
 *	accepts args: {	
@@ -40,7 +40,7 @@ if (typeof fly !== "object") {
 
 fly.init = function (args) {
 	fly.name = "flypaper";
-	fly.version = "0.3.5";
+	fly.version = "0.3.6";
 	if (args === undefined) {
 		args = {};
 	};
@@ -110,7 +110,7 @@ fly.init = function (args) {
 	};
 							
 	fly.eventCtrlr = (function () {
-	// v0.3.5
+	// v0.3.6
 	// eventCtrlr is the main pub/sub object, paper events
 	// all publish through it, objects listening for events
 	// SUBSCRIBE to events with: 
@@ -134,7 +134,7 @@ fly.init = function (args) {
 	// should it be every x frames or every x ms ?
 	
 		var name = "eventCtrlr",
-			version = "0.3.5",
+			version = "0.3.6",
 			events = {},
 			beats = [], // register for beats (2,4,8, etc.)
 			beat = 1,
@@ -275,7 +275,7 @@ fly.init = function (args) {
 	})();
 
 	fly.infoCtrlr = (function () {
-	// v 0.3.5.3
+	// v 0.3.6
 	// new objects can register as a member with infoCtrlr 
 	// by sending the request: fly.infocontroller.register(this);
 	// optional second boolean parameter display: (this,false)
@@ -287,7 +287,7 @@ fly.init = function (args) {
 	// fly.colors.info for a color for that type.
 			
 		var name = "infoCtrlr";
-		var version = "0.3.5";
+		var version = "0.3.6";
 		 // fly is members[0], infoCtlr is member[1] after infoCtrlr.init();
 		var members = [{obj:fly,display:false}];
 		var style = {};
@@ -566,7 +566,7 @@ fly.init = function (args) {
 		}
 		
 		function updateTime(args) {
-			// v 0.3.5
+			// v 0.3.6
 			// args from frameUpdate {delta,time,count}
 			// if args is undefined, check paper onFrame is publishing: ("frame",event);
 			if (args === undefined) {
@@ -597,7 +597,7 @@ fly.init = function (args) {
 		};
 				
 		function updateInfo(force){
-			// v 0.3.5.2
+			// v 0.3.6
 				//	gather most recent info 
 				//	from members with display = true 
 				//	use force === true on resistration or to update all
@@ -741,7 +741,7 @@ fly.init = function (args) {
 //------------- BEGIN FLYPAPER MATH AND MOTION ------------//
 /*					
 *				Math and Motion	Methods
-*				v 0.3.5
+*				v 0.3.6
 */
 //------------- BEGIN FLYPAPER MATH AND MOTION ------------//
 
@@ -771,7 +771,7 @@ fly.scatter = function (o,rect) {
 };
 
 fly.randomizePt = function (point,delta,constrain) {
-	// v 0.3.5
+	// v 0.3.6
 	// adds variance delta to point
 	// constrain === "x" or "y" or default none
 	var c = constrain || "none";
@@ -800,7 +800,7 @@ fly.eachCell = function (o,f) {
 };
 
 fly.gridPlot = function (c,r,rectangle,dir) {
-	// v.0.3.5.3
+	// v.0.3.6
 	// returns an array of arrays of points
 	// c + 1 columns by r + 1 rows inside paper.rectangle r
 	// last column and row run along right and bottom edges
@@ -937,7 +937,7 @@ fly.Swing.prototype.rotation = function () {
 //--------------------- BEGIN Scroll -----------------------//
 /*					
 *				Motion: Scroll
-*				v 0.3.5
+*				v 0.3.6
 *					
 *	Handles scrolling and object in one direction:
 *		"left","right","up","down"
@@ -947,7 +947,7 @@ fly.Swing.prototype.rotation = function () {
 fly.Scroll = function (args){
 	args = args || {};
 	this.name = args.name + " scroll" || "scroll";
-	this.version = "0.3.5";
+	this.version = "0.3.6";
 	this.position = args.position || new paper.Point(0,0);
 	this.direction = args.direction || "left";
 	this.speed = args.speed !== undefined ? args.speed : 5;
@@ -1026,7 +1026,7 @@ fly.Scroll.prototype.reposition = function (point) {
 //--------------------- BEGIN Bob -----------------------//
 /*					
 *				Motion: Bob
-*				v 0.3.5
+*				v 0.3.6
 *					
 *	Moves and object up and down repeatedly
 */
@@ -1086,7 +1086,7 @@ fly.Bob.prototype.update = function (time) {
 //--------------------- BEGIN ANANDA ---------------------//
 /*					
 *				abstract Class fly.Ananda
-*				v 0.3.5
+*				v 0.3.6
 *					
 * use as a drawing context and main handle for structures 
 * creates an object with and optional rectangle handle
@@ -1107,7 +1107,7 @@ fly.Bob.prototype.update = function (time) {
 
 fly.Ananda = function () {
 	if (this.version === undefined) {
-		this.version = "0.3.5";
+		this.version = "0.3.6";
 	};
 	if (this.name === undefined) {
 		this.name = "Ananda ";
@@ -1417,7 +1417,7 @@ fly.Ananda.prototype.eventCall = function (e,args) {
 
 //--------------------- BEGIN Pullbar ---------------------//
 /*					
-*				v 0.3.5
+*				v 0.3.6
 * Pullbar extends Ananda, creates grabbable handles
 *					
 * adaptation of vektor.js from:
@@ -1435,7 +1435,7 @@ fly.Ananda.prototype.eventCall = function (e,args) {
 //--------------------- BEGIN Pullbar --------------------//
 
 fly.Pullbar = function (args){
-	this.version = "0.3.5";
+	this.version = "0.3.6";
 	var args = args || {};
 	args.name = args.name + " pullbar" || "pullbar";
 	if (args.handle === undefined) { 

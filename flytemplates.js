@@ -2,7 +2,7 @@
 /*
 *			Namespace FLYPAPER
 *			abbreviated: fly
-*				v 0.3.5
+*				v 0.3.6
 *								
 *	A collection of FlyPaper Object Templates
 * Use these templates to create your own fly objects
@@ -13,12 +13,12 @@
 /*					
 *				Template for basic FlyPaper smart object
 *				Extends Ananda
-*				v 0.3.5
+*				v 0.3.6
 */
 //--------------------- BEGIN Template -------------//
 
 fly.Template = function (args){
-	this.version = "0.3.5";
+	this.version = "0.3.6";
 	var args = args || {};		
 	fly.Ananda.call(this);
 	
@@ -53,7 +53,7 @@ fly.Template.prototype.info = function (){
 
 //--------------------- BEGIN PullGroup --------------------//
 /*
-* 				v 0.3.5
+* 				v 0.3.6
 * Template for object with handle.
 * Creates an array that can be filled with a more
 * complicated shape.  Redraws the shape to the bounds of
@@ -62,7 +62,7 @@ fly.Template.prototype.info = function (){
 //--------------------- BEGIN PullGroup --------------------//
 
 fly.PullGroup = function(args){
-	this.version = "0.3.5";
+	this.version = "0.3.6";
 	var args = args || {};	
 	this.name = args.name || "PullGroup";
 	fly.Ananda.call(this);
