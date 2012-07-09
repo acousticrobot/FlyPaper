@@ -14,7 +14,7 @@
 <script type="text/javascript" src="http://paperjs.org//static/js/paper.js"></script>
 	
 <script type="text/javascript" src="flypaper.js"></script>
-<script type="text/javascript" src="flytemplates.js"></script>
+<script type="text/javascript" src="templates.js"></script>
 
 <script type="text/javascript">
 
@@ -30,16 +30,15 @@
 		// when fly.debug is set to true, the info panel is accessible
 		fly.debug = true;
 		
-		// mouse events are handles within FlyPaper
-		// the onFrame handler is installed here
+		// All mouse events are handled within FlyPaper
+		// the onFrame handler must be installed here
 		paper.view.onFrame = function(event) {
 		fly.eventCtrlr.publish("frame",event);
 		};
 
-		// fly.Template is the most basic object in FlyPaper
-		// use it to create your own FlyPaper constructions
+		// fly.PullGroup is similar to fly.template, but it adds an example 	
+		// pullbar to the object.
 		var myFly = new fly.PullGroup(
-			// create an object with a pullbar at 100,100 with a draggable handle 300px square 
 			{name:"My Sizable Object",handle:[100,100,300],
 		});
 	}; // END window onLoad
