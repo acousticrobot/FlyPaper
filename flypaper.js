@@ -1118,18 +1118,17 @@ fly.Ananda = function () {
 fly.Ananda.prototype.init = function (args){
 
 	args = typeof(args) !== 'undefined' ? args : -1;
-
 	var iA = {};	// initialization arguments
 		iA.n = "";	// name
 		iA.bld = "";	// build record
-		iA.dv = 50; // default size
-		
+		iA.ds = 50; // default size
+
 	function buildHandle() {
 		if (iA.Pt === undefined) { 
 			iA.Pt = new paper.Point(0,0); 
 		};
 		if (iA.Sz === undefined) { 
-			iA.Sz = new paper.Size(iA.dv,iA.dv); 
+			iA.Sz = new paper.Size(iA.ds,iA.ds); 
 		};
 		if (iA.Rect === undefined) { 
 			iA.Rect = new paper.Rectangle(iA.Pt,iA.Sz); 
@@ -1147,7 +1146,9 @@ fly.Ananda.prototype.init = function (args){
 	function initFromNum (n) {
 		if (args < 0) { // illegal value 
 						// or contructed w/ no parameters
-			iA.n = "NaNborn";
+			iA.n = "born";
+			iA.Sz = new paper.Size(100,100);
+			buildHandle();
 		} else {
 			iA.n = "Numborn";
 			iA.Sz = new paper.Size(n,n);
@@ -1244,7 +1245,6 @@ fly.Ananda.prototype.init = function (args){
 			iA.n = "Objborn";
 		};
 	}
-
 	switch (typeof args) {			
 		case "number" :
 			initFromNum(args);
@@ -1298,7 +1298,7 @@ fly.Ananda.prototype.anandaInfo = function () {
 							+ this.handle.bounds.height.toFixed(2), type: "val"};
 		};
 		i.group = {val: this.group._children.length, type: "val"};
-		i.dragable = {val: this.dragable, type: "val"};
+		i.dragable = {val: this.dragable, type: "bool"};
 		i.moving = { val: this.moving, type: "bool" };
 		i.selectable = { val: this.selectable, type: "bool" };
 		i.selected = { val: this.group.selected, type: "bool" };
