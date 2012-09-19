@@ -1,7 +1,7 @@
 # FlyPaper.js
 version 3.6 author [Jonathan Gabel](http://jonathangabel.com)
 
-FlyPaper grew from an initial desire to allow easy debugging of more complicated systems, quickly adding variables to the canvas so I didn't have to console.log them at 5 - 50 frames per second.  Additionally is adds basic functionality [ dragging and dropping, rotating, selecting, pull-bars ] and motions [ swing, bob, custom ] to shapes or groups of shapes. Lastly, it allows you to register objects to listen for events, or publish events for other shapes to respond to.
+FlyPaper is an add-on to [Paper.js](http://paperjs.org) for creating javascript animations in the HTML5 canvas. FlyPaper grew from an initial desire to allow easy debugging of more complicated systems, quickly displaying variables directly on the canvas so I didn't have to console.log them at 5 - 50 frames per second.  Additionally is adds basic functionality [ dragging and dropping, rotating, selecting, pull-bars ] and motions [ swing, bob, custom ] to shapes or groups of shapes. Lastly, it allows you to register objects to listen for events, or publish events for other shapes to respond to.
 
 FlyPaper.js adds the fly namespace to a project using the [Paper.js](http://paperjs.org) framework. FlyPaper uses JavaScript directly so that a project can be composed of multiple files, please see ["using JavaScript directly"](http://paperjs.org/tutorials/getting-started/using-javascript-directly/) for more info on how this differs from using PaperScript.
 
@@ -27,7 +27,7 @@ basic-example.html contains everything you need to initialize FlyPaper and add a
 		fly.eventCtrlr.publish("frame",event);
 		};
 
-		// fly.Template is the most basic object in FlyPaper.
+		// fly.Template is a basic example of a FlyPaper object.
 		// Look in templates.js to see it.		
 		// Alter it to create your own FlyPaper constructions.
 		var myFly = new fly.Template(
@@ -39,7 +39,7 @@ basic-example.html contains everything you need to initialize FlyPaper and add a
 	}; // END window onLoad
 
 
-If you run this in a browser, you should see a 300 x 250 pixel oval sitting within the canvas. If you press the 'i' key, you will see the information panel that is tracking everything within the FlyPaper context. 
+If you run this page in a browser, you should see a 300 x 250 pixel oval sitting within the canvas. If you press the 'i' key, you will see the information panel that is tracking everything within the FlyPaper context. 
 
 It uses the template object in templates.js to build an oval shape inside of the handle (origin at 100,100 width: 300, height:250). Normally you would add the window.onload function within your own script which includes your own fly objects.  
 
@@ -70,7 +70,7 @@ FlyPaper Objects, which is what you will be writing, all inherit from [Ananda][]
 
 ### Template Objects: a basic example
 
-Inside flyTemplates.js you will find a couple template FlyPaper objects, the most simple being fly.Template. This contains everything you need to plug into the FlyPaper functionality.  It builds a paper.Path.Oval so you can see it on the canvas. Everything you need to initialize the canvas and create a new template object is in basic-example.html. this call supplies two arguments: the name of the object "My Template Objects", and the handle.  If you supply a handle, the object will respond to drag and drop requests select and rotate requests by moving the handle.  
+Inside flyTemplates.js you will find a couple template FlyPaper objects, the most simple being fly.Template. This contains everything you need to plug into the FlyPaper functionality.  It builds a paper.Path.Oval so you can see it on the canvas. Everything you need to initialize the canvas and create a new template object is in basic-example.html. This call supplies two arguments: the name of the object "My Template Objects", and the handle.  If you supply a handle, the object will respond to drag and drop requests select and rotate requests by moving the handle.  
 
 Take a look at basic-example.html in your favorite browser (assuming it's not IE) and you should see a really simple oval sitting in a blue field. The only things that makes it different from your usual oval on rectangle is it has the capability to be dragged around, rotated with the "r" key, selected with the "s" key, and it is smart enough to tell you anything you want to know about it.  Press the "i" key and it should bring up the info panel. Open the "My Template Object" sub-panel (the name we gave it in the imbedded script) and you should see the information it is already set to give. The only information the template object itself is adding is the dummy variable "foo" which was set within the object to "bar".  The template is passing all of the other values through info() from the object's prototype [Ananda][].  You can pass them all in one go, or just select to see the ones that are relevant to your object. Here's a rundown of the default values: 
   
@@ -100,9 +100,9 @@ This file shows an example of a simple object with a pullbar. The object fly.Pul
 
 At the heart of Template is the abstract class Ananda. Ananda takes the arguments sent to and tries to initialize an object with them. The Ananda is initialized when the object calls this.init(args).  The args can take a number of forms:
 
-  * nothing: returns a square handle 100 x 100 and a build string that usually means something went wrong: n[-1]
-  * number(x): creates a square handle x x x. build: n[x]
-  * string: "my object" is the name, no handle. build: s["my object"]
+  * nothing: (). Returns a square handle 100 x 100 and a build string that usually means something went wrong: n[-1]
+  * number: (x). creates a square handle x by x. build: n[x]
+  * string("my object"). Creates a named object with no handle. build: s["my object"]
   * array: creates a handle for dragging. build a[...]
 		* [w&h]
 		* [width, height]
@@ -111,11 +111,11 @@ At the heart of Template is the abstract class Ananda. Ananda takes the argument
   * from rectangle: crates a handle 
   * from object literal: {name:"my object",handle:[20]} (see another example in basic-example.html or basic-pullbar.html)
 
-It can include a number of properties:
+The ananda can include a number of properties:
 
   * the handle is a paper.Path.Rectangle used for dragging, by default it is invisible.
   * the group, initially this.group includes the handle if there is one
-  * selectable (default false, in effect when fly.debug is false)
+  * selectable (default false, unselectable when fly.debug is false)
   * draggable (default true)
   * rotatable (default false)
 
@@ -133,7 +133,7 @@ It can include a number of properties:
 
 Copyright (C) 2012 Jonathan Gabel
 http://jonathangabel.com
-All rights reserved.
+All rights reserved
 
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
