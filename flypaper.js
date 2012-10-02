@@ -88,7 +88,7 @@ fly.init = function (args) {
 	fly.layers.backstage = new paper.Layer();	
 	fly.layers.stage = new paper.Layer(); 
 		// after info layer is created we step
-		// back to this one for all drawing
+		// back to this one for all drawing:
 	fly.layers.frontstage = new paper.Layer();
 
 /*
@@ -111,8 +111,9 @@ fly.init = function (args) {
 							
 	fly.eventCtrlr = (function () {
 	// v0.3.6
-	// eventCtrlr is the main pub/sub object, paper events
-	// all publish through it, objects listening for events
+	// eventCtrlr is the main pub/sub object, 
+	// paper events all publish through it, 
+	// objects listening for events
 	// SUBSCRIBE to events with: 
 	//		fly.eventCtrlr.subscribe("event",this);
 	// See fly.Ananda.prototype.register for an example.
@@ -122,7 +123,7 @@ fly.init = function (args) {
 	// PUBLISH events with:
 	// fly.eventCtrlr.publish("mouse down",event);
 	// mouse and key events are handled with paper tools
-	// within flypaper.
+	// implemented within flypaper.
 	  
 	// IMPORTANT! On-frame events must be initaited
 	// in the main javascript on window load. Use:	
@@ -139,7 +140,7 @@ fly.init = function (args) {
 			beats = [], // register for beats (2,4,8, etc.)
 			beat = 1,
 			maxBeats = 128,
-			frameRegex = /frame \d+/,
+			frameRegex = /frame \d+/, // for matching beats
 			firing = {}, //  used by isFiring
 			firePulse = 10, // isFiring countdown
 			errors = [];
