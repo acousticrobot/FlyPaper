@@ -88,13 +88,13 @@ fly.PullGroup = function(args){
 	this.selected = false; // needed because group.selection lost on draw()
 	this.style = args.style || 
 		[{
-			fillColor: fly.colors.main[0],
-			strokeColor: fly.colors.main[1],
+			fillColor: fly.color.main[0],
+			strokeColor: fly.color.main[1],
 			strokeWidth: 5,
 		},
 		{
-			fillColor: fly.colors.main[2],
-			strokeColor: fly.colors.main[1],
+			fillColor: fly.color.main[2],
+			strokeColor: fly.color.main[1],
 			strokeWidth: 5,
 		}
 		];

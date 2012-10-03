@@ -1,5 +1,6 @@
 // original is sandboxed...
 // version 0.3.6.5
+"use strict"
 var fly = {};
 
 fly.color = (function() {
@@ -89,7 +90,7 @@ fly.color = (function() {
 			darks = spectrum(col2,col3);
 			// remove duplicate color in middle and merge
 			lights.pop();
-			spec = lights.concat(darks);	
+			var spec = lights.concat(darks);	
 			return spec;
 	};
 		

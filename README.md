@@ -50,7 +50,7 @@ More information about this example below in [Template Objects: a basic example]
 ### fly.init()
 
 fly.init() initializes the drawing space and inits other "smart" objects within the Paper.js context. Currently it only looks for two values: the width and height for the canvas.
-Eventually it should take arguments that can control the colors and other aspects of the FlyPaper. For now you will have to look for fly.colors, fly.info etc. and change these within the script. 
+Eventually it should take arguments that can control the colors and other aspects of the FlyPaper. For now you will have to look for fly.color, fly.info etc. and change these within the script. 
 ### The Event Contoller: fly.eventCtrlr
 
 The fly.eventCtrlr is the publication / subscription (pub/sub) object within FlyPaper. New objects can subscribe to receive event announcements, event controllers and objects can send events information through fly.eventCtrlr w/o having to know about specific objects. The fly
