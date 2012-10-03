@@ -9,7 +9,7 @@ FlyPaper.js adds the fly namespace to a project using the [Paper.js](http://pape
 
 ## Setting up a scope
 
-basic-example.html contains everything you need to initialize FlyPaper and add a simple object:  
+basic-example.html contains everything you need to initialize FlyPaper and add a simple object. It calls templates.js, which contains the window.onload function required to initialize FlyPaper, and a couple examples of FlyPaper objects:  
 
 	window.onload = function() {
 		// start by initializing Paper.js
@@ -22,26 +22,24 @@ basic-example.html contains everything you need to initialize FlyPaper and add a
 		fly.debug = true;
 	
 		// All mouse events are handled within FlyPaper
-		// the onFrame handler must be installed here
+		// the onFrame handler must be installed here:
 		paper.view.onFrame = function(event) {
 		fly.eventCtrlr.publish("frame",event);
 		};
-
-		// fly.Template is a basic example of a FlyPaper object.
-		// Look in templates.js to see it.		
-		// Alter it to create your own FlyPaper constructions.
+		
+		// Now we can add a FlyPaper object 
+		// fly.Template is a basic example of a FlyPaper object
 		var myFly = new fly.Template(
-			{name:"My Template",handle:[100,100,300,250],
+			{name:"My Template Object", handle:[100,100,300,250],
 			selectable:true, // default: false
 			dragable: true, // default: true
 			rotatable: true // default: false
 		});
-	}; // END window onLoad
+	
+	};
 
 
-If you run this page in a browser, you should see a 300 x 250 pixel oval sitting within the canvas. If you press the 'i' key, you will see the information panel that is tracking everything within the FlyPaper context. 
-
-It uses the template object in templates.js to build an oval shape inside of the handle (origin at 100,100 width: 300, height:250). Normally you would add the window.onload function within your own script which includes your own fly objects.  
+If you run this page in a browser, you should see a 300 x 250 pixel oval sitting within the canvas, which you can drag around, select with the 's' key, and rotate with the 'r' key. All that fly.Template builds is this one oval shape inside of the handle (origin at 100,100 width: 300, height:250), but it plugs into the functionality shared by all FlyPaper objects. Because we set fly.debug to true, if you press the 'i' key, you will see the information panel that is tracking everything within the FlyPaper context, including our object which we named "My Template Object".
 
 More information about this example below in [Template Objects: a basic example][]
 

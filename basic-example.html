@@ -16,45 +16,7 @@
 <!-- add flypaper -->	
 <script type="text/javascript" src="flypaper.js"></script>
 
-<!-- This example uses fly.template from flytemplates.js
-Normally you would add your own fly objects in a separate js file.
-You can include the window.onload function below in your external
-file as well. -->
-
 <script type="text/javascript" src="templates.js"></script>
-
-
-<script type="text/javascript">
-
-	window.onload = function() {
-		// start by initializing Paper.js
-		var canvas = document.getElementById('ctx');
-		paper.setup(canvas);
-		
-		// initialize FlyPaper and set the canvas to 800 x 500 
-		fly.init({width:800,height:500});
-		// when fly.debug is set to true, the info panel is accesible
-		fly.debug = true;
-		
-		// All mouse events are handled within FlyPaper
-		// the onFrame handler must be installed here
-		paper.view.onFrame = function(event) {
-		fly.eventCtrlr.publish("frame",event);
-		};
-
-		// fly.Template is a basic example of a FlyPaper object.
-		// Look in templates.js to see it.		
-		// Alter it to create your own FlyPaper constructions.
-		var myFly = new fly.Template(
-			{name:"My Template Object", handle:[100,100,300,250],
-			selectable:true, // default: false
-			dragable: true, // default: true
-			rotatable: true // default: false
-		});
-	}; // END window onLoad
-
-</script>
-
 
 </head>
 <body>

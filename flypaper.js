@@ -50,9 +50,13 @@ fly.init = function (args) {
 	
 	paper.view.viewSize = new paper.Size(fly.width,fly.height);
 	
-	if (args.color === undefined) {
-		args.colors = {};
+	if (args.colorset === undefined) {
+		args.colorset = "standard";
 	};
+	
+/*
+*	COLORSPACE -- Init fly.color methods and populate the palette
+*/
 	fly.color = (function() {
 	// version 0.3.7
 	// color utility with methods for reading hex color values
@@ -68,7 +72,8 @@ fly.init = function (args) {
 	// 	cola for color arrays, [r,g,b] ex [0,127,255]
 
 		var name = "infoCtrlr",
-			version = "0.3.7";
+			version = "0.3.7",
+			colorSet = [];
 
 		function limit(col){
 		    // limit col between 0 and 255
@@ -115,7 +120,7 @@ fly.init = function (args) {
 		    return splice(col1a);
 		};
 
-		function spectrum(col1,col2,seg){
+		function bispectrum(col1,col2,seg){
 			// takes two colors, returns array of seg sements
 			// each a hex color. sent colors are first and last 
 			// colors in the array
@@ -131,17 +136,42 @@ fly.init = function (args) {
 		    return spec;
 		};
 
-		function trispectrum(col1,col2,col3){
+		function trispectrum(col1,col2,col3,seg){
 			// takes three hex colors and creates a 9 segment spectrum
 			// made for bringing saturated colors to light and dark
 			// standard use: (lightest, saturated, darkest)
 			// sent colors are first, middle, and last of the array
-			var lights = spectrum(col1,col2),
-				darks = spectrum(col2,col3);
+			// spectrum length defaults to 9, and will always be odd
+			var seg = seg !== undefined ? seg : 9;
+			var midseg = Math.ceil(seg/2);
+			var lights = bispectrum(col1,col2,midseg),
+				darks = bispectrum(col2,col3,midseg);
 				// remove duplicate color in middle and merge
 				lights.pop();
 				var spec = lights.concat(darks);	
 				return spec;
+		};
+		
+		function spectrum(name,col1,col2,col3,seg) {
+			// name: string for name of color set
+			// send two hex colors for a bispectrum
+			// three colors for a trispectrum
+			// possible args sent:
+			//	(name,col1,col2)
+			//	(name,col1,col2,seg)
+			//	(name,col1,col2,col3)
+			//	(name,col1,col2,col3,seg)
+			colorSet.push(name);
+			var spec;
+			if (col3 !== undefined) {
+				if (typeof col3 == "string" ) {
+					spec = trispectrum(col1,col2,col3,seg);
+				} else if (typeof col3 == "number" ) {
+					// col3 is actually seg
+					spec = bispectrum(col1,col2,col3);
+				} else seg = bispectrum(col1,col2);
+			};
+			return spec;
 		};
 
 		return {
@@ -162,15 +192,7 @@ fly.init = function (args) {
 					screen: "#0D1927",	// skim milk
 					bar:	"black"
 			},
-				// preset color arrays
-			red : trispectrum('#400000','#FF0000','#FFC0C0'),
-			orange : trispectrum('#402900','#FFA500','#FFE8C0'),
-			yellow : trispectrum('#404000','#FFFF00','#FFFFC0'),
-			green : trispectrum('#004000','#00FF00','#C0FFC0'),
-			blue : trispectrum('#000040','#0000FF','#C0C0FF'),
-			purple: trispectrum('#400040','#800080','#FFC0FF'),
-			mono : trispectrum('#000000','#808080','#FFFFFF'),
-				// public methods 
+			// public methods 
 			mix : mix,
 			spectrum : spectrum,
 			trispectrum : trispectrum		
@@ -178,6 +200,53 @@ fly.init = function (args) {
 
 	})();
 	
+	
+	// Populate the colorspace with a colorset:
+	
+	(function() {
+		var standard = [
+				['red','#400000','#FF0000','#FFC0C0',],
+				['orange','#402900','#FFA500','#FFE8C0'],
+				['yellow','#404000','#FFFF00','#FFFFC0'],
+				['green','#004000','#00FF00','#C0FFC0'],
+				['blue','#000040','#0000FF','#C0C0FF'],
+				['purple','#400040','#800080','#FFC0FF'],
+				['mono','#000000','#808080','#FFFFFF']
+			],
+			pastel = [
+				['red','#F04040','#FF7070','#FFC0C0',],
+				['orange','#402900','#FFA500','#FFE8C0'],
+				['yellow','#CCAB5F','#FFFF70','#FFFFC0'],
+				['green','#004000','#70FF70','#C0FFC0'],
+				['blue','#000040','#7070FF','#C0C0FF'],
+				['purple','#400040','#800080','#FFC0FF'],
+				['mono','#56534E','#A7A097','#FFFFFF']
+			];
+			
+		var set; // choose set from args passed on init
+		
+		switch(args.colorset) {
+			case "neon":
+				set = neon;
+				break;
+			case "pastel":
+				set = pastel;
+				break;
+			case "standard":
+			default:
+				set = standard;
+		};
+			
+		for (var i=0; i < set.length; i++) {
+			var spec = set[i];
+			fly.color[spec[0]] = fly.color.spectrum(spec[0],spec[1],spec[2],spec[3]);	
+		};
+	})();
+	
+	
+	// Define the layers 
+	
+		
 	fly.layers = {};	// add new layers to fly.layers
 						// init creates three layers:
 						// fly.layers.background w/ 1 colored square
