@@ -68,7 +68,7 @@ fly.init = function (args) {
 	// 	cola for color arrays, [r,g,b] ex [0,127,255]
 
 		var name = "infoCtrlr",
-			version = "0.3.7beta";
+			version = "0.3.7";
 
 		function limit(col){
 		    // limit col between 0 and 255
@@ -907,11 +907,19 @@ fly.eachCell = function (o,f) {
 };
 
 fly.gridPlot = function (c,r,rectangle,dir) {
-	// v.0.3.6
+	// v.0.3.7
 	// returns an array of arrays of points
 	// c + 1 columns by r + 1 rows inside paper.rectangle r
 	// last column and row run along right and bottom edges
-	// dir is a bool, false reverses the grid right to left
+	// dir is an optional string, which controls the direction
+	// (top down, left to right etc.) that the grid travels.
+	// Use this to quickly change the orientation of an object
+	// aligned to a grid.
+	// CHANGE: rectangle is a paper.rectangle, not a path, use
+	// this.handle.bounds to send bounds 
+	// note-to-self: this breaks junkaigo v 0.3.1 !!!
+	// TODO: accept both a rectangle and a path.Rectangle?
+	
 	var dir = dir || "down-left";
 	var rect = new paper.Path.Rectangle(rectangle);
 	var points = [];
