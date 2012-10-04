@@ -171,8 +171,8 @@ fly.Grid.prototype.info = function(){
 
 fly.Grid.prototype.build = function() {
 
-	this.points = fly.gridPlot(this.cols,this.rows,this.handle.bounds,"down-left");
-	this.cellSize = new paper.Size(	this.handle.bounds.width / this.cols,
+	var points = fly.gridPlot(this.cols,this.rows,this.handle.bounds,"down-left"),
+		cellSize = new paper.Size(	this.handle.bounds.width / this.cols,
 									this.handle.bounds.height / this.rows); 
 	for (var x=0; x < this.cols; x++) {
 		for (var y=0; y < this.rows; y++) {

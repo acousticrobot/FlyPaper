@@ -71,7 +71,7 @@ fly.init = function (args) {
 	//	col is used for passed hex color values, ex. "#789ABC"
 	// 	cola for color arrays, [r,g,b] ex [0,127,255]
 
-		var name = "infoCtrlr",
+		var name = "fly colors",
 			version = "0.3.7",
 			colorSet = [];
 
@@ -119,6 +119,11 @@ fly.init = function (args) {
 		    };
 		    return splice(col1a);
 		};
+		
+		function totalValue (col) {
+			var cola = split(col);
+			return cola[0] + cola[1] + cola[2];
+		}
 
 		function bispectrum(col1,col2,seg){
 			// takes two colors, returns array of seg sements
@@ -194,8 +199,8 @@ fly.init = function (args) {
 			},
 			// public methods 
 			mix : mix,
+			totalValue : totalValue,
 			spectrum : spectrum,
-			trispectrum : trispectrum		
 		};
 
 	})();
@@ -214,13 +219,22 @@ fly.init = function (args) {
 				['mono','#000000','#808080','#FFFFFF']
 			],
 			pastel = [
-				['red','#F04040','#FF7070','#FFC0C0',],
-				['orange','#402900','#FFA500','#FFE8C0'],
-				['yellow','#CCAB5F','#FFFF70','#FFFFC0'],
-				['green','#004000','#70FF70','#C0FFC0'],
-				['blue','#000040','#7070FF','#C0C0FF'],
-				['purple','#400040','#800080','#FFC0FF'],
+				['red','#F04040','#FF7070','#FFD3C0',],
+				['orange','#FF6044','#FFB444','#FFE8C0'],
+				['yellow','#F3DF71','#FFFF70','#FFFFC0'],
+				['green','#629043','#89C234','#C0FFC0'],
+				['blue','#0080B3','#00A9EB','#B0E5FF'],
+				['purple','#800080','#BF7AFF','#FFC0FF'],
 				['mono','#56534E','#A7A097','#FFFFFF']
+			],
+			neon = [
+				['red','#9B0241','#FF0023','#FFC0F2',],
+				['orange','#BD2E00','#FFA500','#FFE8C0'],
+				['yellow','#ACFF02','#FFFF00','#FFFFC0'],
+				['green','#133B0F','#38FF41','#BFFF68'],
+				['blue','#010654','#013BFF','#4FFFF8'],
+				['purple','#3B034C','#9800B3','#CC5FFF'],
+				['mono','#0A0511','#696281','#E3E8FF']
 			];
 			
 		var set; // choose set from args passed on init
@@ -451,7 +465,7 @@ fly.init = function (args) {
 	})();
 
 	fly.infoCtrlr = (function () {
-	// v 0.3.6
+	// v 0.3.7
 	// new objects can register as a member with infoCtrlr 
 	// by sending the request: fly.infocontroller.register(this);
 	// optional second boolean parameter display: (this,false)
@@ -463,14 +477,26 @@ fly.init = function (args) {
 	// fly.color.info for a color for that type.
 			
 		var name = "infoCtrlr";
-		var version = "0.3.6";
+		var version = "0.3.7";
 		 // fly is members[0], infoCtlr is member[1] after infoCtrlr.init();
 		var members = [{obj:fly,display:false}];
 		var style = {};
-			style.c1 = fly.color.info.title || 'black';
-			style.c2 = fly.color.info.val || 'red';
-			style.s = fly.color.info.screen || 'grey';
-			style.sb = fly.color.info.bar || 'white';
+			// base text colors:
+			style.c1 = fly.color.blue[9] || "#9BCAE1";
+			style.c2 = fly.color.mono[5] || "#89C234";
+			// screen and bar colors:
+			style.s = "#0D1927";
+			style.sb = 'black';
+			// colors matching value types:
+			style.val = fly.color.green[7] || "#89C234";
+			style.string = fly.color.purple[4] || "#691BE2";
+			style.btrue = fly.color.orange[4] || "#66FF99";
+			style.bfalse = fly.color.orange[2]|| "#3D9199";
+			style.event = fly.color.red[1]|| "#BC4500";
+			style.eventFiring = fly.color.red[4]|| "#FF5E00";
+			style.version = fly.color.mono[2] || "#8A8A39";
+			style.info = fly.color.purple[3] || "#8A8A39";
+			// font styles
 			style.size = 10;
 			style.spacing = style.size * 1.75;
 			style.offset = style.size;
@@ -588,8 +614,8 @@ fly.init = function (args) {
 				} else {
 					_s = val.type;
 				};
-				if (fly.color.info[_s] !== undefined) {
-					text.fillColor = fly.color.info[_s];
+				if (style[_s] !== undefined) {
+					text.fillColor = style[_s];
 				} else {
 					text.fillColor = style.c2;
 				}
