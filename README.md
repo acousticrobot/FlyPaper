@@ -74,7 +74,7 @@ Take a look at basic-example.html in your favorite browser (assuming it's not IE
   
   * version: set within the object at init, or defaults to the prototype's
   * build: a string mash up of what went into the building of the object on init.
-  * point: the upper left origin of the object
+  * point: the upper left origin of the object
   * size: the object's size
   * group: The number of paper.paths that comprise the object.  If you specify a handle, this will be one of the paths.
   * draggable: boolean, set in the args
@@ -120,7 +120,6 @@ The ananda can include a number of properties:
 ----
 
 ## FlyPaper TODO next up:
-  * color handling cleanup. Would like to add additional color sets.
   * better organization of layers [background layer | stage layer array [] | info layer ]
   * add better timing functionality
   * ability to add information into flypaper section of the info panel.
