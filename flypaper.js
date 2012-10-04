@@ -367,7 +367,7 @@ fly.init = function (args) {
 	};
 							
 	fly.eventCtrlr = (function () {
-	// v0.3.6
+	// v0.4
 	// eventCtrlr is the main pub/sub object, 
 	// paper events all publish through it, 
 	// objects listening for events
@@ -387,17 +387,10 @@ fly.init = function (args) {
 	// paper.view.onFrame = fu*c*ion(event) {
 	//		fly.eventCtrlr.publish("frame");
 	//	};
-
-	// TODO: frame beats needs better implementation
-	// should it be every x frames or every x ms ?
 	
 		var name = "eventCtrlr",
-			version = "0.3.6",
-			events = {},
-			beats = [], // register for beats (2,4,8, etc.)
-			beat = 1,
-			maxBeats = 128,
-			frameRegex = /frame \d+/, // for matching beats
+			version = "0.4",
+			events = {},			
 			firing = {}, //  used by isFiring
 			firePulse = 10, // isFiring countdown
 			errors = [];
@@ -415,26 +408,11 @@ fly.init = function (args) {
 			firing[e] = firePulse;
 		}
 
-		function frameBeats() {
-			if (beat > maxBeats) {
-				beat = 1
-			};
-			for (var i=0; i < beats.length; i++) {
-				if (beat % beats[i] === 0) {
-						// question, why does this work with "frame", not "frame "?
-					var frito = "frame" + beats[i];
-					publish(frito);
-				};
-			};
-			beat++;
-		}
-
 		function publish(e,args) {
 			if (fly.debug) {
 				isFiring(e);
 			};
 			if (e === "frame") {
-				frameBeats();
 			};
 			if (events[e]) {
 				for (var i=0; i < events[e].length; i++) {
@@ -456,10 +434,6 @@ fly.init = function (args) {
 				// e = ["event","event",...], o = registering object 
 			for (var i=0, j = e.length; i < j ; i++) {							
 				if (!events[e[i]]) {
-					// check if its a beat:
-					if (e[i].match(frameRegex)) {
-						beats.push(e[i].slice(5))
-					};
 					// add to events
 					events[e[i]] = [o];
 					firing[e[i]] = firePulse;
@@ -965,27 +939,25 @@ fly.init = function (args) {
 			
 	fly.infoCtrlr.request(fly.eventCtrlr);
 
-	
-/*
-*	END CONTROLLERS -- InfoController and EventController
-*/
+//--------------------- END CONTROLLERS INIT ------------//	
+
 
 fly.layers.stage[0].activate(); // back to drawing layer
 
 
+//--------------------- BEGIN EVENT HANDLERS ------------//
 /*
-*	INIT EVENT HANDLER TOOLS -------------------------------//
 *		published to event controller
 *		NOTE: frame is handled by view, this must be
 *		initialized on the window load
-*		frameCounter takes "frame" events and breaks
-*		them into beats: every : 2,4,8,16,32,64,128
 */
+
 	fly.tool = new paper.Tool();
 	
 	fly.tool.onKeyDown = function (event) {
 		var pub_e = event.key + "-key";
 		var report = fly.eventCtrlr.publish(pub_e);
+		console.log(event.toString());
 		paper.view.draw();
 	};
 	
