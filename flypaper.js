@@ -393,6 +393,8 @@ fly.init = function (args) {
 			events = {},			
 			firing = {}, //  used by isFiring
 			firePulse = 10, // isFiring countdown
+			keyRegex = /.*-key$/, // for matching beats
+			lastKey = "",
 			errors = [];
 
 		function isFiring(e) {
@@ -411,8 +413,9 @@ fly.init = function (args) {
 		function publish(e,args) {
 			if (fly.debug) {
 				isFiring(e);
-			};
-			if (e === "frame") {
+				if (e.match(keyRegex)) {
+					lastKey = e;
+				};
 			};
 			if (events[e]) {
 				for (var i=0; i < events[e].length; i++) {
@@ -464,8 +467,6 @@ fly.init = function (args) {
 			var i = {
 				name: name,
 				v: { val: version, type: "version" },
-				// beatCount: {val: beat, type: "val"},
-				// beats: {val: beats, type: "array"},
 				errors: {val: errors.length, type: "val"}
 			};
 			var event;
@@ -475,8 +476,9 @@ fly.init = function (args) {
 				} else {
 					var _t = "event";
 				};
-				i[event] = {val: events[event].length, type: _t};
+				i[event] = {val: events[event].length + " watching", type: _t};
 			}
+			i.last_key = {val: lastKey, type: "string"};
 			return i;
 		}
 		
@@ -540,7 +542,7 @@ fly.init = function (args) {
 			style.version = args.info.version || fly.color.mono[5] || "#8A8A39";
 			style.info = args.info.info || fly.color.purple[4] || "#8A8A39";
 			// font styles
-			style.size = args.info.size || 10;
+			style.size = args.info.size || 11;
 			style.spacing = style.size * 1.75;
 			style.offset = style.size;
 			style.opacity = args.info.opacity || .95;
@@ -617,7 +619,7 @@ fly.init = function (args) {
 		function init() {
 			fly.infoCtrlr.register(this);
 			fly.eventCtrlr.subscribe(
-				["i-key","frame","mouse down","mouse drag","mouse up"],this
+				["shift-i-key","frame","mouse down","mouse drag","mouse up"],this
 			);
 		}
 
@@ -720,9 +722,8 @@ fly.init = function (args) {
 				var from = new paper.Point(ibox.origin.x, ibox.origin.y + .3 * style.size * i + 2);
 				var to = new paper.Point(from.x + ibox.boxWidth, from.y);
 				var gripLine = new paper.Path.Line(from, to);
-				gripLine.strokeColor = 'black';
+				gripLine.strokeColor = style.screenBars;
 				gripLine.strokeWidth = 2;
-				gripLine.opacity = .4;
 				infoGroup.box.addChild(gripLine);
 			};
 		}
@@ -885,7 +886,7 @@ fly.init = function (args) {
 		
 		function eventCall(e,args) {
 			switch (e) {
-			case "i-key" :
+			case "shift-i-key" :
 				if (fly.debug) {
 					toggleDisplay();
 					// make sure handle isn't off screen:
@@ -955,10 +956,27 @@ fly.layers.stage[0].activate(); // back to drawing layer
 	fly.tool = new paper.Tool();
 	
 	fly.tool.onKeyDown = function (event) {
-		var pub_e = event.key + "-key";
+		var pub_e = "";
+		if (event.key.length == 1) {
+			if (event.modifiers.shift == true) {
+					pub_e += "shift-";
+			};
+			if (event.modifiers.control == true) {
+				// paper.js issue: event.key w/ control modify?
+				pub_e += "control-";
+			};
+			if (event.modifiers.option == true) {
+				pub_e += "option-";
+			};
+			if (event.modifiers.command == true) {
+				pub_e += "command-";
+			};
+			if (event.modifiers.capsLock == true) {
+				pub_e += "capsLock-";
+			};
+		};
+		pub_e += event.key + "-key";
 		var report = fly.eventCtrlr.publish(pub_e);
-		console.log(event.toString());
-		paper.view.draw();
 	};
 	
 	fly.tool.onMouseDown = function (event) {
