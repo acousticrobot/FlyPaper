@@ -1,5 +1,8 @@
 # FlyPaper.js
-version 4.0 author [Jonathan Gabel](http://jonathangabel.com)
+
+version 4.0 
+
+author [Jonathan Gabel](http://jonathangabel.com)
 
 FlyPaper is an add-on to [Paper.js](http://paperjs.org) for creating javascript animations in the HTML5 canvas. FlyPaper grew from an initial desire to allow easy debugging of more complicated systems, quickly displaying variables directly on the canvas so I didn't have to console.log them at 5 - 50 frames per second.  Additionally is adds basic functionality [ dragging and dropping, rotating, selecting, pull-bars ] and motions [ swing, bob, custom ] to shapes or groups of shapes. Lastly, it allows you to register objects to listen for events, or publish events for other shapes to respond to.
 
@@ -165,7 +168,7 @@ Once your object had registered with the infoCtrlr, whenever the info panel is v
 
 { name: "an identifying name", foo: {val:bar, type:"var"}, foo2: ... }
 
-## building your own
+## Building your own
 
 First copy and paste the window.onload function and fly.Template into your own javascript file and then replace "Template" everywhere with your own name to begin building your own objects.  Add the initial construction of your object in the empty build function.  Add any variables you need to keep track of in the info function.
 
