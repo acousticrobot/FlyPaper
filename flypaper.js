@@ -1,5 +1,7 @@
 //--------------------- BEGIN FLYPAPER ---------------------//
 /*
+*			Author Jonathan Gabel
+*			website jonathangabel.com
 *			Namespace FLYPAPER
 *			abbreviated: fly
 *				v 0.4
@@ -347,6 +349,8 @@ fly.init = function (args) {
 //--------------------- BEGIN CONTROLLERS INIT ------------//
 /*
 *	Initialize InfoController and EventController
+*
+*	version 0.4
 */
 //--------------------------------------------------------//
 
@@ -579,6 +583,7 @@ fly.init = function (args) {
 			})();
 					
 		//------------------- registration --------------------//
+
 		function reset() {
 			ibox.txtWidth = 0;
 			updateInfo(true);
@@ -946,10 +951,13 @@ fly.layers.stage[0].activate(); // back to drawing layer
 
 //--------------------- BEGIN EVENT HANDLERS ------------//
 /*
-*		published to event controller
-*		NOTE: frame is handled by view, this must be
-*		initialized on the window load
+*	published to event controller
+*	NOTE: frame is handled by view, this must be
+*	initialized on the window load
+*
+*	version 0.4
 */
+//--------------------------------------------------------//
 
 	fly.tool = new paper.Tool();
 	
@@ -1002,10 +1010,11 @@ fly.layers.stage[0].activate(); // back to drawing layer
 
 //------------- BEGIN FLYPAPER MATH AND MOTION ------------//
 /*					
-*				Math and Motion	Methods
-*				v 0.4
+*	Math and Motion	Methods
+*
+*	versions 0.3 - 0.4
 */
-//------------- BEGIN FLYPAPER MATH AND MOTION ------------//
+//--------------------------------------------------------//
 
 fly.midpoint = function (p1,p2) {
 		// returns the point between two points
@@ -1354,7 +1363,7 @@ fly.Bob.prototype.update = function (time) {
 //--------------------- BEGIN ANANDA ---------------------//
 /*					
 *				abstract Class fly.Ananda
-*				v 0.3.6
+*				v 0.4
 *					
 * use as a drawing context and main handle for structures 
 * creates an object with and optional rectangle handle
