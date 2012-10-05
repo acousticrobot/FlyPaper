@@ -1,10 +1,8 @@
-// original is sandboxed...
-// version 0.3.6.5
 "use strict"
 var fly = {};
 
 fly.color = (function() {
-// version 0.3.7
+// version 0.4
 // color utility with methods for reading hex color values
 // and stored color presets.  Preset color arrays are made
 // out of three values: darkest/saturated/lightest a linear
