@@ -37,11 +37,19 @@ window.onload = function() {
 	// Now we can add a FlyPaper object. 
 	// fly.Template is a basic example of a FlyPaper object.
 	var myFly = new fly.Template(
-		{name:"My Template Object", handle:[100,100,300,250],
+		{name:"My Fly", handle:[100,100,300,250],
 		selectable:true, // default: false
 		dragable: true, // default: true
 		rotatable: true // default: false
 	});
+	
+	// fly.PullGroup is similar to fly.template, but it adds an example 	
+	// pullbar to the object.
+	var myFly2 = new fly.PullGroup(
+		{name:"My Sizable Object",handle:[200,200,300],
+		selectable:true
+	});
+	
 	
 };
 
@@ -65,12 +73,12 @@ window.onload = function() {
 /*					
 *	Template for basic FlyPaper smart object
 *	Extends Ananda
-*	v 0.3.6
+*	v 0.4
 */
 //--------------------- BEGIN Template -------------//
 
 fly.Template = function (args){
-	this.version = "0.3.6";
+	this.version = "0.4";
 	fly.Ananda.call(this);
 	
 	// initialize from args (in prototype Ananda)
@@ -82,7 +90,7 @@ fly.Template = function (args){
 	// example variable, see info()
 	this.foo = "bar";	
 
-	// add initial drawing to build
+	// add your initial drawing to build
 	this.build();
 
 	// register with fly.infoCtrlr and fly.eventCtrlr
@@ -94,13 +102,14 @@ fly.Template.prototype = new fly.Ananda;
 fly.Template.prototype.constructor = fly.Template;
 
 fly.Template.prototype.build = function () {
-	// add initial build here:	
-	
+	// add initial build here:		
 	// for example:
 	if (this.handle !== undefined) {
 		var myShape = paper.Path.Oval(this.handle.bounds);
 		myShape.fillColor = "red";
 	}
+	// add your shapes to this.group to make
+	// them act as one unit for dragging, rotating etc.
 	this.group.addChild(myShape);
 };
 
@@ -230,22 +239,23 @@ fly.Grid.prototype.styleCell = function(x,y) {
 //--------------------- BEGIN PullGroup --------------------//
 
 fly.PullGroup = function(args){
-	this.version = "0.3.6";
+	this.version = "0.4";
 	var args = args || {};	
 	fly.Ananda.call(this);
 	this.init(args);
 	this.name = args && args.name ? args.name : "Pull Group Object";
-	this.reset = false; // trigger attached to pullbar, refresh on release
-	this.selected = false; // needed because group.selection lost on draw()
+	 // reset is a trigger attached to pullbar, refreshed on release
+	 // use it to trigger comp-heavy resizes w/o constant refreshing
+	this.reset = false; 
 	this.style = args.style || 
 		[{
-			fillColor: fly.color.main[0],
-			strokeColor: fly.color.main[1],
+			fillColor: fly.color.purple[4],
+			strokeColor: fly.color.purple[3],
 			strokeWidth: 5,
 		},
 		{
-			fillColor: fly.color.main[2],
-			strokeColor: fly.color.main[1],
+			fillColor: fly.color.red[2],
+			strokeColor: fly.color.red[1],
 			strokeWidth: 5,
 		}
 		];
@@ -266,13 +276,19 @@ fly.PullGroup.prototype.toggleSelected = function() {
 }
 
 fly.PullGroup.prototype.build = function() {
+	// Our object is going to be refreshed as the 
+	// pullbar moves, so we do our initial build
+	// here only, and the refreshable drawing in
+	// draw.  bones is an array for storing all 
+	// the paper.Path objects that make up our 
+	// object.
 	this.bones = [];		
 	this.addPullbar();
 	this.draw();
 };
 
 fly.PullGroup.prototype.addPullbar = function() {
-	// add a pullbar, sized to handle
+	// add a pullbar, sized to the handle
 	this.pullbar = new fly.Pullbar(
 		{name:this.name,
 		vectorCtr: this.handle.bounds.center,
@@ -283,20 +299,38 @@ fly.PullGroup.prototype.addPullbar = function() {
 };
 
 fly.PullGroup.prototype.draw = function() {
+	// the handle is resized in update(), so 
+	// as long as our drawing is relative to 
+	// the handle, it will resize along with 
+	// the pullbar.
+	
+	// first erase all current paths, if any 
 	for (var i=0; i < this.bones.length; i++) {
 		this.bones[i].remove();
 	};
+	
+	// Our example has a round rectangle which fits inside the handle,
+	// and a circle which follows handle's width but not it;s height
 	this.bones[0] = new paper.Path.RoundRectangle(this.handle.bounds,30);
 	this.bones[1] = new paper.Path.Circle(this.handle.bounds.center,this.handle.bounds.width/3);
 	this.bones[0].style = this.style[0];
 	this.bones[1].style = this.style[1];
+	// add all the bones to the group, to make it draggable, etc.
 	this.group.addChildren(this.bones);
 	if (this.selectable === true) {
-		this.group.selected = true;
+		this.group.selected = this.pullbar.selected;
 	};
 };
 
 fly.PullGroup.prototype.update = function() {
+	// All registered FlyPaper objects receive
+	// updates on frame events.  Here we check
+	// our pullbar to see if it is moving.  If
+	// it is, we use Ananda's updateHandle method
+	// to resize the handle, and then we call our
+	// draw function again to refresh our objects
+	// size.
+	
 	if (this.pullbar.moving === true) {
 		this.reset = true;
 		this.updateHandle(this.pullbar.group.bounds);
@@ -309,7 +343,10 @@ fly.PullGroup.prototype.update = function() {
 };
 
 fly.PullGroup.prototype.drag = function(event) {
-		// adds check for pullbar moving and updates pullbar location
+	// here we need to override the drag function from Ananda. We
+	// add a check to see if we are dragging our object (its moving, 
+	// and not because we are resizing it with the pullbar). If it is, 
+	// we need to update the pullbar location. Compare with 
 	if (this.moving && !this.pullbar.moving && fly.infoCtrlr.moving() == false) {
 		this.group.position = event.point.subtract(this.moveOrigin);
 		this.pullbar.reposition(this.group.bounds.center);

@@ -55,7 +55,7 @@ fly.BobBee.prototype.setStyle = function(args) {
 			},
 		  pupils :
 			{
-				fillColor: fly.color.mono[0]
+				fillColor: fly.color.grey[0]
 			},
 		  mouth :
 			{
@@ -151,7 +151,7 @@ fly.BobBee.prototype.buildWing = function(top) {
 	} else {
 		var wing = new paper.Path([this.joints[4][1],this.joints[7][0],this.joints[8][1]])
 	}
-	wing.fillColor = fly.color.mono[7];
+	wing.fillColor = fly.color.grey[7];
 	wing.opacity = .5;
 	wing.closePath();
 	wing.smooth();

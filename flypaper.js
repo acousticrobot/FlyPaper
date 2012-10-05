@@ -51,10 +51,16 @@ fly.init = function (args) {
 		args = {};
 	};
 	fly.debug = false; // turns on extra debug info	
-	fly.width = args.width || 600; // canvas width
-	fly.height = args.height || 600; // canvas width
 	
-	paper.view.viewSize = new paper.Size(fly.width,fly.height);
+	if (args.width && args.height) {
+		fly.width = args.width; // canvas width
+		fly.height = args.height; // canvas width
+		paper.view.viewSize = new paper.Size(fly.width,fly.height);
+	} else {
+		console.log(paper.view);
+		fly.width = paper.view.viewSize.width;
+		fly.height = paper.view.viewSize.height;
+	}
 
 //--------------------- BEGIN LAYERS INIT ----------------//
 /*
@@ -247,15 +253,8 @@ fly.init = function (args) {
 		}
 
 		return {
-			// LEGACY COLORS:
-			bkg: ["#00A9EB","#B0E5FF"], 
-			main: ["#FDE8A3","#8A8A39","#C6F063","#FF77CD"],
-			outln: ["#666666"],
-			selected: [],
-			
 			// public vars
 			palette : palette,
-			
 			// public methods 
 			mix : mix,
 			totalValue : totalValue,
@@ -286,7 +285,7 @@ fly.init = function (args) {
 					['green','#42622D','#89C234','#C0FFC0'],
 					['blue','#00597C','#00A9EB','#B0E5FF'],
 					['purple','#6F006F','#9F3DBF','#FFC0FF'],
-					['mono','#383633','#A7A097','#FFFFFF']
+					['grey','#383633','#A7A097','#FFFFFF']
 				];
 				break;
 				
@@ -298,11 +297,11 @@ fly.init = function (args) {
 					['green','#3B4D2A','#89C234','#A0FFA0'],
 					['blue','#1D3852','#00A9EB','#9BCAE1'],
 					['purple','#4C244C','#893DB3','#D0B8FF'],
-					['mono','#1E2421','#848179','#D3FFE9']
+					['grey','#1E2421','#848179','#D3FFE9']
 				]
 				break;			
 
-			case "monotone":
+			case "greytone":
 				var set = [
 					['red','#1B1414','#584444','#FFE7E3',],
 					['orange','#2A2620','#4D463A','#FFE9CC'],
@@ -310,7 +309,7 @@ fly.init = function (args) {
 					['green','#111611','#6E936E','#E7FFD3'],
 					['blue','#0A0A0D','#696991','#E5D9FF'],
 					['purple','#0D090D','#684E68','#FFE3EC'],
-					['mono','#000000','#808080','#FFFFFF']
+					['grey','#000000','#808080','#FFFFFF']
 				];
 				break;
 
@@ -322,7 +321,7 @@ fly.init = function (args) {
 					['green','#133B0F','#38FF41','#BFFF68'],
 					['blue','#010654','#013BFF','#4FFFF8'],
 					['purple','#3B034C','#9800B3','#CC5FFF'],
-					['mono','#0A0511','#696281','#E3E8FF']           
+					['grey','#0A0511','#696281','#E3E8FF']           
 				];
 				break;
 
@@ -335,7 +334,7 @@ fly.init = function (args) {
 					['green','#004000','#00FF00','#C0FFC0'],
 					['blue','#000040','#0000FF','#C0C0FF'],
 					['purple','#400040','#800080','#FFC0FF'],
-					['mono','#000000','#808080','#FFFFFF']
+					['grey','#000000','#808080','#FFFFFF']
 				];
 		};
 
@@ -362,7 +361,7 @@ fly.init = function (args) {
 			i.height = { val: fly.height, type: "val" };
 			i.stage_layers = { val: fly.layers.stage.length, type: "val"};
 			i.color_palette = { val: fly.color.palette, type: "val"};
-			i.keys = {val: "[i]nfo, [s]elect, [r]otate", type: "string" };
+//			i.keys = {val: "[i]nfo, [s]elect, [r]otate", type: "string" };
 			return i;
 	};
 							
@@ -393,7 +392,7 @@ fly.init = function (args) {
 			events = {},			
 			firing = {}, //  used by isFiring
 			firePulse = 10, // isFiring countdown
-			keyRegex = /.*-key$/, // for matching beats
+			keyRegex = /.*-key$/, // for matching key events
 			lastKey = "",
 			errors = [];
 
@@ -476,7 +475,8 @@ fly.init = function (args) {
 				} else {
 					var _t = "event";
 				};
-				i[event] = {val: events[event].length + " watching", type: _t};
+				var subs = events[event].length > 1 ? " subscribers" : " subscriber"
+				i[event] = {val: events[event].length + subs, type: _t};
 			}
 			i.last_key = {val: lastKey, type: "string"};
 			return i;
@@ -516,7 +516,7 @@ fly.init = function (args) {
 	// will initialize this objects panel as open or closed.
 	// On frame events, infoCtrlr sends a request to members
 	// for an info packet.  v0.2 infopackets are of the form:
-	// { name: "name", info1:{val:"info",type:"val"},...}
+	// { name: "name", var1:{val: var1, type:"val"},var2:{..}..},
 	// infoCtrlr will attempt to match the type to a type in
 	// fly.color.info for a color for that type.
 			
@@ -525,21 +525,22 @@ fly.init = function (args) {
 		 // fly is members[0], infoCtlr is member[1] after infoCtrlr.init();
 		var members = [{obj:fly,display:false}];
 		args.info = args.info || {};
+		var keyTrigger = args.info.keyTrigger || 'i-key';
 		var style = {};
 			// base text colors:
-			style.titleBar = args.info.titleBar || fly.color.blue[9] || "#9BCAE1";
-			style.plain = fly.color.mono[4] || "#89C234";
+			style.titles = args.info.titleBar || fly.color.blue[9] || "#9BCAE1";
+			style.plain = fly.color.grey[4] || "#89C234";
 			// screen and bar colors:
-			style.screen = args.info.screen  || fly.color.mono[1] || "#0D1927";
-			style.screenBars = args.info.screenBars || fly.color.mono[0] || 'black';
+			style.screen = args.info.screen  || fly.color.grey[1] || "#0D1927";
+			style.screenBars = args.info.screenBars || fly.color.grey[0] || 'black';
 			// colors matching value types:
 			style.val = args.info.val || fly.color.green[2] || "#89C234";
-			style.string = args.info.string || fly.color.mono[4] || "#691BE2";
+			style.string = args.info.string || fly.color.grey[4] || "#691BE2";
 			style.btrue = args.info.btrue || fly.color.orange[5] || "#66FF99";
 			style.bfalse = args.info.bfalse || fly.color.orange[3]|| "#3D9199";
 			style.event = args.info.event || fly.color.red[4]|| "#BC4500";
 			style.eventFiring = args.info.eventFiring || fly.color.red[7]|| "#FF5E00";
-			style.version = args.info.version || fly.color.mono[5] || "#8A8A39";
+			style.version = args.info.version || fly.color.grey[5] || "#8A8A39";
 			style.info = args.info.info || fly.color.purple[4] || "#8A8A39";
 			// font styles
 			style.size = args.info.size || 11;
@@ -619,7 +620,7 @@ fly.init = function (args) {
 		function init() {
 			fly.infoCtrlr.register(this);
 			fly.eventCtrlr.subscribe(
-				["shift-i-key","frame","mouse down","mouse drag","mouse up"],this
+				[keyTrigger,"frame","mouse down","mouse drag","mouse up"],this
 			);
 		}
 
@@ -640,10 +641,10 @@ fly.init = function (args) {
 			if (val === "openTitle") { 
 					// object name line, style as title	
 				_t += "\u25BC  " + key; // down triangle
-				text.fillColor = style.titleBar;
+				text.fillColor = style.titles;
 			} else if (val === "closedTitle") {
 				_t += "\u25B6 " + key; // right triangle
-				text.fillColor = style.titleBar;
+				text.fillColor = style.titles;
 				ibox.cursor.y += 2;
 			} else {	// styles for other items
 				var _s;	// style by type
@@ -886,16 +887,13 @@ fly.init = function (args) {
 		
 		function eventCall(e,args) {
 			switch (e) {
-			case "shift-i-key" :
+			case keyTrigger :
 				if (fly.debug) {
 					toggleDisplay();
 					// make sure handle isn't off screen:
-					if (ibox.origin.x < 1 || ibox.origin.x > fly.height) {
+					if (ibox.origin.x < 1 || ibox.origin.x > fly.height
+						|| ibox.origin.y < 1 || ibox.origin.y > fly.width) {
 						ibox.origin.x = 10;
-						ibox.txtOrigin = ibox.origin.add(ibox.txtOffset);
-						resetBars();
-					};
-					if (ibox.origin.y < 1 || ibox.origin.y > fly.width) {
 						ibox.origin.y = 10;
 						ibox.txtOrigin = ibox.origin.add(ibox.txtOffset);
 						resetBars();
@@ -995,9 +993,6 @@ fly.layers.stage[0].activate(); // back to drawing layer
 		fly.eventCtrlr.publish("mouse move",event);
 	};
 
-/*
-*	END FLY TOOL --------------------------------------//
-*/
 
 }; // END flypaper init
 
@@ -1008,7 +1003,7 @@ fly.layers.stage[0].activate(); // back to drawing layer
 //------------- BEGIN FLYPAPER MATH AND MOTION ------------//
 /*					
 *				Math and Motion	Methods
-*				v 0.3.6
+*				v 0.4
 */
 //------------- BEGIN FLYPAPER MATH AND MOTION ------------//
 
@@ -1038,7 +1033,6 @@ fly.scatter = function (o,rect) {
 };
 
 fly.randomizePt = function (point,delta,constrain) {
-	// v 0.3.6
 	// adds variance delta to point
 	// constrain === "x" or "y" or default none
 	var c = constrain || "none";
@@ -1067,7 +1061,7 @@ fly.eachCell = function (o,f) {
 };
 
 fly.gridPlot = function (c,r,rectangle,dir) {
-	// v.0.3.7
+	// v.0.4
 	// returns an array of arrays of points
 	// c + 1 columns by r + 1 rows inside paper.rectangle r
 	// last column and row run along right and bottom edges
@@ -1113,7 +1107,6 @@ fly.gridPlot = function (c,r,rectangle,dir) {
 };
 
 fly.initArray = function (c,r) {
-	// v.0.3.0	
 	// init 3-d array
 	var a = [];
 	for (var x=0; x < c; x++) {
@@ -1413,7 +1406,7 @@ fly.Ananda.prototype.init = function (args){
 
 		iA.handle.selected = false;
 
-		iA.handle.style = iA.style || {fillColor: fly.color.main[0]};
+		iA.handle.style = iA.style || {fillColor: 'white'};
 
 		iA.handle.visible = iA.visible || false;	
 	}
@@ -1638,11 +1631,7 @@ fly.Ananda.prototype.grab = function (event) {
 };
 
 fly.Ananda.prototype.drag = function (event) {
-	if (this.handle) {
-		if (this.moving && this.dragable && fly.infoCtrlr.moving() === false) {
-			this.handle.position = event.point.subtract(this.moveOrigin);
-		};
-	};
+	// don't move it if it's under a visible info controller
 	if (this.moving && this.dragable && fly.infoCtrlr.moving() === false) {
 		this.group.position = event.point.subtract(this.moveOrigin);
 	};
@@ -1710,9 +1699,9 @@ fly.Ananda.prototype.eventCall = function (e,args) {
 //--------------------- BEGIN Pullbar --------------------//
 
 fly.Pullbar = function (args){
-	this.version = "0.3.6";
+	this.version = "0.4";
 	var args = args || {};
-	args.name = args.name + " pullbar" || "pullbar";
+	args.name = args.name + "'s pullbar" || "pullbar";
 	if (args.handle === undefined) { 
 		args.handle = 10; // default size = 50;
 	};
