@@ -5,7 +5,7 @@
 * A simple bug that floats up and down using fly.Bob() 		
 * 	-draggable												
 *	-eyes follow mouse movements							
-*	-bob and eyeblink follow realtime (fly v0.3.5 protocol)	
+*	-bob and eyeblink follow realtime
 *	-wings beat as fast as frame updates					
 */															
 //--------------------- BEGIN BobBee --------------------//
@@ -288,8 +288,6 @@ fly.BobBee.prototype.updateDirection = function(args) {
 		this.rebuildFace();
 		return;
 	};	
-
-
 	
 	if (args.point.y > paper.view.bounds.bottomCenter.y && this.direction[1] != "down") {
 		this.direction[1] = "down";
@@ -331,7 +329,6 @@ fly.BobBee.prototype.grab = function(event) {
 fly.BobBee.prototype.drag = function(event) {
 	if (this.moving && this.dragable && fly.infoCtrlr.moving() == false) {
 		this.group.position = event.point.subtract(this.moveOrigin);
-		// this.draw();
 		this.Bob.move(this.handle.bounds.center);
 	};
 };
@@ -400,5 +397,3 @@ window.onload = function() {
 		});
 
 };
-
-

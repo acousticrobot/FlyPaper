@@ -43,14 +43,6 @@ window.onload = function() {
 		rotatable: true // default: false
 	});
 	
-	// fly.PullGroup is similar to fly.template, but it adds an example 	
-	// pullbar to the object.
-	var myFly2 = new fly.PullGroup(
-		{name:"My Sizable Object",handle:[200,200,300],
-		selectable:true
-	});
-	
-	
 };
 
 /* 	Other flypaper objects are called similarly, although
@@ -343,10 +335,11 @@ fly.PullGroup.prototype.update = function() {
 };
 
 fly.PullGroup.prototype.drag = function(event) {
-	// here we need to override the drag function from Ananda. We
+	// Here we need to override the drag function from Ananda. We
 	// add a check to see if we are dragging our object (its moving, 
 	// and not because we are resizing it with the pullbar). If it is, 
-	// we need to update the pullbar location. Compare with 
+	// we need to update and redraw the pullbar. Compare with 
+	// fly.Ananda.prototype.drag in flypaper.js
 	if (this.moving && !this.pullbar.moving && fly.infoCtrlr.moving() == false) {
 		this.group.position = event.point.subtract(this.moveOrigin);
 		this.pullbar.reposition(this.group.bounds.center);

@@ -162,6 +162,7 @@ Open the "My Fly" sub-panel (the name we gave it in the imbedded script) and you
   * rotatable: boolean, set in the args
 
 Once your object had registered with the infoCtrlr, whenever the info panel is visible, and opened to your object, fly.infoCtrlr sends regular requests to  your object for info via YourObject.info(). It expects an object to be returned with the form: 
+
 { name: "an identifying name", foo: {val:bar, type:"var"}, foo2: ... }
 
 ## building your own
@@ -171,7 +172,13 @@ First copy and paste the window.onload function and fly.Template into your own j
 
 ## Another example: pullbar.html
 
-This file shows an example of a simple object with a pullbar. The object fly.PullGroup included in FlyPaper is one example of how to add multiple shapes using the build function, and define they way they update based on stimuli.  This object creates it's own fly.Pullbar and uses it to resize the shapes in its group. Press the s key to bring up the pullbar, press the i key to watch how the information sent from the objects pullbar is used. 
+Back in basic-example.com, replace the fly.Template constructor with the following:
+
+	var myFly2 = new fly.PullGroup(
+		{name:"My Sizable Fly",handle:[200,200,300],
+	});
+
+This object creates it's own fly.Pullbar and uses it to resize the shapes in its group. Press the s key to bring up the pullbar, press the i key to watch how the information sent from the object's pullbar is used. 
 
 
 ----
