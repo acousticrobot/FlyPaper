@@ -1,6 +1,6 @@
 # FlyPaper.js
 
-version 4.0 
+version 0.4.0 
 
 author [Jonathan Gabel](http://jonathangabel.com)
 
