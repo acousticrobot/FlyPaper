@@ -1,13 +1,15 @@
 "use strict"
+//--------------------- FLYPAPER TEMPLATES ---------------------//
 /*
-*	TEMPLATES FOR FLYPAPER.JS
-*
-*	Author: Jonathan Gabel
-*	version 0.3.7
+*	Author Jonathan Gabel
+*	website jonathangabel.com
+*	Namespace FLYPAPER
+*	abbreviated: fly
+*	version 0.4
 *
 *	A collection of FlyPaper Object Templates
-* 	Use these templates to create your own fly objects
-*	Open example.html to view in a browser.
+* 	Use these templates to create your own fly 
+*	objects. Open example.html to view in a browser.
 *
 *	This file contains a series of template objects 
 *	for flypaper.js, to be used in conjunction with

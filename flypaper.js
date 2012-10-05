@@ -1,27 +1,18 @@
 //--------------------- BEGIN FLYPAPER ---------------------//
 /*
-*			Author Jonathan Gabel
-*			website jonathangabel.com
-*			Namespace FLYPAPER
-*			abbreviated: fly
-*				v 0.4
+*	Author Jonathan Gabel
+*	website jonathangabel.com
+*	Namespace FLYPAPER
+*	abbreviated: fly
+*	version 0.4
 *								
 * flypaper init() creates a drawing and animation context
-* using the paper.js library
+* using the paper.js library. View README for more info.
 *	
-* fly.init() includes:
-* all internal variables for style, size etc.
-* three layers: background, stage[], and info
-*	
-* - infoCtrlr() for info regarding all objects
-* - eventCtrlr() for pub/sub and event handling
-*
-//--------------------- BEGIN FLYPAPER --------------------//
-
-/* global paper */
+*/
+//--------------------------------------------------------//
 
 "use strict"
-
 var fly = fly == undefined ? {} : fly ;
 if (typeof fly !== "object") {
 	throw new Error("fly is not an object!");
@@ -42,8 +33,7 @@ if (typeof fly !== "object") {
 *
 *	version 0.4			
 */
-//--------------------- BEGIN FLYPAPER INIT ---------------//
-
+//--------------------------------------------------------//
 
 fly.init = function (args) {
 
@@ -370,7 +360,6 @@ fly.init = function (args) {
 	};
 							
 	fly.eventCtrlr = (function () {
-	// v0.4
 	// eventCtrlr is the main pub/sub object, 
 	// paper events all publish through it, 
 	// objects listening for events
@@ -513,7 +502,6 @@ fly.init = function (args) {
 	})();
 
 	fly.infoCtrlr = (function () {
-	// v 0.4
 	// new objects can register as a member with infoCtrlr 
 	// by sending the request: fly.infocontroller.register(this);
 	// optional second boolean parameter display: (this,false)
@@ -924,9 +912,9 @@ fly.init = function (args) {
 
 		return {
 			moving: function () { return moving; },
-// temp patch
+// temp patch ???
 			fps : function () { return time.fps.ave; }, 
-//  temp patch 
+//  temp patch ???
 			isMobile :	function () {return device.isMobile},
 			isIpad : function () {return device.isIpad},
 			init: init,
@@ -1129,8 +1117,8 @@ fly.initArray = function (c,r) {
 
 //--------------------- BEGIN Swing -----------------------//
 /*					
-*				Motion: Swing
-*				v 0.3.3
+*	Motion: Swing
+*	version 0.3.3
 *	TODO: V0.3.4 using fly.infoCtrlr.fps()
 */
 //--------------------- BEGIN Swing -----------------------//
@@ -1213,8 +1201,8 @@ fly.Swing.prototype.rotation = function () {
 
 //--------------------- BEGIN Scroll -----------------------//
 /*					
-*				Motion: Scroll
-*				v 0.3.6
+*	Motion: Scroll
+*	v 0.3.6
 *					
 *	Handles scrolling and object in one direction:
 *		"left","right","up","down"
@@ -1302,8 +1290,8 @@ fly.Scroll.prototype.reposition = function (point) {
 
 //--------------------- BEGIN Bob -----------------------//
 /*					
-*				Motion: Bob
-*				v 0.3.6
+*	Motion: Bob
+*	v 0.3.6
 *					
 *	Moves and object up and down repeatedly
 */
@@ -1362,8 +1350,8 @@ fly.Bob.prototype.update = function (time) {
 
 //--------------------- BEGIN ANANDA ---------------------//
 /*					
-*				abstract Class fly.Ananda
-*				v 0.4
+*	abstract Class fly.Ananda
+*	v 0.4
 *					
 * use as a drawing context and main handle for structures 
 * creates an object with and optional rectangle handle
@@ -1690,20 +1678,20 @@ fly.Ananda.prototype.eventCall = function (e,args) {
 
 //--------------------- BEGIN Pullbar ---------------------//
 /*					
-*				v 0.3.6
-* Pullbar extends Ananda, creates grabbable handles
+*	Pullbar extends Ananda, creates grabbable handles
 *					
-* adaptation of vektor.js from:
-* http://paperjs.org/tutorials/geometry/vector-geometry/
+* 	adaptation of vektor.js from:
+*	http://paperjs.org/tutorials/geometry/vector-geometry/
 *					
-* args = {	fixLength:bool,fixAngle:bool,
+* 	args = {	fixLength:bool,fixAngle:bool,
 *			this.visible: bool,
 *			vectorCtr:point,
 *			vector:point,	// length from center
 *			handle: see ananda // creates pullBall size
 *			color: #e4141b  // any valid color val
 *		 }			
-*					
+*
+*	version 0.3.6				
 */
 //--------------------- BEGIN Pullbar --------------------//
 
