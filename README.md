@@ -21,7 +21,7 @@ basic-example.html contains everything you need to initialize FlyPaper and add a
 	
 		// initialize FlyPaper and set the canvas to 800 x 500 
 		fly.init({width:800,height:500});
-		// when fly.debug is set to true, the info panel is accesible
+		// when fly.debug is set to true, the info panel is accessible
 		fly.debug = true;
 	
 		// All mouse events are handled within FlyPaper

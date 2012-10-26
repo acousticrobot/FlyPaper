@@ -27,7 +27,7 @@ window.onload = function() {
 	
 	// initialize FlyPaper and set the canvas to 800 x 500 
 	fly.init({width:800,height:500});
-	// when fly.debug is set to true, the info panel is accesible
+	// when fly.debug is set to true, the info panel is accessible
 	fly.debug = true;
 	
 	// All mouse events are handled within FlyPaper
@@ -86,9 +86,6 @@ fly.Template = function (args){
 
 	// add your initial drawing to build
 	this.build();
-
-	// register with fly.infoCtrlr and fly.eventCtrlr
-	this.register();
 };
 
 fly.Template.prototype = new fly.Ananda;
@@ -105,6 +102,9 @@ fly.Template.prototype.build = function () {
 	// add your shapes to this.group to make
 	// them act as one unit for dragging, rotating etc.
 	this.group.addChild(myShape);
+
+	// register with fly.infoCtrlr and fly.eventCtrlr
+	this.register();
 };
 
 fly.Template.prototype.info = function (){

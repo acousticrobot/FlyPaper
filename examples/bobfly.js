@@ -337,6 +337,7 @@ fly.BobFly.prototype.info = function(){
 	var i = this.anandaInfo();
 	i.facing = {val: this.direction[0],type:"val"};
 	i.looking = {val: this.direction[1],type:"val"};
+	i.blinking = {val: this.blinking, type:"bool"};   
 	i.drift = {val: this.drift, type: "val"};
 	return i;
 }
@@ -363,7 +364,7 @@ fly.BobFly.prototype.drag = function(event) {
 
 fly.BobFly.prototype.update = function(e) {
 	if (!this.moving) {
-		this.Bob.update(e.time);
+		this.Bob.update(e);
 		this.group.position = this.Bob.position;
 		this.fly();	
 		this.shakeALeg();
@@ -377,7 +378,7 @@ fly.BobFly.prototype.update = function(e) {
 	}
 };
 
-fly.Ananda.prototype.eventCall = function(e,args) {
+fly.BobFly.prototype.eventCall = function(e,args) {
 	switch (e) {
 		case "mouse move" :
 			this.updateDirection(args);
