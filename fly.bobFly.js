@@ -1,18 +1,42 @@
 "use strict"
-//--------------------- BEGIN BobBee --------------------//
-/*															
-* 				v 0.4									
-* A simple bug that floats up and down using fly.Bob() 		
-* 	-draggable												
-*	-eyes follow mouse movements							
+
+//--------------------- Initialization and new BobFly object --------//
+
+window.onload = function() {
+	
+	var canvas = document.getElementById('ctx');
+	paper.setup(canvas);
+	fly.init({width : 800, height : 500, colorPalette : "sunny day"});
+	fly.debug = true;
+	
+	fly.color.background(fly.color.blue[4]);
+	
+	paper.view.onFrame = function(event) {
+		fly.eventCtrlr.publish("frame",event);
+		paper.view.draw();
+	};
+
+	var myFly = new fly.BobFly(
+		{	name:"Bee",handle:[300,150,200,120],
+			selectable:false,
+			dragable: true,
+		});
+};
+
+//--------------------- BEGIN BobFly --------------------//
+/*
+* v 0.4
+* A simple bug that floats up and down using fly.Bob()
+* 	-draggable
+*	-eyes follow mouse movements
 *	-bob and eyeblink follow realtime
-*	-wings beat as fast as frame updates					
-*/															
-//--------------------- BEGIN BobBee --------------------//
-fly.BobBee = function(args){
+*	-wings beat as fast as frame updates
+*/
+//--------------------- BEGIN BobFly --------------------//
+fly.BobFly = function(args){
 	this.version = "0.4";
 	var args = args || {};
-	this.name = args.name || "BobBee";
+	this.name = args.name || "BobFly";
 	fly.Ananda.call(this);
 	this.setStyle(args);
 	this.init(args);
@@ -20,7 +44,6 @@ fly.BobBee = function(args){
 	this.speed = args.speed != undefined ? args.speed : 5;	
 	this.looseness = args.looseness || 1; // for random points
 	this.roundHead = args.roundHead || true;
-	this.speedFactor = args.speed || 5;
 	this.direction = ["left","forward"];
 	this.rWings = [0,0]; // keep track of wing rotation
 	this.rLegs = [0,0,0,0,0,0]; // keep track of leg vibrations
@@ -28,48 +51,50 @@ fly.BobBee = function(args){
 	this.build();
 };
 
-fly.BobBee.prototype = new fly.Ananda;
+fly.BobFly.prototype = new fly.Ananda;
 
-fly.BobBee.prototype.constructor = fly.BobBee;
+fly.BobFly.prototype.constructor = fly.BobFly;
 
 //--------------------- init and build --------------------//
 
-fly.BobBee.prototype.setStyle = function(args) {
-	this.style = args.style || {};
-	this.style.body = this.style.body ||
+fly.BobFly.prototype.setStyle = function(args) {
+	this.style = {};
+	this.style.body = args.body ||
 		{
-			fillColor: fly.color.green[4] //"#89C234"
+			fillColor: fly.color.green[4] 
 		};
-	this.style.bodyShade = this.style.bodyShade ||
+	this.style.shade = args.shade ||
 		{
-			fillColor: fly.color.green[3] //"#658F26"
-		},
-	this.style.face = this.style.face ||
-		{ mask :
-			{
-				fillColor: fly.color.green[8] //"#A0FFA0"
-			},
-		  iris :
-			{
-				fillColor: fly.color.green[1] //"#62664C"
-			},
-		  pupils :
-			{
-				fillColor: fly.color.grey[0]
-			},
-		  mouth :
-			{
-				fillColor: fly.color.background()
-			}
+			fillColor: fly.color.green[3] 
 		};
-	this.style.legs = this.style.legs ||	
+	this.style.face = {};
+	this.style.face.mask = args.mask ||
+			{
+				fillColor: fly.color.green[8] 
+			};
+	this.style.face.iris = args.iris ||
+			{
+				fillColor: fly.color.green[1] 
+			};
+	this.style.face.pupils = args.pupils ||
+			{
+				fillColor: fly.color.grey[0] 
+			};
+	this.style.face.mouth = args.mouth ||
+			{
+				fillColor: fly.color.background(),
+			};
+	this.style.legs = args.legs ||	
 		{
-			strokeColor: fly.color.green[1], //"#658F26"
-			strokeWidth: 2
+			strokeColor: fly.color.green[1],
+			strokeWidth: 1
 		};
 };
 
-fly.BobBee.prototype.build = function() {
+fly.BobFly.prototype.build = function() {
+		// bones holds all the shapes
+		// that make up the fly:
+		// [abdomen,wing,wing,head,]
 	this.bones = [];
 	this.draw();
 	this.register();
@@ -81,7 +106,7 @@ fly.BobBee.prototype.build = function() {
 		});
 };
 
-fly.BobBee.prototype.rebuild = function() {
+fly.BobFly.prototype.rebuild = function() {
 	var h = new paper.Path.Rectangle(this.handle.bounds);
 	this.group.removeChildren();
 	this.handle = h;
@@ -89,7 +114,7 @@ fly.BobBee.prototype.rebuild = function() {
 	this.draw();
 };
 
-fly.BobBee.prototype.rebuildFace = function() {
+fly.BobFly.prototype.rebuildFace = function() {
 	for (var i=0; i < this.face.length; i++) {
 		this.face[i].remove();
 	};
@@ -97,7 +122,7 @@ fly.BobBee.prototype.rebuildFace = function() {
 	this.buildFace();
 };
 
-fly.BobBee.prototype.draw = function() {
+fly.BobFly.prototype.draw = function() {
 	this.buildJoints();
 		// build abdomen
 	this.buildAbdomen();
@@ -117,7 +142,8 @@ fly.BobBee.prototype.draw = function() {
 	this.buildFace();
 };
 
-fly.BobBee.prototype.buildJoints = function() {
+fly.BobFly.prototype.buildJoints = function() {
+	// make a 8 x 4 grid of points to plot out drawing paths
 	if (this.direction[0] == "right") {
 		this.joints = fly.gridPlot(8,4,this.handle.bounds,"right");
 	} else {
@@ -125,7 +151,7 @@ fly.BobBee.prototype.buildJoints = function() {
 	}
 };
 
-fly.BobBee.prototype.buildAbdomen = function() {
+fly.BobFly.prototype.buildAbdomen = function() {
 	var abWiggle = this.looseness * this.handle.bounds.height / 40;
 	var abSegs = [];
 	 	abSegs[0] = this.joints[2][0],
@@ -136,6 +162,7 @@ fly.BobBee.prototype.buildAbdomen = function() {
 	this.bones[0] = new paper.Path(abSegs);
 	this.bones[0].closed = true;
 	this.bones[0].smooth();
+		// make the hidden points sharp to keep behind head
 	this.bones[0].segments[0].handleIn = new paper.Point(0,0);
 	this.bones[0].segments[0].handleOut = new paper.Point(0,0);
 	this.bones[0].segments[2].handleIn = new paper.Point(0,0);
@@ -145,7 +172,7 @@ fly.BobBee.prototype.buildAbdomen = function() {
 	this.bones[0].style = this.style.body;
 };
 
-fly.BobBee.prototype.buildWing = function(top) {
+fly.BobFly.prototype.buildWing = function(top) {
 	if (top) {
 		var wing = new paper.Path([this.joints[4][1],this.joints[7][2],this.joints[8][1]])
 	} else {
@@ -158,7 +185,7 @@ fly.BobBee.prototype.buildWing = function(top) {
 	return wing;
 };
 
-fly.BobBee.prototype.buildFace = function() {
+fly.BobFly.prototype.buildFace = function() {
 	var faceRect = new paper.Rectangle(this.joints[0][1],this.joints[3][3]);
 	var grid = new fly.gridPlot(8,8,faceRect,this.direction[0]);
 	this.face = [];
@@ -171,7 +198,7 @@ fly.BobBee.prototype.buildFace = function() {
 	f[3] = new paper.Path.Rectangle(grid[0][6],grid[6][7]);
 	// shading
 	this.face[0] = new paper.Path.Rectangle(grid[0][0],grid[7][5]);
-	this.face[0].style = this.style.bodyShade;
+	this.face[0].style = this.style.shade;
 	switch (this.direction[1]) {
 		case "up" :
 			var eyeY = 1;
@@ -205,7 +232,7 @@ fly.BobBee.prototype.buildFace = function() {
 	this.group.addChildren(this.face);
 };
 
-fly.BobBee.prototype.buildLegs = function() {
+fly.BobFly.prototype.buildLegs = function() {
 	this.legs = [];
 	var size = this.handle.bounds.width/40;
 	var dir = this.direction[0] == "left" ? 1 : -1;
@@ -233,14 +260,14 @@ fly.BobBee.prototype.buildLegs = function() {
 			this.legs[i].rotate(dir * r,this.legs[i].bounds.topLeft) :
 			this.legs[i].rotate(dir * r,this.legs[i].bounds.topRight);
 		this.legs[i].style = this.style.legs;
-		this.legs[i].strokeWidth = 1;
+		this.legs[i].strokeWidth = this.style.legs.strokeWidth;
 		this.group.addChildren(this.legs);
 	};
 };
 
 //--------------------- animation --------------------------//
 
-fly.BobBee.prototype.fly = function() {
+fly.BobFly.prototype.fly = function() {
 	var dir = this.direction[0] == "right" ? 1 : -1;
 	var o = new paper.Point(this.bones[1].segments[0].point);
 	var r = dir * 45 * Math.random();
@@ -251,7 +278,7 @@ fly.BobBee.prototype.fly = function() {
 	this.rWings[1] = r2;
 };
 
-fly.BobBee.prototype.shakeALeg = function() {
+fly.BobFly.prototype.shakeALeg = function() {
 	var o = new paper.Point(this.legs[0].segments[0].point);
 	for (var i=0; i < this.legs.length; i++) {
 		var r = -5 * Math.random();
@@ -260,7 +287,7 @@ fly.BobBee.prototype.shakeALeg = function() {
 	};
 };
 
-fly.BobBee.prototype.updateDirection = function(args) {
+fly.BobFly.prototype.updateDirection = function(args) {
 	if (this.direction[0] != "right" && args.point.x > this.handle.bounds.center.x) {
 			this.direction[0] = "right";
 			this.rebuild();
@@ -269,14 +296,14 @@ fly.BobBee.prototype.updateDirection = function(args) {
 			this.rebuild();
 	};
 
-	if (args.point.y > paper.view.bounds.bottomCenter.y) {
+	if (args.point.y > this.handle.bounds.bottomCenter.y) {
 		if (this.direction[1] == "down") {
 			return;
 		};
 		this.direction[1] = "down";
 		this.rebuildFace();
 		return;
-	} else if (args.point.y < paper.view.bounds.topCenter.y) {
+	} else if (args.point.y < this.handle.bounds.topCenter.y) {
 		if (this.direction[1] == "up") {
 			this.rebuildFace();
 			return;
@@ -298,18 +325,19 @@ fly.BobBee.prototype.updateDirection = function(args) {
 	};	
 };
 
-fly.BobBee.prototype.blink = function(b) {
+fly.BobFly.prototype.blink = function(b) {
 	this.face[4].visible = b;
 	this.blinking = b;
 };
 
 //--------------------- information collection ------------//
 
-fly.BobBee.prototype.info = function(){
+fly.BobFly.prototype.info = function(){
 	// override Ananda info() to add other info,
 	var i = this.anandaInfo();
-	i.facing = {val: this.direction[0],type:"var"};
-	i.looking = {val: this.direction[1],type:"var"};
+	i.facing = {val: this.direction[0],type:"val"};
+	i.looking = {val: this.direction[1],type:"val"};
+	i.drift = {val: this.drift, type: "val"};
 	return i;
 }
 
@@ -319,21 +347,21 @@ fly.Ananda.prototype.register = function(display) {
 	fly.eventCtrlr.subscribe(["mouse move","mouse down","mouse drag", "mouse up", "frame", "s-key"],this);
 }			
 
-fly.BobBee.prototype.grab = function(event) {
+fly.BobFly.prototype.grab = function(event) {
 	if (this.bones[3].hitTest(event.point)) {
 		this.moveOrigin = event.point.subtract(this.group.bounds.center);
 		this.moving = true;
 	}
 };
 
-fly.BobBee.prototype.drag = function(event) {
+fly.BobFly.prototype.drag = function(event) {
 	if (this.moving && this.dragable && fly.infoCtrlr.moving() == false) {
 		this.group.position = event.point.subtract(this.moveOrigin);
 		this.Bob.move(this.handle.bounds.center);
 	};
 };
 
-fly.BobBee.prototype.update = function(e) {
+fly.BobFly.prototype.update = function(e) {
 	if (!this.moving) {
 		this.Bob.update(e.time);
 		this.group.position = this.Bob.position;
@@ -374,26 +402,4 @@ fly.Ananda.prototype.eventCall = function(e,args) {
 };
 
 
-//--------------------- END BobBee -----------------------//
-
-window.onload = function() {
-	
-	var canvas = document.getElementById('ctx');
-	paper.setup(canvas);
-	fly.init({width : 800, height : 500, colorPalette : "pastel" });
-	fly.debug = true;
-	
-	fly.color.background(fly.color.blue[4]);
-	
-	paper.view.onFrame = function(event) {
-		fly.eventCtrlr.publish("frame",event);
-		paper.view.draw();
-	};
-
-	var myFly = new fly.BobBee(
-		{	name:"Bee",handle:[300,150,200,120],
-			selectable:false,
-			dragable: true,
-		});
-
-};
+//--------------------- END BobFly -----------------------//
