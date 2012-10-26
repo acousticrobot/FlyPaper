@@ -293,7 +293,7 @@ fly.init = function (args) {
 				]
 				break;			
 
-			case "greytone":
+			case "monotone":
 				var set = [
 					['red','#1B1414','#584444','#FFE7E3',],
 					['orange','#2A2620','#4D463A','#FFE9CC'],
@@ -1291,15 +1291,15 @@ fly.Scroll.prototype.reposition = function (point) {
 //--------------------- BEGIN Bob -----------------------//
 /*					
 *	Motion: Bob
-*	v 0.3.6
+*	v 0.4
 *					
 *	Moves and object up and down repeatedly
 */
 //--------------------- BEGIN Bob -----------------------//
 
 fly.Bob = function (args){
-	this.name = args.name + " bob" || "bob";
-	this.version = "0.3.4";
+	this.name = args.name + "'s motion: bob" || "bob";
+	this.version = "0.4";
 	this.position = new paper.Point(args.position) || new paper.Point(0,0);
 	this.origin = new paper.Point(this.position);
 	this.speed = args.speed !== undefined ? args.speed : 5;
@@ -1311,7 +1311,9 @@ fly.Bob.prototype.info = function (){
 	var i = {};
 	i.name = this.name;
 	i.version = { val: this.version, type: "version"};
-	i.position = { val: this.position, type: "val" };
+	i.position = { val: 
+					"x: " + this.position.x.toFixed(0) +
+					", y: " + this.position.y.toFixed(0), type: "val" };
 	i.speed = { val: this.speed, type: "val" };
 	i.delta = {val: this.delta, type:"val"};
 	return i;
