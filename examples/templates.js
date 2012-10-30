@@ -26,7 +26,7 @@ window.onload = function() {
 	paper.setup(canvas);
 	
 	// initialize FlyPaper and set the canvas to 800 x 500 
-	fly.init({width:800,height:500});
+	fly.init({width:800,height:500,debug:true});
 	// when fly.debug is set to true, the info panel is accessible
 	fly.debug = true;
 	

@@ -62,8 +62,6 @@ fly.init = function (args) {
 	fly.eventCtrlrInit();
 	
 	fly.infoCtrlrInit();
-
-	fly.infoCtrlr.request(fly.eventCtrlr);
 	
 	fly.layers.stage[0].activate();
 	

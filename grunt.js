@@ -45,10 +45,10 @@ module.exports = function(grunt) {
       }
     },
     qunit: {
-      files: ['test/**/*.html']
+      files: ['test/test-build.html']
     },
     lint: {
-      files: ['grunt.js', 'src/**/*.js', 'test/**/*.js']
+      files: ['grunt.js', 'src/**/*.js', 'test/**/*.js', 'examples/**/*.sjs']
     },
     watch: {
       files: '<config:lint.files>',
@@ -82,5 +82,5 @@ module.exports = function(grunt) {
 
   // Default task.
   grunt.registerTask('default', 'lint qunit concat min');
-
+  grunt.registerTask('dirty', 'lint concat');
 };

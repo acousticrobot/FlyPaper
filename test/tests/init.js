@@ -26,41 +26,25 @@ window.onload = function() {
 	// start by initializing Paper.js
 	var canvas = document.getElementById('ctx');
 	paper.setup(canvas);
-	fly.init();
+	fly.init({debug:true});
 
 module("test init");
 
-test("init", 1, function(){
-	ok(fly, "fly namespace exists");
-});
-
-module("retest build");
-
-test("head", 2, function(){
+test("init", 11, function(){
 	ok(paper, "paper exsits");
 	ok(fly, "fly namespace exists");
-});
-
-test("layers", function(){
-		ok(fly.layers, "fly.layers exists");
-		ok(fly.layers.background, "The background layer exists.");
-		ok(fly.layers.stage[0], "The stage layer exists.");
-		ok(fly.layers.infoLayer, "The info layer exists.");
-});
-
-test("color", 1, function(){
+	equal(fly.debug,true, "fly.debug should be true");
+	ok(fly.layers, "fly.layers exists");
+	ok(fly.layers.background, "The background layer exists.");
+	ok(fly.layers.stage[0], "The stage layer exists.");
+	ok(fly.layers.infoLayer, "The info layer exists.");
 	ok(fly.color, "fly.color exists");
-});
-test("color palette", 1, function(){
 	ok(fly.colorPalette, "fly.colorPalette exists");
-});
-
-test("eventCtrlr", 1, function(){
 	ok(fly.eventCtrlr, "fly event controller exists");
-});
-
-test("infoCtrlr", 1, function(){
 	ok(fly.infoCtrlr, "fly event controller exists");
 });
+test("infoCtrlr", 1, function(){
+	equal(fly.infoCtrlr.members.length,3, "the IC should have three members");
+});
 
-} // end window on-load
+}; // end window on-load

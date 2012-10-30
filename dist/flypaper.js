@@ -3,7 +3,7 @@
  * Author: Jonathan Gabel
  * Email: post@jonathangabel.com
  * URL: http://jonathangabel.com
- * Date: 2012-10-30 00:49:11
+ * Date: 2012-10-30 12:07:31
  * https://github.com/josankapo/FlyPaper
  * Copyright (c) 2012 Jonathan Gabel;
  * Licensed MIT 
@@ -891,6 +891,11 @@ fly.infoCtrlrInit = function(infoPrefs) {
 		};
 		
 	})(infoPrefs); // END infoCntrlr
+	
+	fly.infoCtrlr.init();
+			
+	fly.infoCtrlr.request(fly.eventCtrlr);
+	
 }; // END infoCntrlrInit
 
 
@@ -957,6 +962,7 @@ fly.initEventHandlers = function() {
 *	accepts the following in args:	
 *		width: canvas width
 *		height: canvas height
+*		debug: turns on debug info and makes infoCtrlr visible
 *		colorPalette: "standard","neon","pastel","custom"
 *		colorSet: [ ['red','#400000','#FF0000','#FFC0C0',],[.,.,.,.],...]
 *			colorSet is used when colorPalette is "custom"
@@ -968,13 +974,12 @@ fly.initEventHandlers = function() {
 //--------------------------------------------------------//
 
 fly.init = function (args) {
-	"use strict";
 	fly.name = "flypaper";
 	fly.version = "0.4";
 	if (args === undefined) {
 		args = {};
 	}
-	fly.debug = false; // turns on extra debug info	
+	fly.debug = args.debug || false;	
 	
 	if (args.width && args.height) {
 		fly.width = args.width; // canvas width
@@ -989,10 +994,10 @@ fly.init = function (args) {
 	fly.initLayers(stageLayers);
 
 	var colorPalette = args.colorPalette || {};
-	fly.initColorPalette(colorPalette);
+	fly.colorPalette(colorPalette);
 	
 	fly.info = function() {
-	// fly namespace is the first member of fly.infoCtrlr
+		// fly namespace is the first member of fly.infoCtrlr
 		var i = {};
 		i.name = fly.name;
 		i.version = { val: fly.version, type: "version"};
@@ -1007,9 +1012,7 @@ fly.init = function (args) {
 
 	fly.eventCtrlrInit();
 	
-	fly.infoCtrlr.init();
-
-	fly.infoCtrlr.request(fly.eventCtrlr);
+	fly.infoCtrlrInit();
 	
 	fly.layers.stage[0].activate();
 	

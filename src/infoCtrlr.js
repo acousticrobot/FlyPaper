@@ -436,5 +436,9 @@ fly.infoCtrlrInit = function(infoPrefs) {
 		
 	})(infoPrefs); // END infoCntrlr
 	
+	fly.infoCtrlr.init();
+			
+	fly.infoCtrlr.request(fly.eventCtrlr);
+	
 }; // END infoCntrlrInit
 
