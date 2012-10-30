@@ -18,7 +18,6 @@
 *		backgroundColor: "#F00F00", "red[4]"
 *		stageLayers: number of layers in fly.layers.stage[]
 *
-*	version 0.4			
 */
 //--------------------------------------------------------//
 

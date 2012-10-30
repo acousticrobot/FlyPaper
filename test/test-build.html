@@ -7,6 +7,13 @@
 	<link rel="stylesheet" href="../libs/qunit/qunit.css" media="screen">
 	<script src="../libs/qunit/qunit.js"></script>
 	<script src="../libs/paper.js"></script>
+	<script type="text/javascript" charset="utf-8">
+		window.onload = function() {
+			var canvas = document.getElementById('ctx');
+			console.log(canvas);
+			paper.setup(canvas);
+		}
+	</script>
 
 	<!-- Load local lib. -->
 	<script src="../src/head.js"></script>
@@ -16,7 +23,7 @@
 	<script src="../src/eventCtrlr.js"></script>
 	<script src="../src/infoCtrlr.js"></script>
 	<script src="../src/eventHandlers.js"></script>
-<!--<script src="../src/init.js"></script>
+	<script src="../src/init.js"></script>
 	<script src="../src/math.js"></script>
 	<script src="../src/motions/motion.js"></script>
 	<script src="../src/motions/scroll.js"></script>
@@ -24,7 +31,6 @@
 	<script src="../src/motions/swing.js"></script>
 	<script src="../src/objects/Ananda.js"></script>
 	<script src="../src/objects/Pullbar.js"></script>
--->
 
   <!-- Load tests. -->
   <script src="tests/build.js"></script>

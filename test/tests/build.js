@@ -19,14 +19,7 @@
 		strictEqual(actual, expected, [message])
 		notStrictEqual(actual, expected, [message])
 		raises(block, [expected], [message])
-*/
-
-
-window.onload = function() {
-	// start by initializing Paper.js
-	var canvas = document.getElementById('ctx');
-	paper.setup(canvas);
-	
+*/	
 test("head", 2, function(){
 	ok(paper, "paper exsits");
 	ok(fly, "fly namespace exists");
@@ -65,8 +58,6 @@ test("eventCtrlr", 1, function(){
 });
 
 test("infoCtrlr", 1, function(){
-	fly.infoCtrlrInit();
+	fly.init();
 	ok(fly.infoCtrlr, "fly info controller exists");
 });
-
-}; // end window.onLoad

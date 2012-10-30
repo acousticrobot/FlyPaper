@@ -12,7 +12,6 @@
  * sets of colors. It can also be set to "custom", in 
  * which case a second parameter, colorSet, should contain
  * the list of colors to be included in the set.
- * version 0.4 
 */
 
 fly.colorPalette = function(paletteName,colorSet){
