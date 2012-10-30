@@ -40,7 +40,7 @@ fly.FlyMotion = function (args){
 	
 	// initialize from args (in prototype Ananda)
 	this.init(args);	 
-	this.delta = 10;
+	this.delta = 30;
 	this.speed = args.speed != undefined ? args.speed : 5;	
 	
 	// send a name in args, take the one created in init
@@ -69,7 +69,7 @@ fly.FlyMotion.prototype.build = function () {
 
 	// register with fly.infoCtrlr and fly.eventCtrlr
 	this.register();
-	this.Motion = new fly.Scroll(
+	this.Motion = new fly.Bob(
 						{	name:  this.name,
 							speed: this.speed,
 							delta: this.delta,
