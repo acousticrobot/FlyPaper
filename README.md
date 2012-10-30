@@ -4,8 +4,7 @@ version 0.4.0
 
 author [Jonathan Gabel](http://jonathangabel.com)
 
-
-* Note: There is a proof-of-concept site I put up using this framework if you want to see it in action: [YunKaiGo](http://yunkaigo.com/) .  It's currently set for debugging, if you press the 'i' key it will bring up the debug panel.*
+*Note: There is a proof-of-concept site I put up using this framework if you want to see it in action: [YunKaiGo](http://yunkaigo.com/) .  It's currently set for debugging, if you press the 'i' key it will bring up the debug panel.*
 
 
 FlyPaper is an add-on to [Paper.js](http://paperjs.org) for creating javascript animations in the HTML5 canvas. FlyPaper grew from an initial desire to allow easy debugging of more complicated systems, quickly displaying variables directly on the canvas so I didn't have to console.log them at 5 - 50 frames per second.  Additionally is adds basic functionality [ dragging and dropping, rotating, selecting, pull-bars ] and motions [ swing, bob, custom ] to shapes or groups of shapes. Lastly, it allows you to register objects to listen for events, or publish events for other shapes to respond to.
