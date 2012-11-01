@@ -3,7 +3,7 @@
  * Author: Jonathan Gabel
  * Email: post@jonathangabel.com
  * URL: http://jonathangabel.com
- * Date: 2012-10-30 12:16:08
+ * Date: 2012-11-01 15:05:50
  * https://github.com/josankapo/FlyPaper
  * Copyright (c) 2012 Jonathan Gabel;
  * Licensed MIT 
@@ -15,6 +15,19 @@ var fly = fly === undefined ? {} : fly ;
 if (typeof fly !== "object") {
 	throw new Error("fly is not an object!");
 }
+
+if (typeof Object.create !== 'function') {
+    Object.create = function (o) {
+		var F = function () {};
+		var t = typeof o; // Otherwise do some more type checking
+		if (t !== "object" && t !== "function") {
+			throw new TypeError();
+		}
+		F.prototype = o;
+		return new F();
+	};
+}
+
 
 //--------------------- BEGIN LAYERS INIT ----------------//
 /*
@@ -233,7 +246,6 @@ fly.color = (function(args) {
  * sets of colors. It can also be set to "custom", in 
  * which case a second parameter, colorSet, should contain
  * the list of colors to be included in the set.
- * version 0.4 
 */
 
 fly.colorPalette = function(paletteName,colorSet){
@@ -969,7 +981,6 @@ fly.initEventHandlers = function() {
 *		backgroundColor: "#F00F00", "red[4]"
 *		stageLayers: number of layers in fly.layers.stage[]
 *
-*	version 0.4			
 */
 //--------------------------------------------------------//
 
