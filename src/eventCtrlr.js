@@ -4,28 +4,34 @@
  * Find the built file in dist/flypaper.js
  */
 
+/*
+ * ## eventCtrlr
+ * eventCtrlr is the main pub/sub object, 
+ * paper events all publish through it, 
+ * objects listening for events
+ * 
+ * ### SUBSCRIBE to events with: 
+ *     fly.eventCtrlr.subscribe("event",this);
+ *  See fly.Ananda.prototype.register for an example.
+ *  common events include: 
+ *  "mouse down","mouse drag", "mouse up",	
+ *  "frame", and "x-key" where x is any key
+ *  
+ * ### PUBLISH events with:
+ *      fly.eventCtrlr.publish("mouse down",event);
+ *      mouse and key events are handled with paper tools
+ *      implemented within flypaper.
+ * 
+ *  **IMPORTANT** On-frame events must be initaited
+ *  in the main javascript on window load. Use:	   
+ *      paper.view.onFrame = fu*c*ion(event) {
+ * 	        fly.eventCtrlr.publish("frame");
+ * 	    };
+ */
+
 fly.eventCtrlrInit = function() {
 	
 	fly.eventCtrlr = (function () {
-	// eventCtrlr is the main pub/sub object, 
-	// paper events all publish through it, 
-	// objects listening for events
-	// SUBSCRIBE to events with: 
-	//		fly.eventCtrlr.subscribe("event",this);
-	// See fly.Ananda.prototype.register for an example.
-	// common events include: 
-	// "mouse down","mouse drag", "mouse up",	
-	// "frame", and "x-key" where x is any key
-	// PUBLISH events with:
-	// fly.eventCtrlr.publish("mouse down",event);
-	// mouse and key events are handled with paper tools
-	// implemented within flypaper.
-
-	// IMPORTANT! On-frame events must be initaited
-	// in the main javascript on window load. Use:	
-	// paper.view.onFrame = fu*c*ion(event) {
-	//		fly.eventCtrlr.publish("frame");
-	//	};
 
 		var name = "eventCtrlr",
 			version = "0.4",
