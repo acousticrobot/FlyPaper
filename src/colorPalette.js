@@ -6,6 +6,7 @@
 
 
 /*
+ * ## ColorPalette
  * Populate the colorspace with a colorset: 
  * check args passed on init for color palette info.
  * paletteName is a string matched against predefined
@@ -14,13 +15,16 @@
  * the list of colors to be included in the set.
 */
 
+// beta5: palette = "name" || {name:"name",palette:[[]...]}
+// beta5: paletteName ! in predefined: colorSet? custom : default
+// beta5: add new sets in, check against registry
+
 fly.colorPalette = function(paletteName,colorSet){
 	
 		// don't allow no-args reset to existing palette 
 		if (fly.color.palette !== "not yet defined" && !paletteName) {
 			return fly.color.palette;
 		}
-
 		switch(paletteName) {
 			case "custom":
 				var set = colorSet || [];
