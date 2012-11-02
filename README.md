@@ -97,7 +97,7 @@ Here is the example from above with the default values for the info panel added 
 
 	fly.init({
 		width:800, height:500,
-		info: {
+		infoPrefs: {
 			keyTrigger: 'i-key', // if you need "i" for something else, change it here
 			screen : fly.color.grey[1], // the backround screen
 			screenBars : fly.color.grey[0], // the grip and title bars
