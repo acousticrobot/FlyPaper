@@ -49,7 +49,7 @@ module.exports = function(grunt) {
       scratch: ['test/test-scratch.html']
     },
     lint: {
-      files: ['grunt.js', 'src/**/*.js', 'test/**/*.js', 'examples/**/*.sjs'],
+      files: ['grunt.js', 'src/**/*.js', 'test/**/!(scratch).js', 'examples/**/*.js'],
       scratch: ['grunt.js','scratchpad/**/*.js','test/tests/test-scratch.js']
     },
     watch: {
@@ -85,5 +85,5 @@ module.exports = function(grunt) {
   // Default task.
   grunt.registerTask('default', 'lint:files qunit:files concat min');
   grunt.registerTask('dirty', 'lint:files concat');
-  grunt.registerTask('scratch', 'lint:scratch qunit:scratch');
+  grunt.registerTask('scratch', 'lint:files lint:scratch qunit:scratch');
 };
