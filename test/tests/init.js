@@ -44,7 +44,9 @@ test("init", 11, function(){
 	ok(fly.infoCtrlr, "fly event controller exists");
 });
 test("infoCtrlr", 1, function(){
-	equal(fly.infoCtrlr.members.length,3, "the IC should have three members");
+	var ICinfo = fly.infoCtrlr.info();
+	var members = ICinfo.members;
+	equal(members.val,3, "the IC should have three members");
 });
 
 }; // end window on-load

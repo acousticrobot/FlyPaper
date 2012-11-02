@@ -20,11 +20,11 @@
 */
 //--------------------------------------------------------//
 fly.initLayers = function(stageLayers){
-	
+
 	// if (paper.project.layers.length > 1) {
 	// console.log("layers init at greater than 1");
 	// }
-	
+
 	fly.layers = (function(stageLayers) {
 		var background = paper.project.activeLayer,
 			backRect = new paper.Path.Rectangle(paper.view.bounds),
@@ -36,7 +36,7 @@ fly.initLayers = function(stageLayers){
 		} else {
 			stage[0] = new paper.Layer();
 		}
-		var infoLayer = new paper.Layer();	
+		var infoLayer = new paper.Layer();
 		return {
 			background : background,
 			backRect : backRect,
@@ -47,7 +47,7 @@ fly.initLayers = function(stageLayers){
 			}
 		};
 	})(stageLayers);
-	
+
 };
 
 

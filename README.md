@@ -21,18 +21,18 @@ basic-example.html contains everything you need to initialize FlyPaper and add a
 		// start by initializing Paper.js
 		var canvas = document.getElementById('ctx');
 		paper.setup(canvas);
-	
+
 		// initialize FlyPaper and set the canvas to 800 x 500 
 		fly.init({width:800,height:500});
 		// when fly.debug is set to true, the info panel is accessible
 		fly.debug = true;
-	
+
 		// All mouse events are handled within FlyPaper
 		// the onFrame handler must be installed here:
 		paper.view.onFrame = function(event) {
 		fly.eventCtrlr.publish("frame",event);
 		};
-		
+
 		// Now we can add a FlyPaper object 
 		// fly.Template is a basic example of a FlyPaper object
 		var myFly = new fly.Template(
@@ -41,7 +41,7 @@ basic-example.html contains everything you need to initialize FlyPaper and add a
 			dragable: true, // default: true
 			rotatable: true // default: false
 		});
-	
+
 	};
 
 

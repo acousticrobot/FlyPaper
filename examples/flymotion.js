@@ -2,12 +2,12 @@ window.onload = function() {
 	// start by initializing Paper.js
 	var canvas = document.getElementById('ctx');
 	paper.setup(canvas);
-	
+
 	// initialize FlyPaper and set the canvas to 800 x 500 
 	fly.init({width:800,height:500});
 	// when fly.debug is set to true, the info panel is accessible
 	fly.debug = true;
-	
+
 	// All mouse events are handled within FlyPaper
 	// the onFrame handler must be installed here:
 	paper.view.onFrame = function(event) {
@@ -22,11 +22,11 @@ window.onload = function() {
 		dragable: true, // default: true
 		rotatable: true // default: false
 	});
-	
+
 };
 
 //--------------------- BEGIN FlyMotion --------------//
-/*					
+/*
 *	FlyMotion for basic FlyPaper smart object
 *	with tracks it's location to a fly motion
 *	Extends Ananda, builds apon fly.template
@@ -37,12 +37,12 @@ window.onload = function() {
 fly.FlyMotion = function (args){
 	this.version = "0.4";
 	fly.Ananda.call(this);
-	
+
 	// initialize from args (in prototype Ananda)
 	this.init(args);	 
 	this.delta = 30;
-	this.speed = args.speed != undefined ? args.speed : 5;	
-	
+	this.speed = args.speed !== undefined ? args.speed : 5;
+
 	// send a name in args, take the one created in init
 	// or add one after init that describes the object type
     this.name = args && args.name ? args.name : "FlyMotion Object";
@@ -52,15 +52,16 @@ fly.FlyMotion = function (args){
 	this.build();
 };
 
-fly.FlyMotion.prototype = new fly.Ananda;
+fly.FlyMotion.prototype = new fly.Ananda();
 
 fly.FlyMotion.prototype.constructor = fly.FlyMotion;
 
 fly.FlyMotion.prototype.build = function () {
-	// add initial build here:		
+	// add initial build here:
 	// for example:
+	var myShape;
 	if (this.handle !== undefined) {
-		var myShape = paper.Path.Oval(this.handle.bounds);
+		myShape = paper.Path.Oval(this.handle.bounds);
 		myShape.fillColor = "red";
 	}
 	// add your shapes to this.group to make
@@ -73,8 +74,8 @@ fly.FlyMotion.prototype.build = function () {
 						{	name:  this.name,
 							speed: this.speed,
 							delta: this.delta,
-							position: this.handle.bounds,
-						});	
+							position: this.handle.bounds
+						});
 };
 
 fly.FlyMotion.prototype.info = function (){
@@ -83,13 +84,13 @@ fly.FlyMotion.prototype.info = function (){
 	// example varible sent to infoCtrlr
 	i.speed = {val: this.speed, type:"val"};
 	return i;
-}
+};
 
 fly.FlyMotion.prototype.drag = function(event) {
-	if (this.moving && this.dragable && fly.infoCtrlr.moving() == false) {
+	if (this.moving && this.dragable && fly.infoCtrlr.moving() === false) {
 		this.group.position = event.point.subtract(this.moveOrigin);
 		this.Motion.move(this.handle.bounds.center);
-	};
+	}
 };
 
 
@@ -97,7 +98,7 @@ fly.FlyMotion.prototype.update = function (e) {
 		if (!this.moving) {
 			this.Motion.update(e);
 			this.group.position = this.Motion.position;
-		};
+		}
 };
 
 

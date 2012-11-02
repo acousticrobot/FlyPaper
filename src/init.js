@@ -7,8 +7,8 @@
 //--------------------- BEGIN FLYPAPER INIT ----------------//
 /*
 *	initializes the canvas for all drawing
-*	inits eventCtrlr and infoCtrlr	
-*	accepts the following in args:	
+*	inits eventCtrlr and infoCtrlr
+*	accepts the following in args:
 *		width: canvas width
 *		height: canvas height
 *		debug: turns on debug info and makes infoCtrlr visible
@@ -27,8 +27,8 @@ fly.init = function (args) {
 	if (args === undefined) {
 		args = {};
 	}
-	fly.debug = args.debug || false;	
-	
+	fly.debug = args.debug || false;
+
 	if (args.width && args.height) {
 		fly.width = args.width; // canvas width
 		fly.height = args.height; // canvas width
@@ -44,7 +44,7 @@ fly.init = function (args) {
 	var colorPalette = args.colorPalette || {};
 	var colorSet = args.colorSet || {};
 	fly.colorPalette(colorPalette,colorSet);
-	
+
 	fly.info = function() {
 		// fly namespace is the first member of fly.infoCtrlr
 		var i = {};
@@ -60,12 +60,13 @@ fly.init = function (args) {
 	};
 
 	fly.eventCtrlrInit();
-	
+
 	var infoPrefs = args.infoPrefs || {};
 	fly.infoCtrlrInit(infoPrefs);
-	
+
+
 	fly.layers.stage[0].activate();
-	
+
 	fly.initEventHandlers();
 
 };

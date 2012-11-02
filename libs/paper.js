@@ -5882,10 +5882,10 @@ var Color = this.Color = Base.extend(new function() {
 				f = h - i,
 				i = hsbIndices[i],
 				v = [
-					b,						
-					b * (1 - s),			
-					b * (1 - s * f),		
-					b * (1 - s * (1 - f))	
+					b,
+					b * (1 - s),
+					b * (1 - s * f),
+					b * (1 - s * (1 - f))
 				];
 			return new RgbColor(v[i[0]], v[i[1]], v[i[2]], color._alpha);
 		},

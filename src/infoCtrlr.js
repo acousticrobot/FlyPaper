@@ -5,7 +5,7 @@
  */
 
 fly.infoCtrlrInit = function(infoPrefs) {
-	
+
 	fly.infoCtrlr = ( function (infoPrefs) {
 	// new objects can register as a member with infoCtrlr 
 	// by sending the request: fly.infocontroller.register(this);
@@ -52,7 +52,7 @@ fly.infoCtrlrInit = function(infoPrefs) {
 			ibox.origin = new paper.Point(10,10);
 			ibox.txtOffset = [style.size,style.size * 3.5];
 			ibox.txtOrigin = ibox.origin.add(ibox.txtOffset);
-			ibox.txtLen = 0;	
+			ibox.txtLen = 0;
 			ibox.txtWidth = 0;
 			ibox.titleBars = [];
 			ibox.visible = fly.debug; // start visible in debug mode;
@@ -68,7 +68,7 @@ fly.infoCtrlrInit = function(infoPrefs) {
 			_time.time = 0;
 			_time.fps = {curr:0,ave:0};
 		var device = {}; // for device detection
-			device.isIpad = navigator.userAgent.match(/iPad/i) !== null;	
+			device.isIpad = navigator.userAgent.match(/iPad/i) !== null;
 			device.isMobile = (function () {
 				var user = navigator.userAgent.toLowerCase();
 				var agents = /android|webos|iphone/;
@@ -87,7 +87,7 @@ fly.infoCtrlrInit = function(infoPrefs) {
 		}
 
 		function register(o,d){
-			d = typeof(d) !== 'undefined' ? d : false;			
+			d = typeof(d) !== 'undefined' ? d : false;
 				// new objects register to become a member
 			for (var i=0; i < members.length; i++) {
 				if (members[i].obj === o) {
@@ -130,11 +130,11 @@ fly.infoCtrlrInit = function(infoPrefs) {
 		function printTxtLine(key,val) {
 				// printText() sends:
 				// (name,"openTitle) or (name,"closedTitle")
-				// or (key,{v:val,t:type})	
+				// or (key,{v:val,t:type})
 				if (key === undefined || val === undefined) {
 					return "Error printing info";
 				}
-				updateWidth(key,val);				
+				updateWidth(key,val);
 			var text = new paper.PointText(ibox.cursor);
 				text.paragraphStyle.justification = 'left';
 				text.characterStyle.fontSize = style.size;
@@ -233,7 +233,7 @@ fly.infoCtrlrInit = function(infoPrefs) {
 		function drawBox() {
 			ibox.txtWidth = ibox.txtLen * style.size * 0.68;
 			ibox.boxWidth = ibox.txtWidth + 2 * style.offset;
-			var _s = new paper.Size (	
+			var _s = new paper.Size (
 						ibox.boxWidth, 
 						ibox.cursor.y - ibox.origin.y - style.offset
 						);
@@ -431,14 +431,15 @@ fly.infoCtrlrInit = function(infoPrefs) {
 			deregister: deregister,
 			request: request,
 			info: info,
-			eventCall: eventCall
+			eventCall: eventCall,
+			members: members
 		};
-		
+
 	})(infoPrefs); // END infoCntrlr
-	
+
 	fly.infoCtrlr.init();
-			
+
 	fly.infoCtrlr.request(fly.eventCtrlr);
-	
+
 }; // END infoCntrlrInit
 

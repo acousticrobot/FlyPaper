@@ -1,22 +1,22 @@
 //--------------------- BEGIN ANANDA ---------------------//
-/*					
+/*
 *	abstract Class fly.Ananda
 *	v 0.4
-*					
+*
 * use as a drawing context and main handle for structures 
 * creates an object with and optional rectangle handle
-* methods:			
-* - Communication with infoCtrlr & eventCtrlr	
-* - dragable		
-*					
+* methods:
+* - Communication with infoCtrlr & eventCtrlr
+* - dragable
+*
 * takes one parameter: 'args' which can be:
 *	a number (square size for handle),
-*	a string (name),	
+*	a string (name),
 *	an array of numbers:
 		[s] same as number,
 		[w,h]:rect,
 *		[x,y,s], [x,y,w,h], larger object:
-*  {name:"name",handle:[...],...}	
+*  {name:"name",handle:[...],...}
 */
 //--------------------- BEGIN ANANDA ---------------------//
 
@@ -28,7 +28,7 @@ fly.Ananda = function () {
 		this.name = "Ananda ";
 	}
 	// empty constructor
-};	
+};
 
 fly.Ananda.prototype.init = function (args){
 
@@ -55,9 +55,9 @@ fly.Ananda.prototype.init = function (args){
 
 		iA.handle.style = iA.style || {fillColor: 'white'};
 
-		iA.handle.visible = iA.visible || false;	
+		iA.handle.visible = iA.visible || false;
 	}
-		
+
 	function initFromNum (n) {
 		if (args < 0) { // illegal value 
 						// or contructed w/ no parameters
@@ -96,7 +96,7 @@ fly.Ananda.prototype.init = function (args){
 			iA.bld += a[0] + "." + a[1] + "." + a[2];
 			iA.Pt = new paper.Point(a[0],a[1]);
 			iA.Sz = new paper.Size(a[2],a[2]);
-		break;						
+		break;
 		case 4 :  // use as x,y,w,h
 			iA.bld += a[0] + "." + a[1] + "." + a[2] + "." + a[3];
 			iA.Pt = new paper.Point(a[0],a[1]);
@@ -159,8 +159,8 @@ fly.Ananda.prototype.init = function (args){
 			iA.n = "Objborn";
 		}
 	}
-	
-	switch (typeof args) {			
+
+	switch (typeof args) {
 		case "number" :
 			initFromNum(args);
 			break;
@@ -240,7 +240,7 @@ fly.Ananda.prototype.updateHandle = function (rect) {
 	this.handle.remove();
 	this.handle = new paper.Path.Rectangle(_r);
 	if (this.group.selected === true) {
-		this.handle.selected = true;	
+		this.handle.selected = true;
 	}
 	this.handle.style = _s;
 	this.handle.opacity = _o;
@@ -254,7 +254,7 @@ fly.Ananda.prototype.toggleDisplay = function (){
 
 fly.Ananda.prototype.toggleSelected = function () {
 	if (fly.debug && this.selectable) {
-		this.group.selected = !this.group.selected;		
+		this.group.selected = !this.group.selected;
 	}
 };
 

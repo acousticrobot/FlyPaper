@@ -14,7 +14,7 @@
  *     fly.eventCtrlr.subscribe("event",this);
  *  See fly.Ananda.prototype.register for an example.
  *  common events include: 
- *  "mouse down","mouse drag", "mouse up",	
+ *  "mouse down","mouse drag", "mouse up",
  *  "frame", and "x-key" where x is any key
  *  
  * ### PUBLISH events with:
@@ -23,19 +23,19 @@
  *      implemented within flypaper.
  * 
  *  **IMPORTANT** On-frame events must be initaited
- *  in the main javascript on window load. Use:	
+ *  in the main javascript on window load. Use:
  *    paper.view.onFrame = function(event) {
  *      fly.eventCtrlr.publish("frame");
  *    };
  */
 
 fly.eventCtrlrInit = function() {
-	
+
 	fly.eventCtrlr = (function () {
 
 		var name = "eventCtrlr",
 			version = "0.4",
-			events = {},			
+			events = {},
 			firing = {}, //  used by isFiring
 			firePulse = 10, // isFiring countdown
 			keyRegex = /.*-key$/, // for matching key events
@@ -80,7 +80,7 @@ fly.eventCtrlrInit = function() {
 
 		function subscribe(e,o) {
 				// e = ["event","event",...], o = registering object 
-			for (var i=0, j = e.length; i < j ; i++) {							
+			for (var i=0, j = e.length; i < j ; i++) {
 				if (!events[e[i]]) {
 					// add to events
 					events[e[i]] = [o];
@@ -152,5 +152,5 @@ fly.eventCtrlrInit = function() {
 			reqInfo: register,	// infoCtrlr requests registration
 			reportErrors: reportErrors
 		};
-	})();	
+	})();
 };

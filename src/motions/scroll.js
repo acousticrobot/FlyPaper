@@ -5,10 +5,10 @@
  */
 
 //--------------------- BEGIN Scroll -----------------------//
-/*					
+/*
 *	Motion: Scroll
 *	v 0.4 Beta
-*					
+*
 *	Handles scrolling and object in one direction:
 *		"left","right","up","down"
 */
@@ -49,7 +49,7 @@ fly.Scroll.prototype.register = function () {
 	if (fly.debug) {
 		fly.infoCtrlr.register(this);
 	}
-};			
+};
 
 fly.Scroll.prototype.update = function (args) {
 	this.curSpeed = args.delta * this.speed * 8;
@@ -61,7 +61,7 @@ fly.Scroll.prototype.update = function (args) {
 			}
 			break;
 		case "down" :
-			this.position.y += this.curSpeed;		
+			this.position.y += this.curSpeed;
 			if (this.position.y > this.resetAt) {
 				this.reset = true;
 			}

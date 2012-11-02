@@ -1,16 +1,14 @@
-"use strict"
-
 //--------------------- Initialization and new BobFly object --------//
 
 window.onload = function() {
-	
+
 	var canvas = document.getElementById('ctx');
 	paper.setup(canvas);
 	fly.init({width : 800, height : 500, colorPalette : "sunny day"});
 	fly.debug = true;
-	
+
 	fly.color.background(fly.color.blue[4]);
-	
+
 	paper.view.onFrame = function(event) {
 		fly.eventCtrlr.publish("frame",event);
 		paper.view.draw();
@@ -19,7 +17,7 @@ window.onload = function() {
 	var myFly = new fly.BobFly(
 		{	name:"Bee",handle:[300,150,200,120],
 			selectable:false,
-			dragable: true,
+			dragable: true
 		});
 };
 
@@ -27,7 +25,7 @@ window.onload = function() {
 /*
 * v 0.4
 * A simple bug that floats up and down using fly.Bob()
-* 	-draggable
+*	-draggable
 *	-eyes follow mouse movements
 *	-bob and eyeblink follow realtime
 *	-wings beat as fast as frame updates
@@ -35,13 +33,13 @@ window.onload = function() {
 //--------------------- BEGIN BobFly --------------------//
 fly.BobFly = function(args){
 	this.version = "0.4";
-	var args = args || {};
+	args = args || {};
 	this.name = args.name || "BobFly";
 	fly.Ananda.call(this);
 	this.setStyle(args);
 	this.init(args);
 	this.bobHeight = args.bobHeight || this.handle.bounds.height/10 ; // float delta
-	this.speed = args.speed != undefined ? args.speed : 5;	
+	this.speed = args.speed !== undefined ? args.speed : 5;
 	this.looseness = args.looseness || 1; // for random points
 	this.roundHead = args.roundHead || true;
 	this.direction = ["left","forward"];
@@ -51,7 +49,7 @@ fly.BobFly = function(args){
 	this.build();
 };
 
-fly.BobFly.prototype = new fly.Ananda;
+fly.BobFly.prototype = new fly.Ananda();
 
 fly.BobFly.prototype.constructor = fly.BobFly;
 
@@ -61,30 +59,30 @@ fly.BobFly.prototype.setStyle = function(args) {
 	this.style = {};
 	this.style.body = args.body ||
 		{
-			fillColor: fly.color.green[4] 
+			fillColor: fly.color.green[4]
 		};
 	this.style.shade = args.shade ||
 		{
-			fillColor: fly.color.green[3] 
+			fillColor: fly.color.green[3]
 		};
 	this.style.face = {};
 	this.style.face.mask = args.mask ||
 			{
-				fillColor: fly.color.green[8] 
+				fillColor: fly.color.green[8]
 			};
 	this.style.face.iris = args.iris ||
 			{
-				fillColor: fly.color.green[1] 
+				fillColor: fly.color.green[1]
 			};
 	this.style.face.pupils = args.pupils ||
 			{
-				fillColor: fly.color.grey[0] 
+				fillColor: fly.color.grey[0]
 			};
 	this.style.face.mouth = args.mouth ||
 			{
-				fillColor: fly.color.background(),
+				fillColor: fly.color.background()
 			};
-	this.style.legs = args.legs ||	
+	this.style.legs = args.legs ||
 		{
 			strokeColor: fly.color.green[1],
 			strokeWidth: 1
@@ -102,7 +100,7 @@ fly.BobFly.prototype.build = function() {
 		{	name:  this.name,
 			speed: this.speed,
 			delta: this.bobHeight,
-			position: this.handle.bounds,
+			position: this.handle.bounds
 		});
 };
 
@@ -110,14 +108,14 @@ fly.BobFly.prototype.rebuild = function() {
 	var h = new paper.Path.Rectangle(this.handle.bounds);
 	this.group.removeChildren();
 	this.handle = h;
-	this.group.addChild(this.handle);	
+	this.group.addChild(this.handle);
 	this.draw();
 };
 
 fly.BobFly.prototype.rebuildFace = function() {
 	for (var i=0; i < this.face.length; i++) {
 		this.face[i].remove();
-	};
+	}
 	this.buildJoints();
 	this.buildFace();
 };
@@ -144,7 +142,7 @@ fly.BobFly.prototype.draw = function() {
 
 fly.BobFly.prototype.buildJoints = function() {
 	// make a 8 x 4 grid of points to plot out drawing paths
-	if (this.direction[0] == "right") {
+	if (this.direction[0] === "right") {
 		this.joints = fly.gridPlot(8,4,this.handle.bounds,"right");
 	} else {
 		this.joints = fly.gridPlot(8,4,this.handle.bounds);
@@ -154,11 +152,11 @@ fly.BobFly.prototype.buildJoints = function() {
 fly.BobFly.prototype.buildAbdomen = function() {
 	var abWiggle = this.looseness * this.handle.bounds.height / 40;
 	var abSegs = [];
-	 	abSegs[0] = this.joints[2][0],
+		abSegs[0] = this.joints[2][0],
 		abSegs[1] = fly.randomizePt(this.joints[6][3],abWiggle);
 		abSegs[2] = fly.randomizePt(this.joints[8][2],abWiggle);
 		abSegs[3] = fly.randomizePt(this.joints[6][2],abWiggle);
-	 	abSegs[4] = this.joints[2][4],
+		abSegs[4] = this.joints[2][4],
 	this.bones[0] = new paper.Path(abSegs);
 	this.bones[0].closed = true;
 	this.bones[0].smooth();
@@ -173,13 +171,14 @@ fly.BobFly.prototype.buildAbdomen = function() {
 };
 
 fly.BobFly.prototype.buildWing = function(top) {
+	var wing;
 	if (top) {
-		var wing = new paper.Path([this.joints[4][1],this.joints[7][2],this.joints[8][1]])
+		wing = new paper.Path([this.joints[4][1],this.joints[7][2],this.joints[8][1]]);
 	} else {
-		var wing = new paper.Path([this.joints[4][1],this.joints[7][0],this.joints[8][1]])
+		wing = new paper.Path([this.joints[4][1],this.joints[7][0],this.joints[8][1]]);
 	}
 	wing.fillColor = fly.color.grey[7];
-	wing.opacity = .5;
+	wing.opacity = 0.5;
 	wing.closePath();
 	wing.smooth();
 	return wing;
@@ -199,17 +198,18 @@ fly.BobFly.prototype.buildFace = function() {
 	// shading
 	this.face[0] = new paper.Path.Rectangle(grid[0][0],grid[7][5]);
 	this.face[0].style = this.style.shade;
+	var eyeY;
 	switch (this.direction[1]) {
 		case "up" :
-			var eyeY = 1;
-			break;
-		case "forward" :
-		default:
-			var eyeY = 2;
+			eyeY = 1;
 			break;
 		case "down" :
-			var eyeY = 3;
-	};
+			eyeY = 3;
+			break;
+		default: // "forward"
+			eyeY = 2;
+			break;
+	}
 	// iris
 	this.face[1] = new paper.Path.Rectangle(grid[0][eyeY],grid[7][eyeY + 2]);
 	this.face[1].style = this.style.face.iris;
@@ -223,11 +223,12 @@ fly.BobFly.prototype.buildFace = function() {
 	this.face[4] = this.face[0].clone();
 	this.face[4].visible = false;
 		// mouth -- should be background color!
-	this.face[5] = new paper.Path.Rectangle(grid[0][6],grid[8][8]);	
+	this.face[5] = new paper.Path.Rectangle(grid[0][6],grid[8][8]);
 	this.face[5].style = this.style.face.mouth;
 	this.face[6] = new paper.CompoundPath(f);
 	var group = new paper.Group(this.face);
-	this.direction[0] == "right" ? group.shear(0,-0.125) : group.shear(0, 0.125) 
+	var s =	this.direction[0] === "right" ? -0.125 : 0.125;
+	group.shear(0,s);
 	group.scale(1.25);
 	this.group.addChildren(this.face);
 };
@@ -235,40 +236,39 @@ fly.BobFly.prototype.buildFace = function() {
 fly.BobFly.prototype.buildLegs = function() {
 	this.legs = [];
 	var size = this.handle.bounds.width/40;
-	var dir = this.direction[0] == "left" ? 1 : -1;
+	var dir = this.direction[0] === "left" ? 1 : -1;
 	for (var i=0; i < 6; i++) {
 		var shift = new paper.Point(dir * i * size,0);
-		var j0 = this.joints[3][3].add(shift);
-		switch (true) {
-			case i < 2 :
-				var j1 = fly.randomizePt(this.joints[4][4],size);
-				var j2 = fly.randomizePt(this.joints[5][4],size);
-				var r = 15 + i*6;
-				break;
-			case i < 4 :
-				var j1 = fly.randomizePt(this.joints[4][4].add(shift),size);
-				var j2 = fly.randomizePt(this.joints[6][4].add(shift),size);
-				r = i/2;
-				break;
-			default :
-			var j1 = fly.randomizePt(this.joints[4][4].add(shift),size);
-			var j2 = fly.randomizePt(this.joints[7][4].add(shift),size);
-			var r = -i*2;
+		var j0 = this.joints[3][3].add(shift),
+			j1,
+			j2,
+			r;
+		if (i < 2) {
+			j1 = fly.randomizePt(this.joints[4][4],size);
+			j2 = fly.randomizePt(this.joints[5][4],size);
+			r = 15 + i*6;
+		} else if (i < 4) {
+			j1 = fly.randomizePt(this.joints[4][4].add(shift),size);
+			j2 = fly.randomizePt(this.joints[6][4].add(shift),size);
+			r = i/2;
+		} else {
+			j1 = fly.randomizePt(this.joints[4][4].add(shift),size);
+			j2 = fly.randomizePt(this.joints[7][4].add(shift),size);
+			r = -i*2;
 		}
 		this.legs[i] = new paper.Path(j0,j1,j2);
-		dir == 1 ? 
-			this.legs[i].rotate(dir * r,this.legs[i].bounds.topLeft) :
-			this.legs[i].rotate(dir * r,this.legs[i].bounds.topRight);
+		var LorR = dir === 1 ? "topLeft" : "topRight";
+		this.legs[i].rotate(dir * r, this.legs[i].bounds[LorR]);
 		this.legs[i].style = this.style.legs;
 		this.legs[i].strokeWidth = this.style.legs.strokeWidth;
 		this.group.addChildren(this.legs);
-	};
+	}
 };
 
 //--------------------- animation --------------------------//
 
 fly.BobFly.prototype.fly = function() {
-	var dir = this.direction[0] == "right" ? 1 : -1;
+	var dir = this.direction[0] === "right" ? 1 : -1;
 	var o = new paper.Point(this.bones[1].segments[0].point);
 	var r = dir * 45 * Math.random();
 	var r2 = dir * 45 * Math.random() + dir * 45;
@@ -284,45 +284,45 @@ fly.BobFly.prototype.shakeALeg = function() {
 		var r = -5 * Math.random();
 		this.legs[i].rotate(r - this.rLegs[i],o);
 		this.rLegs[i] = r;
-	};
+	}
 };
 
 fly.BobFly.prototype.updateDirection = function(args) {
-	if (this.direction[0] != "right" && args.point.x > this.handle.bounds.center.x) {
+	if (this.direction[0] !== "right" && args.point.x > this.handle.bounds.center.x) {
 			this.direction[0] = "right";
 			this.rebuild();
-	} else if (this.direction[0] != "left" && args.point.x < this.handle.bounds.center.x ) {
+	} else if (this.direction[0] !== "left" && args.point.x < this.handle.bounds.center.x ) {
 			this.direction[0] = "left";
 			this.rebuild();
-	};
+	}
 
 	if (args.point.y > this.handle.bounds.bottomCenter.y) {
-		if (this.direction[1] == "down") {
+		if (this.direction[1] === "down") {
 			return;
-		};
+		}
 		this.direction[1] = "down";
 		this.rebuildFace();
 		return;
 	} else if (args.point.y < this.handle.bounds.topCenter.y) {
-		if (this.direction[1] == "up") {
+		if (this.direction[1] === "up") {
 			this.rebuildFace();
 			return;
-		};
+		}
 		this.direction[1] = "up";
 		return;
-	} else if (this.direction[1] != "forward") {
+	} else if (this.direction[1] !== "forward") {
 		this.direction[1] = "forward";
 		this.rebuildFace();
 		return;
-	};	
-	
-	if (args.point.y > paper.view.bounds.bottomCenter.y && this.direction[1] != "down") {
+	}
+
+	if (args.point.y > paper.view.bounds.bottomCenter.y && this.direction[1] !== "down") {
 		this.direction[1] = "down";
-	} else if (args.point.y < paper.view.bounds.topCenter.y && this.direction[1] != "up") {
+	} else if (args.point.y < paper.view.bounds.topCenter.y && this.direction[1] !== "up") {
 		this.direction[1] = "up";
-	} else if (this.direction[1] != "forward") {
+	} else if (this.direction[1] !== "forward") {
 		this.direction[1] = "forward";
-	};	
+	}
 };
 
 fly.BobFly.prototype.blink = function(b) {
@@ -337,16 +337,16 @@ fly.BobFly.prototype.info = function(){
 	var i = this.anandaInfo();
 	i.facing = {val: this.direction[0],type:"val"};
 	i.looking = {val: this.direction[1],type:"val"};
-	i.blinking = {val: this.blinking, type:"bool"};   
+	i.blinking = {val: this.blinking, type:"bool"};
 	i.drift = {val: this.drift, type: "val"};
 	return i;
-}
+};
 
 fly.Ananda.prototype.register = function(display) {
-	var display = display || false;
+	display = display || false;
 	fly.infoCtrlr.register(this,display);
 	fly.eventCtrlr.subscribe(["mouse move","mouse down","mouse drag", "mouse up", "frame", "s-key"],this);
-}			
+};
 
 fly.BobFly.prototype.grab = function(event) {
 	if (this.bones[3].hitTest(event.point)) {
@@ -356,23 +356,23 @@ fly.BobFly.prototype.grab = function(event) {
 };
 
 fly.BobFly.prototype.drag = function(event) {
-	if (this.moving && this.dragable && fly.infoCtrlr.moving() == false) {
+	if (this.moving && this.dragable && fly.infoCtrlr.moving() === false) {
 		this.group.position = event.point.subtract(this.moveOrigin);
 		this.Bob.move(this.handle.bounds.center);
-	};
+	}
 };
 
 fly.BobFly.prototype.update = function(e) {
 	if (!this.moving) {
 		this.Bob.update(e);
 		this.group.position = this.Bob.position;
-		this.fly();	
+		this.fly();
 		this.shakeALeg();
-	};
+	}
 	if (e.time > this.blinkCount + 4) {
 		this.blink(true);
 		this.blinkCount = e.time;
-	} else if (this.blinking && e.time > this.blinkCount + .25) {
+	} else if (this.blinking && e.time > this.blinkCount + 0.25) {
 		this.blink(false);
 		this.blinkCount = e.time + 5 * Math.random();
 	}
@@ -398,8 +398,7 @@ fly.BobFly.prototype.eventCall = function(e,args) {
 		case "mouse up" :
 			this.drop(args);
 			break;
-	default :
-	};
+	}
 };
 
 

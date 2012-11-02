@@ -5,7 +5,7 @@
  */
 
 //------------- BEGIN FLYPAPER MATH AND MOTION ------------//
-/*					
+/*
 *	Math and Motion	Methods
 *
 *	versions 0.3 - 0.4

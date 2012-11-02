@@ -1,10 +1,10 @@
 //--------------------- BEGIN Pullbar ---------------------//
-/*					
+/*
 *	Pullbar extends Ananda, creates grabbable handles
-*					
+*
 *	adaptation of vektor.js from:
 *	http://paperjs.org/tutorials/geometry/vector-geometry/
-*					
+*
 *	args = {	fixLength:bool,fixAngle:bool,
 *			this.visible: bool,
 *			vectorCtr:point,
@@ -13,7 +13,7 @@
 *			color: #e4141b	// any valid color val
 *		}
 *
-*	version 0.3.6				
+*	version 0.3.6
 */
 //--------------------- BEGIN Pullbar --------------------//
 
@@ -28,7 +28,7 @@ fly.Pullbar = function (args){
 	this.init(args);
 	this.fixLength = args.fixLength || false;
 	this.fixAngle = args.fixAngle || false;
-	this.vectorCtr = args.vectorCtr || new paper.Point(paper.view.center);	
+	this.vectorCtr = args.vectorCtr || new paper.Point(paper.view.center);
 	this.vector = args.vector || new paper.Point(0,0);
 	this.color = args.color || '#E4141B';
 	this.selected = args.selected || false;
@@ -68,7 +68,7 @@ fly.Pullbar.prototype.register = function (display) {
 	display = display || false;
 	fly.infoCtrlr.register(this,display);
 	fly.eventCtrlr.subscribe(["mouse down","mouse drag", "mouse up", "s-key"],this);
-};			
+};
 
 fly.Pullbar.prototype.toggleSelected = function (state) {
 	// state is an optional bool
@@ -104,7 +104,7 @@ fly.Pullbar.prototype.build = function () {
 	this.bones[1] = new paper.Path([this.joints[0],this.joints[1]]); // pull bar
 	this.bones[1].strokeWidth = 1.75;
 	this.bones[1].strokeColor = '#e4141b';
-	
+
 	var o1 = new paper.Path.Oval(this.handle.bounds);  // first grip handle
 	var o2 = o1.clone();
 	o2.scale(0.5,o2.bounds.center);
@@ -159,7 +159,7 @@ fly.Pullbar.prototype.grab = function (event) {
 fly.Pullbar.prototype.drag = function (event) {
 	if (this.moving === true) {
 		if (!event.modifiers.shift && this.fixLength && this.fixAngle) {
-			this.vectorCtr = event.point;		
+			this.vectorCtr = event.point;
 		}
 		this.processVector(event.point);
 	}

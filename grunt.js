@@ -14,8 +14,8 @@ module.exports = function(grunt) {
         '<%= pkg.homepage ? " * " + pkg.homepage + "\n" : "" %>' +
         ' * Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author.name %>;\n' +
         ' * Licensed <%= _.pluck(pkg.licenses, "type").join(", ") %> \n */\n' +
-		' //--------------------------------------------------------//\n' 
-    },
+		' //--------------------------------------------------------//\n'
+   },
     concat: {
       dist: {
         src: [	'<banner:meta.banner>', 
@@ -50,7 +50,7 @@ module.exports = function(grunt) {
     },
     lint: {
       files: ['grunt.js', 'src/**/*.js', 'test/**/!(scratch).js', 'examples/**/*.js'],
-      scratch: ['grunt.js','scratchpad/**/*.js','test/tests/test-scratch.js']
+      scratch: ['grunt.js','scratchpad/**/*.js','test/tests/scratch.js']
     },
     watch: {
       files: '<config:lint.files>',

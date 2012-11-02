@@ -1,4 +1,4 @@
 
 fly.base = function () {
-	
+
 };

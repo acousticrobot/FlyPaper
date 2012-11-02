@@ -5,7 +5,7 @@
  */
 
 //------------- BEGIN FLYPAPER MOTION --------------------//
-/*					
+/*
 *	Motion	Methods
 *
 *	version 0.4

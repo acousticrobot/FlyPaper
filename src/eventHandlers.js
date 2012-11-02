@@ -17,7 +17,7 @@
 fly.initEventHandlers = function() {
 
 	fly.tool = new paper.Tool();
-	
+
 	fly.tool.onKeyDown = function (event) {
 		var pub_e = "";
 		if (event.key.length ===1) {
@@ -41,7 +41,7 @@ fly.initEventHandlers = function() {
 		pub_e += event.key + "-key";
 		var report = fly.eventCtrlr.publish(pub_e);
 	};
-	
+
 	fly.tool.onMouseDown = function (event) {
 		fly.eventCtrlr.publish("mouse down",event);
 	};
@@ -53,7 +53,7 @@ fly.initEventHandlers = function() {
 	fly.tool.onMouseUp = function (event) {
 		fly.eventCtrlr.publish("mouse up",event);
 	};
-	
+
 	fly.tool.onMouseMove = function (event) {
 		fly.eventCtrlr.publish("mouse move",event);
 	};

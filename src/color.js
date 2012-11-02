@@ -29,7 +29,7 @@ fly.color = (function(args) {
 		colorPresets = [],
 		bkgCol = '#FFFFFF',
 		palette = 'not yet defined';
-		
+
 	function limit(col){
 		// limit col between 0 and 255
 		// color is any int
@@ -74,7 +74,7 @@ fly.color = (function(args) {
 		}
 		return splice(col1a);
 	}
-	
+
 	function totalValue (col) {
 		// adds the R,G,B values together
 		var cola = split(col);
@@ -109,10 +109,10 @@ fly.color = (function(args) {
 			darks = bispectrum(col2,col3,midseg);
 			// remove duplicate color in middle and merge
 			lights.pop();
-			var spec = lights.concat(darks);	
+			var spec = lights.concat(darks);
 			return spec;
 	}
-	
+
 	function spectrum(name,col1,col2,col3,seg) {
 		// name: string for name of color set
 		// send two hex colors for a bispectrum
@@ -136,16 +136,16 @@ fly.color = (function(args) {
 		}
 		return spec;
 	}
-	
+
 	function setPalette (colorSet) {
 		// colorSet is an array of color arrays, example:
 		// [ ['red','#400000','#FF0000','#FFC0C0',],[.,.,.,.],...]
 		for (var i=0; i < colorSet.length; i++) {
 			var spec = colorSet[i];
-			fly.color[spec[0]] = fly.color.spectrum(spec[0],spec[1],spec[2],spec[3]);	
+			fly.color[spec[0]] = fly.color.spectrum(spec[0],spec[1],spec[2],spec[3]);
 		}
 	}
-	
+
 	function background (col) {
 		if (!fly.layers) {
 			fly.initLayers();

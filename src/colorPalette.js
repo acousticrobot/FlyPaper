@@ -20,7 +20,7 @@
 // beta5: add new sets in, check against registry
 
 fly.colorPalette = function(paletteName,colorSet){
-	
+
 		// don't allow no-args reset to existing palette 
 		if (fly.color.palette !== "not yet defined" && !paletteName) {
 			return fly.color.palette;
@@ -52,7 +52,7 @@ fly.colorPalette = function(paletteName,colorSet){
 					['purple','#4C244C','#893DB3','#D0B8FF'],
 					['grey','#1E2421','#848179','#D3FFE9']
 				];
-				break;			
+				break;
 
 			case "monotone":
 				set = [
@@ -90,10 +90,10 @@ fly.colorPalette = function(paletteName,colorSet){
 					['grey','#000000','#808080','#FFFFFF']
 				];
 		} // end switch
-		
+
 		fly.color.palette = paletteName;
-		fly.color.setPalette(set);	
-		fly.color.background();	
-				
+		fly.color.setPalette(set);
+		fly.color.background();
+
 };
  

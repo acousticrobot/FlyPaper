@@ -5,10 +5,10 @@
  */
 
 //--------------------- BEGIN Bob -----------------------//
-/*					
+/*
 *	Motion: Bob
 *	v 0.4.1
-*					
+*
 *	Moves and object up and down repeatedly
 */
 //--------------------- BEGIN Bob -----------------------//
@@ -57,5 +57,5 @@ fly.Bob.prototype.update = function (e) {
 		var p = new paper.Point(this.origin);
 		var d = Math.sin(e.time * this.speed) * this.delta;
 		p.y += d;
-		this.reposition(p);		
+		this.reposition(p);
 };

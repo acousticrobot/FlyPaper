@@ -5,7 +5,7 @@
  */
 
 //--------------------- BEGIN Swing -----------------------//
-/*					
+/*
 *	Motion: Swing
 *	version 0.3.3
 *	TODO: V0.3.4 using fly.infoCtrlr.fps()
