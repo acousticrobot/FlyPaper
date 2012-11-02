@@ -23,10 +23,10 @@
  *      implemented within flypaper.
  * 
  *  **IMPORTANT** On-frame events must be initaited
- *  in the main javascript on window load. Use:	   
- *      paper.view.onFrame = fu*c*ion(event) {
- * 	        fly.eventCtrlr.publish("frame");
- * 	    };
+ *  in the main javascript on window load. Use:	
+ *    paper.view.onFrame = function(event) {
+ *      fly.eventCtrlr.publish("frame");
+ *    };
  */
 
 fly.eventCtrlrInit = function() {

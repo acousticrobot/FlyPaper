@@ -1,0 +1,4 @@
+
+fly.base = function () {
+	
+};

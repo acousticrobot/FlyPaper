@@ -45,10 +45,12 @@ module.exports = function(grunt) {
       }
     },
     qunit: {
-      files: ['test/test-build.html']
+      files: ['test/test-build.html','test/test-init.html'],
+      scratch: ['test/test-scratch.html']
     },
     lint: {
-      files: ['grunt.js', 'src/**/*.js', 'test/**/*.js', 'examples/**/*.sjs']
+      files: ['grunt.js', 'src/**/*.js', 'test/**/*.js', 'examples/**/*.sjs'],
+      scratch: ['grunt.js','scratchpad/**/*.js','test/tests/test-scratch.js']
     },
     watch: {
       files: '<config:lint.files>',
@@ -81,6 +83,7 @@ module.exports = function(grunt) {
   });
 
   // Default task.
-  grunt.registerTask('default', 'lint qunit concat min');
-  grunt.registerTask('dirty', 'lint concat');
+  grunt.registerTask('default', 'lint:files qunit:files concat min');
+  grunt.registerTask('dirty', 'lint:files concat');
+  grunt.registerTask('scratch', 'lint:scratch qunit:scratch');
 };

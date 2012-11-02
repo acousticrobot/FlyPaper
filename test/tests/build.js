@@ -21,7 +21,7 @@
 		raises(block, [expected], [message])
 */	
 test("head", 2, function(){
-	ok(paper, "paper exsits");
+	ok(paper, "paper exists");
 	ok(fly, "fly namespace exists");
 });
 
