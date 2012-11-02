@@ -42,7 +42,8 @@ fly.init = function (args) {
 	fly.initLayers(stageLayers);
 
 	var colorPalette = args.colorPalette || {};
-	fly.colorPalette(colorPalette);
+	var colorSet = args.colorSet || {};
+	fly.colorPalette(colorPalette,colorSet);
 	
 	fly.info = function() {
 		// fly namespace is the first member of fly.infoCtrlr
@@ -60,7 +61,8 @@ fly.init = function (args) {
 
 	fly.eventCtrlrInit();
 	
-	fly.infoCtrlrInit();
+	var infoPrefs = args.infoPrefs || {};
+	fly.infoCtrlrInit(infoPrefs);
 	
 	fly.layers.stage[0].activate();
 	
