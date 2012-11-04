@@ -1,4 +1,0 @@
-
-fly.base = function () {
-
-};

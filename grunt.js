@@ -19,7 +19,8 @@ module.exports = function(grunt) {
     concat: {
       dist: {
         src: [	'<banner:meta.banner>', 
-				'<file_strip_banner:src/head.js>',
+				'<file_strip_banner:src/core/head.js>',
+				'<file_strip_banner:src/core/string.js>',
 				'<file_strip_banner:src/layers.js>',
 				'<file_strip_banner:src/color.js>',
 				'<file_strip_banner:src/colorPalette.js>',

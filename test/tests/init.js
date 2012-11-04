@@ -43,6 +43,26 @@ test("init", 11, function(){
 	ok(fly.eventCtrlr, "fly event controller exists");
 	ok(fly.infoCtrlr, "fly event controller exists");
 });
+
+test("toString", function(){
+	equal(fly.toString([0,[1,2,3],[4,5,[6,7]]]),"[0,object,object]", "toString Method should match");
+	equal(fly.toString([0,[1,2,3],[4,5,[6,7]]],1),"[0,[1,2,3],[4,5,object]]", "toString Method should match");
+	equal(fly.toString([0,[1,2,3],[4,5,[6,[7]]]],2),"[0,[1,2,3],[4,5,[6,object]]]", "toString Method should match");
+	equal(fly.toString([0,[1,2,3],[4,5,[6,[7]]]],3,0),"[0,[1,2,3],[4,5,[6,[7]]]]", "toString Method should match");
+	equal(fly.toString({a:0,b:[0,[1,2,3],[4,5,{six:6,seven:"seven"}]]}),"{a:0,b:object}", "toString Method should match");
+	equal(fly.toString({a:0,b:[0,[1,2,3],[4,5,{six:6,seven:"seven"}]]},1),
+		"{a:0,b:[0,object,object]}", "toString Method should match");
+	equal(fly.toString({a:0,b:[0,[1,2,3],[4,5,{six:6,seven:"seven"}]]},2),
+		"{a:0,b:[0,[1,2,3],[4,5,object]]}", "toString Method should match");
+	equal(fly.toString({a:0,b:[0,[1,2,3],[4,5,{six:6,seven:"seven"}]]},3),
+		'{a:0,b:[0,[1,2,3],[4,5,{six:6,seven:"seven"}]]}', "toString Method should match");
+	equal(fly.toString(fly.base,2),
+		'{name:"fly base",version:"0.5beta",infoArray:[{name:"props",val:"my property",type:"string"}],info:(),toString:()}',
+		"toString Method should match");
+	equal(fly.base.toString(1),
+		'{name:"fly base",version:"0.5beta",infoArray:[object],info:(),toString:()}', "toString Method should match");
+});
+
 test("infoCtrlr", 1, function(){
 	var ICinfo = fly.infoCtrlr.info();
 	var members = ICinfo.members;
