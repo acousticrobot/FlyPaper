@@ -3,7 +3,7 @@
  * Author: Jonathan Gabel
  * Email: post@jonathangabel.com
  * URL: http://jonathangabel.com
- * Date: 2012-11-06 17:25:31
+ * Date: 2012-11-06 18:43:34
  * https://github.com/josankapo/FlyPaper
  * Copyright (c) 2012 Jonathan Gabel;
  * Licensed MIT 
@@ -30,6 +30,13 @@ if (typeof Object.create !== 'function') {
 
 
 // run test cases in scratchpad/test.html
+/*
+ * This file is part of the flypaper.js build.
+ * Use grunt to assemble the completed file.
+ * Find the built file in dist/flypaper.js
+ */
+
+
 // copy results, make a test in test/
 // move base out, integrate test into general tests
 // get these into the source build, rename this file: string
@@ -81,6 +88,63 @@ fly.grantString = function(o) {
 		return fly.toString(this,depth,0);
 	};
 	return o;
+};
+
+fly.grantInfo = function(o) {
+	// store the properties sent to infoController via call to info()
+	var name = o.name || fly.name,
+		version = o.version || fly.version,
+		_info = {
+			version : { val: version, type: "version"}
+		};
+
+	function mergeInfo (i,args) {
+		// private utility to add object in args to info i
+		var el, v, t;
+		for (el in args) {
+			if (args[el].val && args[el].type) {
+				v = args[el].val,
+				t = args[el].type;
+				i[el] = {"val":v,"type":t};
+			}
+		}
+		return i;
+	}
+
+	o.addInfo = function(args){
+		// add property to track to the infoArray
+		// ex. args = {info1:{val:"sam",type:"i am"}}
+		// ex. args = {info1:{val:"sam",type:"i am"},info2:{val:"foo",type:"bar"}}
+		mergeInfo(_info,args);
+	};
+
+	o.deleteInfo = function(args) {
+		// delete existing property from the infoArray
+		// ex args = "sam" || ["sam","foo"]
+		if (typeof args === "string") {
+			delete _info[args];
+		} else if (args instanceof Array) {
+			var el;
+			for (var i=0; i < args.length; i++) {
+				if (args[i] in _info) {
+					delete _info[args[i]];
+				}
+			}
+		}
+	};
+
+	o.info = function(){
+		// method called by the InfoCtrlr, should return:
+		// { name: "name", var1:{val: var1, type:"val"},var2:{..}..},
+		var i = {},
+			el;
+		i.name = name;
+		i = mergeInfo(i,_info);
+		return i;
+	};
+
+	return o;
+
 };
 
 //--------------------- BEGIN LAYERS INIT ----------------//
@@ -1073,19 +1137,14 @@ fly.init = function (args) {
 	var colorSet = args.colorSet || {};
 	fly.colorPalette(colorPalette,colorSet);
 
-	fly.info = function() {
-		// fly namespace is the first member of fly.infoCtrlr
-		var i = {};
-		i.name = fly.name;
-		i.version = { val: fly.version, type: "version"};
-		i.debug = { val: fly.debug, type: "bool" };
-		i.width = { val: fly.width, type: "val" };
-		i.height = { val: fly.height, type: "val" };
-		i.stage_layers = { val: fly.layers.stage.length, type: "val"};
-		i.color_palette = { val: fly.color.palette, type: "val"};
-		//i.keys = {val: "[i]nfo, [s]elect, [r]otate", type: "string" };
-		return i;
-	};
+	fly.grantInfo(fly);
+	fly.addInfo({
+		debug : { val: fly.debug, type: "bool" },
+		width : { val: fly.width, type: "val" },
+		height : { val: fly.height, type: "val" },
+		stage_layers : { val: fly.layers.stage.length, type: "val"},
+		color_palette : { val: fly.color.palette, type: "val"}
+	});
 
 	fly.eventCtrlrInit();
 

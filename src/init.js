@@ -45,19 +45,14 @@ fly.init = function (args) {
 	var colorSet = args.colorSet || {};
 	fly.colorPalette(colorPalette,colorSet);
 
-	fly.info = function() {
-		// fly namespace is the first member of fly.infoCtrlr
-		var i = {};
-		i.name = fly.name;
-		i.version = { val: fly.version, type: "version"};
-		i.debug = { val: fly.debug, type: "bool" };
-		i.width = { val: fly.width, type: "val" };
-		i.height = { val: fly.height, type: "val" };
-		i.stage_layers = { val: fly.layers.stage.length, type: "val"};
-		i.color_palette = { val: fly.color.palette, type: "val"};
-		//i.keys = {val: "[i]nfo, [s]elect, [r]otate", type: "string" };
-		return i;
-	};
+	fly.grantInfo(fly);
+	fly.addInfo({
+		debug : { val: fly.debug, type: "bool" },
+		width : { val: fly.width, type: "val" },
+		height : { val: fly.height, type: "val" },
+		stage_layers : { val: fly.layers.stage.length, type: "val"},
+		color_palette : { val: fly.color.palette, type: "val"}
+	});
 
 	fly.eventCtrlrInit();
 

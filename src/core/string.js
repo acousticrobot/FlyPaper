@@ -5,6 +5,13 @@
  */
 
 // run test cases in scratchpad/test.html
+/*
+ * This file is part of the flypaper.js build.
+ * Use grunt to assemble the completed file.
+ * Find the built file in dist/flypaper.js
+ */
+
+
 // copy results, make a test in test/
 // move base out, integrate test into general tests
 // get these into the source build, rename this file: string

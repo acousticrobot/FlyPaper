@@ -57,10 +57,11 @@ test("toString", function(){
 	equal(fly.toString({a:0,b:[0,[1,2,3],[4,5,{six:6,seven:"seven"}]]},3),
 		'{a:0,b:[0,[1,2,3],[4,5,{six:6,seven:"seven"}]]}', "toString Method should match");
 	equal(fly.toString(fly.base,2),
-		'{name:"fly base",version:"0.5beta",info(),addInfo(),deleteInfo(),toString()}',
+		'{name:"fly base",version:"0.5beta",toString(),addInfo(),deleteInfo(),info()}',
 		"toString Method should match");
 	equal(fly.base.toString(1),
-		'{name:"fly base",version:"0.5beta",info(),addInfo(),deleteInfo(),toString()}', "toString Method should match");
+		'{name:"fly base",version:"0.5beta",toString(),addInfo(),deleteInfo(),info()}',
+		"toString Method should match");
 });
 
 test("base", 5, function(){
