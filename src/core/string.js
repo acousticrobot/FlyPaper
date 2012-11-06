@@ -28,11 +28,11 @@ fly.toString = function(args,toDepth,currDepth) {
 	toDepth = toDepth || 0;
 	currDepth = currDepth || 0;
 	for (p in args) {
-		if (!isarray) {
+		if (!isarray && typeof args[p] !== "function") {
 			s += p + ":";
 		}
 		if (typeof args[p] === "function") {
-			s += "()";
+			s += p + "()";
 		} else if (typeof args[p] === "object") {
 			if (currDepth < toDepth) {
 				s += fly.toString(args[p],toDepth,currDepth+1);

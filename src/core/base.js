@@ -4,19 +4,25 @@
  * Find the built file in dist/flypaper.js
  */
 
+/*
+ * fly base is the starting point for most fly
+ * objects. It has the ability to create the info
+ * object that the info controller requests, and can
+ * add and delete items from the list.  It also
+ */
+
 fly.base = (function(){
 
 	var name =  "fly base",
-		version =  "0.5beta",
-		property =  "my property";
-
+		version =  "0.5beta";
+		
 	// store the properties sent to infoController via call to info()
 	var _info = {
-		version : { val: version, type: "version"},
-		"props":{val:property,type:"string"}		
+		version : { val: version, type: "version"}
 	};
 
 	function mergeInfo (i,args) {
+		// private utility to add object in args to info i
 		var el, v, t;
 		for (el in args) {
 			if (args[el].val && args[el].type) {
@@ -27,28 +33,32 @@ fly.base = (function(){
 		}
 		return i;
 	}
-
 	
 	function addInfo(args){
 		// add property to track to the infoArray
 		// ex. args = {info1:{val:"sam",type:"i am"}}
-		// ex. args = {info1:{val:"sam",type:"i am"},info2:{val:"sand",type:"string"}}
+		// ex. args = {info1:{val:"sam",type:"i am"},info2:{val:"foo",type:"bar"}}
 		mergeInfo(_info,args);
 	}
 	
 	function deleteInfo(args) {
-		var el;
-		for (el in args) {
-			if (_info[el]) {
-				delete _info[el];
-			}
+		// delete existing property from the infoArray
+		// ex args = "sam" || ["sam","foo"]
+		if (typeof args === "string") {
+			delete _info[args];
+		} else if (args instanceof Array) {
+			var el;
+			for (var i=0; i < args.length; i++) {
+				if (args[i] in _info) {
+					delete _info[args[i]];
+				};
+			};
 		}
 	}
-	
-	
-	// method called by the InfoCtrlr, should return:
-	// { name: "name", var1:{val: var1, type:"val"},var2:{..}..},
+		
 	function info(){
+		// method called by the InfoCtrlr, should return:
+		// { name: "name", var1:{val: var1, type:"val"},var2:{..}..},
 		var i = {},
 			el;
 		i.name = name;
@@ -60,7 +70,8 @@ fly.base = (function(){
 		name: name,
 		version: version,
 		info: info,
-		addInfo: addInfo
+		addInfo: addInfo,
+		deleteInfo: deleteInfo
 	};
 
 })();

@@ -30,7 +30,7 @@ window.onload = function() {
 
 module("test init");
 
-test("init", 11, function(){
+test("the build", 11, function(){
 	ok(paper, "paper exists");
 	ok(fly, "fly namespace exists");
 	equal(fly.debug,true, "fly.debug should be true");
@@ -57,20 +57,31 @@ test("toString", function(){
 	equal(fly.toString({a:0,b:[0,[1,2,3],[4,5,{six:6,seven:"seven"}]]},3),
 		'{a:0,b:[0,[1,2,3],[4,5,{six:6,seven:"seven"}]]}', "toString Method should match");
 	equal(fly.toString(fly.base,2),
-		'{name:"fly base",version:"0.5beta",info:(),addInfo:(),toString:()}',
+		'{name:"fly base",version:"0.5beta",info(),addInfo(),deleteInfo(),toString()}',
 		"toString Method should match");
 	equal(fly.base.toString(1),
-		'{name:"fly base",version:"0.5beta",info:(),addInfo:(),toString:()}', "toString Method should match");
+		'{name:"fly base",version:"0.5beta",info(),addInfo(),deleteInfo(),toString()}', "toString Method should match");
 });
 
-test("base", 2, function(){
-	var _info = fly.base.info(),
-	_istring = fly.toString(_info,2);
-	equal(_istring, '{name:"fly base",version:{val:"0.5beta",type:"version"},props:{val:"my property",type:"string"}}',"string should match");
-	fly.base.addInfo({foo:{val:"bar",type:"string"}});
-	_istring = fly.toString(fly.base.info(),2);
-	equal(_istring, '{name:"fly base",version:{val:"0.5beta",type:"version"},props:{val:"my property",type:"string"},foo:{val:"bar",type:"string"}}',"string should match");
+test("base", 5, function(){
+	var _i_string = fly.toString(fly.base.info(),2);
+	equal(_i_string, '{name:"fly base",version:{val:"0.5beta",type:"version"}}',"string should match");
 	
+	fly.base.addInfo({foo:{val:"bar",type:"string"}});
+	_i_string = fly.toString(fly.base.info(),2);
+	equal(_i_string, '{name:"fly base",version:{val:"0.5beta",type:"version"},foo:{val:"bar",type:"string"}}',"string should match");
+	
+	fly.base.deleteInfo("foo");
+	_i_string = fly.toString(fly.base.info(),2);
+	equal(_i_string, '{name:"fly base",version:{val:"0.5beta",type:"version"}}',"string should match");
+	
+	fly.base.addInfo({foo:{val:"bar",type:"string"},ifoo:{val:5,type:"val"}});
+	_i_string = fly.toString(fly.base.info(),2);
+	equal(_i_string, '{name:"fly base",version:{val:"0.5beta",type:"version"},foo:{val:"bar",type:"string"},ifoo:{val:5,type:"val"}}',"string should match");
+
+	fly.base.deleteInfo(["foo","ifoo"]);
+	_i_string = fly.toString(fly.base.info(),2);
+	equal(_i_string, '{name:"fly base",version:{val:"0.5beta",type:"version"}}',"string should match");
 });
 
 test("infoCtrlr", 1, function(){
