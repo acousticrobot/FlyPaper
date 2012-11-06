@@ -67,6 +67,6 @@ fly.init = function (args) {
 
 	fly.layers.stage[0].activate();
 
-	fly.initEventHandlers();
+	fly.initPaperTool();
 
 };

@@ -51,8 +51,8 @@ fly.base = (function(){
 			for (var i=0; i < args.length; i++) {
 				if (args[i] in _info) {
 					delete _info[args[i]];
-				};
-			};
+				}
+			}
 		}
 	}
 		

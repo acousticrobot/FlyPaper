@@ -3,7 +3,7 @@
  * Author: Jonathan Gabel
  * Email: post@jonathangabel.com
  * URL: http://jonathangabel.com
- * Date: 2012-11-05 20:59:34
+ * Date: 2012-11-06 17:25:31
  * https://github.com/josankapo/FlyPaper
  * Copyright (c) 2012 Jonathan Gabel;
  * Licensed MIT 
@@ -53,11 +53,11 @@ fly.toString = function(args,toDepth,currDepth) {
 	toDepth = toDepth || 0;
 	currDepth = currDepth || 0;
 	for (p in args) {
-		if (!isarray) {
+		if (!isarray && typeof args[p] !== "function") {
 			s += p + ":";
 		}
 		if (typeof args[p] === "function") {
-			s += "()";
+			s += p + "()";
 		} else if (typeof args[p] === "object") {
 			if (currDepth < toDepth) {
 				s += fly.toString(args[p],toDepth,currDepth+1);
@@ -986,7 +986,7 @@ fly.infoCtrlrInit = function(infoPrefs) {
 */
 //--------------------------------------------------------//
 
-fly.initEventHandlers = function() {
+fly.initPaperTool = function() {
 
 	fly.tool = new paper.Tool();
 
@@ -1095,7 +1095,7 @@ fly.init = function (args) {
 
 	fly.layers.stage[0].activate();
 
-	fly.initEventHandlers();
+	fly.initPaperTool();
 
 };
 

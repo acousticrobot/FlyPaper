@@ -26,7 +26,7 @@ module.exports = function(grunt) {
 				'<file_strip_banner:src/colorPalette.js>',
 				'<file_strip_banner:src/eventCtrlr.js>',
 				'<file_strip_banner:src/infoCtrlr.js>',
-				'<file_strip_banner:src/eventHandlers.js>',
+				'<file_strip_banner:src/PaperTool.js>',
 				'<file_strip_banner:src/init.js>',
 				'<file_strip_banner:src/math.js>',
 				'<file_strip_banner:src/motions/motion.js>',
