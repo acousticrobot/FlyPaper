@@ -5,28 +5,28 @@
  */
 
 /*
- * ## eventCtrlr
+ * ## EventCtrlr
  * eventCtrlr is the main pub/sub object, 
  * paper events all publish through it, 
- * objects listening for events
+ * objects subscribe to events which are 
+ * handled through their eventCall method.
  * 
  * ### SUBSCRIBE to events with: 
- *     fly.eventCtrlr.subscribe("event",this);
- *  See fly.Ananda.prototype.register for an example.
+ *      fly.eventCtrlr.subscribe(["event1","event2",...],this);
  *  common events include: 
  *  "mouse down","mouse drag", "mouse up",
  *  "frame", and "x-key" where x is any key
  *  
  * ### PUBLISH events with:
- *      fly.eventCtrlr.publish("mouse down",event);
- *      mouse and key events are handled with paper tools
- *      implemented within flypaper.
+ *     fly.eventCtrlr.publish("mouse down",event);
+ * mouse and key events are handled with paper tools
+ * implemented within flypaper.
  * 
  *  **IMPORTANT** On-frame events must be initaited
  *  in the main javascript on window load. Use:
- *    paper.view.onFrame = function(event) {
- *      fly.eventCtrlr.publish("frame");
- *    };
+ *      paper.view.onFrame = function(event) {
+ *        fly.eventCtrlr.publish("frame");
+ *      };
  */
 
 fly.eventCtrlrInit = function() {
@@ -79,7 +79,10 @@ fly.eventCtrlrInit = function() {
 		}
 
 		function subscribe(e,o) {
-				// e = ["event","event",...], o = registering object 
+			// e can be string "event" or array ["event","event",...]
+			if (typeof e === 'string') {
+				e = [e];
+			}
 			for (var i=0, j = e.length; i < j ; i++) {
 				if (!events[e[i]]) {
 					// add to events
@@ -91,16 +94,31 @@ fly.eventCtrlrInit = function() {
 			}
 		}
 
-		function unsubscribe(o) {
-			for (var e in events) {
-				for (var i=0, j = events[e].length; i < j; i++) {
-					if (events[e][i] === o) {
-						events[e].splice(i,1); // remove 0 events;
+		function unsubscribe(e,o) {
+			
+			var remove = function(_e) {
+				for (var i=0, j = events[_e].length; i < j; i++) {
+					if (events[_e][i] === o) {
+						events[_e].splice(i,1); // remove 0 events;
 					}
-					if (events[e].length === 0) {
-						delete events[e];
+					if (events[_e].length === 0) {
+						delete events[_e];
 					}
 				}
+			};
+			
+			// e = "single event" or "all" keyword to unsubscribe o from all events
+			if (e === "all") {
+				for (var event in events) {
+					if (events.hasOwnProperty[event]) {
+						remove(event);
+					}
+				}
+			} else {
+				if (events.hasOwnProperty(e)) {
+					remove(e);
+				}
+				
 			}
 		}
 
@@ -116,13 +134,15 @@ fly.eventCtrlrInit = function() {
 			};
 			var event, _t;
 			for (event in events) {
-				if (firing[event] > 0) {
-					_t = "eventFiring";
-				} else {
-					_t = "event";
+				if (events.hasOwnProperty[event]) {
+					if (firing[event] > 0) {
+						_t = "eventFiring";
+					} else {
+						_t = "event";
+					}
+					var subs = events[event].length > 1 ? " subscribers" : " subscriber";
+					i[event] = {val: events[event].length + subs, type: _t};
 				}
-				var subs = events[event].length > 1 ? " subscribers" : " subscriber";
-				i[event] = {val: events[event].length + subs, type: _t};
 			}
 			i.last_key = {val: lastKey, type: "string"};
 			return i;
@@ -150,7 +170,8 @@ fly.eventCtrlrInit = function() {
 			unsubscribe: unsubscribe,
 			info: info,
 			reqInfo: register,	// infoCtrlr requests registration
-			reportErrors: reportErrors
+			reportErrors: reportErrors,
+			reportEvents: function() {return events;}
 		};
 	})();
 };

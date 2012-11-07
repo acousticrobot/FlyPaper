@@ -26,6 +26,11 @@ test("head", 2, function(){
 });
 
 test("layers", function(){
+	function resetStage() {
+		paper.project.remove();
+		fly.layers.remove();
+		new paper.Project();
+	}
 	function buildLayers (stageLayers) {
 		fly.initLayers(stageLayers);
 		var n = stageLayers || 1;
@@ -37,9 +42,10 @@ test("layers", function(){
 			"'" + stageLayers + "' should create " + n + " stage layer.");
 		strictEqual(paper.project.layers.length, n + 2,
 			"'" + stageLayers + "' should create " + (n + 2) + " paper layers.");
-		paper.project.remove();
-		fly.layers.remove();
-		new paper.Project();
+		resetStage();
+	}
+	if (fly.layers !== undefined) {
+		resetStage();
 	}
 	buildLayers(1);
 	for (var i=0; i < 3; i++) {
@@ -55,9 +61,23 @@ test("color palette", 1, function(){
 	ok(fly.colorPalette, "fly.colorPalette exists");
 });
 
-test("eventCtrlr", 1, function(){
+test("events", 4, function(){
 	fly.eventCtrlrInit();
 	ok(fly.eventCtrlr, "fly event controller exists");
+	var dummy = {};
+	fly.grantEvents(dummy);
+	fly.grantString(dummy);
+	dummy.registerEvent({frame:'update','i-key':'showInfo'});
+	console.log(dummy.logEvents());
+// Note: reportEvents should change to something more useful, add toString and ...?	
+	equal(fly.toString(fly.eventCtrlr.reportEvents(),1),
+		'{frame:[object],i-key:[object]}','events in EC should match');
+	dummy.deregisterEvent('i-key');
+	equal(fly.toString(fly.eventCtrlr.reportEvents(),1),
+		'{frame:[object]}','events in EC should match');
+	dummy.registerEvent({'i-key':'showInfo'}).deregisterEvent('all');
+	equal(fly.toString(fly.eventCtrlr.reportEvents(),1),
+		'{}','events in EC should match');
 });
 
 test("infoCtrlr", 1, function(){

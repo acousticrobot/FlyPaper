@@ -25,3 +25,4 @@ fly.base = (function(){
 
 fly.grantString(fly.base);
 fly.grantInfo(fly.base);
+fly.grantEvents(fly.base);

@@ -4,67 +4,70 @@
  * Find the built file in dist/flypaper.js
  */
 
-// TODO:
-// -don't need to pass functions, just function name
-// -passing args to functions should suffice
-// - need and registerEvent and deregisterEvent
-// - register/deregister multiple events
-// -only need single event handler function for each event (no eventArray)
-// -send events to EC.subscribe
-// -EC 
+//  private registry = {"frame":"update","beat wing":"updateWing",...etc.}
 
-var grantEventHandling = function (o) {
+fly.grantEvents = function (o) {
 	var registry = {};
 
-	o.registerEvent = function (type, method, parameters) {
-	//Makes a handler record. Put it
-	// in a handler array, making one if it doesn't yet
-	// exist for this type.
-
-		var handler = {
-			method: method,
-			parameters: parameters
-		};
-		if (registry.hasOwnProperty(type)) {
-			registry[type].push(handler);
-		} else {
-			registry[type] = [handler];
+	o.registerEvent = function (eventObj) {
+		// eventObj = {"event 1":"handlerOne","event 2":"handlerTwo",...}
+		// record event(s) and handling method in registry
+		// if event exists in registry, the handler will be replaced.
+		for ( var event in eventObj ) {
+			if (eventObj.hasOwnProperty(event)) {
+				if (!registry.hasOwnProperty(event)) {
+					fly.eventCtrlr.subscribe(event,o);
+				}
+				registry[event] = eventObj[event];
+			}
 		}
-		return this;
+		return o;
+	};
+	
+	o.deregisterEvent = function (event) {
+		// events can be a string representing one event name, an
+		// array of events, or the string "all" to deregister all
+		var e;
+		var	dereg = function (e) {
+			if (registry.hasOwnProperty(e)) {
+				delete registry[e];
+				fly.eventCtrlr.unsubscribe(e,o);
+			}
+		};
+
+		if (typeof event === 'string') {
+			if (event === 'all') {
+				for (e in registry ) {
+					if (registry.hasOwnProperty(e)) {
+						dereg(e);
+					}
+				}
+			} else {
+				dereg(event);
+			}
+		} else {
+			for (e in event) {
+				if (event.hasOwnProperty(e)) {
+					dereg(e);
+				}
+			}
+		}
 	};
 
 	o.eventCall = function (event,args) {
-	// event = "event" as string
-	// optional args contain the event (usually as sent by paper.js)
-		var eventArray,
-			func,
-			handler;
-			
-		// If an array of handlers exist for this event, then
-		// loop through it and execute the handlers in order.
-		if (registry.hasOwnProperty(event)) {
-			eventArray = registry[event];
-			for ( var i = 0; i < eventArray.length; i += 1) {
-				handler = eventArray[i];
-
-		// A handler record contains a method and an optional
-		// array of parameters. If the method is a name, look
-		// up the function.
-		func = handler.method;
-		if (typeof func === 'string') {
-			func = this[func];
+		// method called by eventCtrlr for registered events
+		// event = "event" as string
+		// optional args contain the event (usually as sent by paper.js)
+		if (registry.hasOwnProperty(event) && o.hasOwnProperty(registry[event])) {
+			var func = registry[event];
+			o[func](args);
 		}
-
-// Invoke a handler. If the record contained
-// parameters, then pass them. Otherwise, pass the
-// event object.
-
-				func.apply(this,
-					handler.parameters || [event]);
-			}
-		}
-		return this;
+		return o;
 	};
-
+	
+	o.logEvents = function(){
+		return fly.toString(registry);
+	};
+	
 	return o;
 };
