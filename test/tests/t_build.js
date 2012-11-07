@@ -62,6 +62,7 @@ test("color palette", 1, function(){
 });
 
 test("events", 4, function(){
+	// test subscribing / unsubscribing with eventController
 	ok(fly.eventCtrlr, "fly event controller exists");
 	var dummy = {};
 	fly.grantEvents(dummy);

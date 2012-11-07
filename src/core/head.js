@@ -9,6 +9,9 @@ if (typeof fly !== "object") {
 	throw new Error("fly is not an object!");
 }
 
+fly.name = "flypaper";
+fly.version = "0.4";
+
 if (typeof Object.create !== 'function') {
     Object.create = function (o) {
 		var F = function () {};

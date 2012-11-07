@@ -22,8 +22,6 @@
 //--------------------------------------------------------//
 
 fly.init = function (args) {
-	fly.name = "flypaper";
-	fly.version = "0.4";
 	if (args === undefined) {
 		args = {};
 	}
@@ -56,7 +54,6 @@ fly.init = function (args) {
 
 	var infoPrefs = args.infoPrefs || {};
 	fly.infoCtrlrInit(infoPrefs);
-
 
 	fly.layers.stage[0].activate();
 
