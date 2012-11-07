@@ -46,7 +46,9 @@ fly.toString = function(args,toDepth,currDepth) {
 		}
 		s += ",";
 	}
-	s = s.slice(0,-1);
+	if (s.length > 1) {
+		s = s.slice(0,-1);
+	}
 	s += ends;
 	return s;
 };
