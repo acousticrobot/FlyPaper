@@ -30,7 +30,7 @@ fly.toString = function(args,toDepth,currDepth) {
 	for (p in args) {
 		if (args.hasOwnProperty(p)) {
 			if (!isarray && typeof args[p] !== "function") {
-				s += p + ":";
+				s += '"' + p + '":';
 			}
 			if (typeof args[p] === "function") {
 				s += p + "()";

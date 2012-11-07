@@ -3,7 +3,7 @@
  * Author: Jonathan Gabel
  * Email: post@jonathangabel.com
  * URL: http://jonathangabel.com
- * Date: 2012-11-07 14:21:11
+ * Date: 2012-11-07 16:42:39
  * https://github.com/josankapo/FlyPaper
  * Copyright (c) 2012 Jonathan Gabel;
  * Licensed MIT 
@@ -53,25 +53,29 @@ fly.toString = function(args,toDepth,currDepth) {
 	toDepth = toDepth || 0;
 	currDepth = currDepth || 0;
 	for (p in args) {
-		if (!isarray && typeof args[p] !== "function") {
-			s += p + ":";
-		}
-		if (typeof args[p] === "function") {
-			s += p + "()";
-		} else if (typeof args[p] === "object") {
-			if (currDepth < toDepth) {
-				s += fly.toString(args[p],toDepth,currDepth+1);
-			} else {
-				s += "object";
+		if (args.hasOwnProperty(p)) {
+			if (!isarray && typeof args[p] !== "function") {
+				s += '"' + p + '":';
 			}
-		} else if (typeof args[p] === "string") {
-			s += '"' + args[p] + '"';
-		} else {
-			s += args[p];
+			if (typeof args[p] === "function") {
+				s += p + "()";
+			} else if (typeof args[p] === "object") {
+				if (currDepth < toDepth) {
+					s += fly.toString(args[p],toDepth,currDepth+1);
+				} else {
+					s += "object";
+				}
+			} else if (typeof args[p] === "string") {
+				s += '"' + args[p] + '"';
+			} else {
+				s += args[p];
+			}
+			s += ",";
 		}
-		s += ",";
 	}
-	s = s.slice(0,-1);
+	if (s.length > 1) {
+		s = s.slice(0,-1);
+	}
 	s += ends;
 	return s;
 };
@@ -142,6 +146,73 @@ fly.grantInfo = function(o) {
 
 };
 
+//  private registry = {"frame":"update","beat wing":"updateWing",...etc.}
+
+fly.grantEvents = function (o) {
+	var registry = {};
+
+	o.registerEvent = function (eventObj) {
+		// eventObj = {"event 1":"handlerOne","event 2":"handlerTwo",...}
+		// record event(s) and handling method in registry
+		// if event exists in registry, the handler will be replaced.
+		for ( var event in eventObj ) {
+			if (eventObj.hasOwnProperty(event)) {
+				if (!registry.hasOwnProperty(event)) {
+					fly.eventCtrlr.subscribe(event,o);
+				}
+				registry[event] = eventObj[event];
+			}
+		}
+		return o;
+	};
+	
+	o.deregisterEvent = function (event) {
+		// events can be a string representing one event name, an
+		// array of events, or the string "all" to deregister all
+		var e;
+		var	dereg = function (e) {
+			if (registry.hasOwnProperty(e)) {
+				delete registry[e];
+				fly.eventCtrlr.unsubscribe(e,o);
+			}
+		};
+
+		if (typeof event === 'string') {
+			if (event === 'all') {
+				for (e in registry ) {
+					if (registry.hasOwnProperty(e)) {
+						dereg(e);
+					}
+				}
+			} else {
+				dereg(event);
+			}
+		} else {
+			for (e in event) {
+				if (event.hasOwnProperty(e)) {
+					dereg(e);
+				}
+			}
+		}
+	};
+
+	o.eventCall = function (event,args) {
+		// method called by eventCtrlr for registered events
+		// event = "event" as string
+		// optional args contain the event (usually as sent by paper.js)
+		if (registry.hasOwnProperty(event) && o.hasOwnProperty(registry[event])) {
+			var func = registry[event];
+			o[func](args);
+		}
+		return o;
+	};
+	
+	o.logEvents = function(){
+		return fly.toString(registry);
+	};
+	
+	return o;
+};
 //--------------------- BEGIN LAYERS INIT ----------------//
 /*
 *	Initialize drawing layers in fly.layers
@@ -218,7 +289,8 @@ fly.color = (function(args) {
 	function limit(col){
 		// limit col between 0 and 255
 		// color is any int
-		return col = Math.min(Math.max(col, 0),255);
+		col = Math.min(Math.max(col, 0),255);
+		return col;
 	}
 
 	function split(hexCol){
@@ -520,7 +592,10 @@ fly.eventCtrlrInit = function() {
 		}
 
 		function subscribe(e,o) {
-				// e = ["event","event",...], o = registering object 
+			// e can be string "event" or array ["event","event",...]
+			if (typeof e === 'string') {
+				e = [e];
+			}
 			for (var i=0, j = e.length; i < j ; i++) {
 				if (!events[e[i]]) {
 					// add to events
@@ -535,20 +610,22 @@ fly.eventCtrlrInit = function() {
 		function unsubscribe(e,o) {
 			
 			var remove = function(_e) {
-				for (var i=0, j = events[event].length; i < j; i++) {
-					if (events[event][i] === o) {
-						events[event].splice(i,1); // remove 0 events;
+				for (var i=0, j = events[_e].length; i < j; i++) {
+					if (events[_e][i] === o) {
+						events[_e].splice(i,1); // remove 0 events;
 					}
-					if (events[event].length === 0) {
-						delete events[event];
+					if (events[_e].length === 0) {
+						delete events[_e];
 					}
 				}
 			};
 			
 			// e = "single event" or "all" keyword to unsubscribe o from all events
-			if (e = "all") {
+			if (e === "all") {
 				for (var event in events) {
-					remove(event);
+					if (events.hasOwnProperty[event]) {
+						remove(event);
+					}
 				}
 			} else {
 				if (events.hasOwnProperty(e)) {
@@ -570,13 +647,15 @@ fly.eventCtrlrInit = function() {
 			};
 			var event, _t;
 			for (event in events) {
-				if (firing[event] > 0) {
-					_t = "eventFiring";
-				} else {
-					_t = "event";
+				if (events.hasOwnProperty[event]) {
+					if (firing[event] > 0) {
+						_t = "eventFiring";
+					} else {
+						_t = "event";
+					}
+					var subs = events[event].length > 1 ? " subscribers" : " subscriber";
+					i[event] = {val: events[event].length + subs, type: _t};
 				}
-				var subs = events[event].length > 1 ? " subscribers" : " subscriber";
-				i[event] = {val: events[event].length + subs, type: _t};
 			}
 			i.last_key = {val: lastKey, type: "string"};
 			return i;
@@ -604,7 +683,8 @@ fly.eventCtrlrInit = function() {
 			unsubscribe: unsubscribe,
 			info: info,
 			reqInfo: register,	// infoCtrlr requests registration
-			reportErrors: reportErrors
+			reportErrors: reportErrors,
+			reportEvents: function() {return events;}
 		};
 	})();
 };
@@ -954,15 +1034,17 @@ fly.infoCtrlrInit = function(infoPrefs) {
 					if (force) { // recheck max width of infobox
 						var key;
 						for (key in members[i].info) {
-							try {
-								if (key === "name") {
-									updateWidth("name", members[i].info.name);
-								} else {
-									updateWidth(key, members[i].info[key].val);
+							if (members[i].info.hasOwnProperty(key)) {
+								try {
+									if (key === "name") {
+										updateWidth("name", members[i].info.name);
+									} else {
+										updateWidth(key, members[i].info[key].val);
+									}
 								}
-							}
-							catch(ex) {
-								return(ex);
+								catch(ex) {
+									return(ex);
+								}
 							}
 						}
 					}

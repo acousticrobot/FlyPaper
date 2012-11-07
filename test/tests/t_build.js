@@ -68,13 +68,13 @@ test("events", 4, function(){
 	fly.grantEvents(dummy);
 	fly.grantString(dummy);
 	dummy.registerEvent({frame:'update','i-key':'showInfo'});
-	console.log(dummy.logEvents());
+//	console.log(dummy.logEvents());
 // Note: reportEvents should change to something more useful, add toString and ...?	
 	equal(fly.toString(fly.eventCtrlr.reportEvents(),1),
-		'{frame:[object],i-key:[object]}','events in EC should match');
+		'{"frame":[object],"i-key":[object]}','events in EC should match');
 	dummy.deregisterEvent('i-key');
 	equal(fly.toString(fly.eventCtrlr.reportEvents(),1),
-		'{frame:[object]}','events in EC should match');
+		'{"frame":[object]}','events in EC should match');
 	dummy.registerEvent({'i-key':'showInfo'}).deregisterEvent('all');
 	equal(fly.toString(fly.eventCtrlr.reportEvents(),1),
 		'{}','events in EC should match');
