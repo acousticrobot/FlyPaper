@@ -23,6 +23,7 @@ module.exports = function(grunt) {
 				'<file_strip_banner:src/core/string.js>',
 				'<file_strip_banner:src/core/info.js>',
 				'<file_strip_banner:src/core/event.js>',
+				'<file_strip_banner:src/core/base.js>',
 				'<file_strip_banner:src/layers.js>',
 				'<file_strip_banner:src/color.js>',
 				'<file_strip_banner:src/colorPalette.js>',

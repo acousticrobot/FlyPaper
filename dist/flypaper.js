@@ -3,7 +3,7 @@
  * Author: Jonathan Gabel
  * Email: post@jonathangabel.com
  * URL: http://jonathangabel.com
- * Date: 2012-11-07 16:42:39
+ * Date: 2012-11-07 17:11:04
  * https://github.com/josankapo/FlyPaper
  * Copyright (c) 2012 Jonathan Gabel;
  * Licensed MIT 
@@ -213,6 +213,29 @@ fly.grantEvents = function (o) {
 	
 	return o;
 };
+/*
+ * fly base is the starting point for most fly
+ * objects. Through mixins it has the ability to create the info
+ * object that the info controller requests, and can
+ * add and delete items from the list.
+ */
+
+fly.base = (function(){
+
+	var name =  "fly base",
+		version =  "0.5beta";
+
+	return {
+		name: name,
+		version: version
+	};
+
+})();
+
+fly.grantString(fly.base);
+fly.grantInfo(fly.base);
+fly.grantEvents(fly.base);
+
 //--------------------- BEGIN LAYERS INIT ----------------//
 /*
 *	Initialize drawing layers in fly.layers
@@ -647,7 +670,7 @@ fly.eventCtrlrInit = function() {
 			};
 			var event, _t;
 			for (event in events) {
-				if (events.hasOwnProperty[event]) {
+				if (events.hasOwnProperty(event)) {
 					if (firing[event] > 0) {
 						_t = "eventFiring";
 					} else {

@@ -134,7 +134,7 @@ fly.eventCtrlrInit = function() {
 			};
 			var event, _t;
 			for (event in events) {
-				if (events.hasOwnProperty[event]) {
+				if (events.hasOwnProperty(event)) {
 					if (firing[event] > 0) {
 						_t = "eventFiring";
 					} else {
