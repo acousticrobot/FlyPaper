@@ -33,8 +33,10 @@ test("layers", function(){
 		ok(fly.layers.background, "The background layer exists.");
 		ok(fly.layers.stage[0], "The stage layer exists.");
 		ok(fly.layers.infoLayer, "The info layer exists.");
-		strictEqual(fly.layers.stage.length, n, "'" + stageLayers + "' should create " + n + " stage layer.");
-		strictEqual(paper.project.layers.length, n + 2, "'" + stageLayers + "' should create " + (n + 2) + " paper layers.");
+		strictEqual(fly.layers.stage.length, n,
+			"'" + stageLayers + "' should create " + n + " stage layer.");
+		strictEqual(paper.project.layers.length, n + 2,
+			"'" + stageLayers + "' should create " + (n + 2) + " paper layers.");
 		paper.project.remove();
 		fly.layers.remove();
 		new paper.Project();
@@ -48,6 +50,7 @@ test("layers", function(){
 test("color", 1, function(){
 	ok(fly.color, "fly.color exists");
 });
+
 test("color palette", 1, function(){
 	ok(fly.colorPalette, "fly.colorPalette exists");
 });

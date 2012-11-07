@@ -64,23 +64,34 @@ test("toString", function(){
 		"toString Method should match");
 });
 
-test("base", 5, function(){
+test("base", 6, function(){
+
+	// 1. Check base info object
 	var _i_string = fly.toString(fly.base.info(),2);
 	equal(_i_string, '{name:"fly base",version:{val:"0.5beta",type:"version"}}',"string should match");
-	
+
+	// 2. Test adding single info
 	fly.base.addInfo({foo:{val:"bar",type:"string"}});
 	_i_string = fly.toString(fly.base.info(),2);
 	equal(_i_string, '{name:"fly base",version:{val:"0.5beta",type:"version"},foo:{val:"bar",type:"string"}}',"string should match");
 	
+	// 3. Test deleting single info
 	fly.base.deleteInfo("foo");
 	_i_string = fly.toString(fly.base.info(),2);
 	equal(_i_string, '{name:"fly base",version:{val:"0.5beta",type:"version"}}',"string should match");
 	
+	// 4. Test adding multiple info 
 	fly.base.addInfo({foo:{val:"bar",type:"string"},ifoo:{val:5,type:"val"}});
 	_i_string = fly.toString(fly.base.info(),2);
 	equal(_i_string, '{name:"fly base",version:{val:"0.5beta",type:"version"},foo:{val:"bar",type:"string"},ifoo:{val:5,type:"val"}}',"string should match");
 
+	// 5.Test deleteInfo
 	fly.base.deleteInfo(["foo","ifoo"]);
+	_i_string = fly.toString(fly.base.info(),2);
+	equal(_i_string, '{name:"fly base",version:{val:"0.5beta",type:"version"}}',"string should match");
+
+	// 6.Test chaining methods addInfo and deleteInfo
+	fly.base.addInfo({foo:{val:"bar",type:"string"},ifoo:{val:5,type:"val"}}).deleteInfo(["foo","ifoo"]);
 	_i_string = fly.toString(fly.base.info(),2);
 	equal(_i_string, '{name:"fly base",version:{val:"0.5beta",type:"version"}}',"string should match");
 });

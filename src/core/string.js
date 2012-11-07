@@ -4,18 +4,11 @@
  * Find the built file in dist/flypaper.js
  */
 
-// run test cases in scratchpad/test.html
 /*
- * This file is part of the flypaper.js build.
- * Use grunt to assemble the completed file.
- * Find the built file in dist/flypaper.js
- */
-
-
-// copy results, make a test in test/
-// move base out, integrate test into general tests
-// get these into the source build, rename this file: string
-
+ * To String recursive method, use through
+ * fly.toString(object) or use mixin to 
+ * grant string control
+*/
 
 fly.toString = function(args,toDepth,currDepth) {
 	// initial depth = 0, toDepth is the last depth examined
