@@ -29,7 +29,7 @@
  *      };
  */
 
-fly.eventCtrlrInit = function() {
+//fly.eventCtrlrInit = function() {
 
 	fly.eventCtrlr = (function () {
 
@@ -123,6 +123,7 @@ fly.eventCtrlrInit = function() {
 		}
 
 		function register() {
+			// infoCtrlr requests registration
 			fly.infoCtrlr.register(this);
 		}
 
@@ -169,9 +170,10 @@ fly.eventCtrlrInit = function() {
 			subscribe: subscribe,
 			unsubscribe: unsubscribe,
 			info: info,
-			reqInfo: register,	// infoCtrlr requests registration
-			reportErrors: reportErrors,
-			reportEvents: function() {return events;}
+			reqInfo: register,	
+			logErrors: function() {return fly.toString(errors);},
+			logEvents: function() {return fly.toString(events);}
 		};
 	})();
-};
+
+//};

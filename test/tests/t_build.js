@@ -62,20 +62,18 @@ test("color palette", 1, function(){
 });
 
 test("events", 4, function(){
-	fly.eventCtrlrInit();
 	ok(fly.eventCtrlr, "fly event controller exists");
 	var dummy = {};
 	fly.grantEvents(dummy);
 	fly.grantString(dummy);
 	dummy.registerEvent({frame:'update','i-key':'showInfo'});
-// Note: reportEvents should change to something more useful, add toString and ...?	
-	equal(fly.toString(fly.eventCtrlr.reportEvents(),1),
-		'{"frame":[object],"i-key":[object]}','events in EC should match');
+	equal(fly.eventCtrlr.logEvents(),
+		'{"frame":object,"i-key":object}','events in EC should match');
 	dummy.deregisterEvent('i-key');
-	equal(fly.toString(fly.eventCtrlr.reportEvents(),1),
-		'{"frame":[object]}','events in EC should match');
+	equal(fly.eventCtrlr.logEvents(),
+		'{"frame":object}','events in EC should match');
 	dummy.registerEvent({'i-key':'showInfo'}).deregisterEvent('all');
-	equal(fly.toString(fly.eventCtrlr.reportEvents(),1),
+	equal(fly.eventCtrlr.logEvents(),
 		'{}','events in EC should match');
 });
 

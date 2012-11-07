@@ -54,8 +54,6 @@ fly.init = function (args) {
 		color_palette : { val: fly.color.palette, type: "val"}
 	});
 
-	fly.eventCtrlrInit();
-
 	var infoPrefs = args.infoPrefs || {};
 	fly.infoCtrlrInit(infoPrefs);
 
