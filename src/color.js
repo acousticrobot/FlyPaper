@@ -33,7 +33,8 @@ fly.color = (function(args) {
 	function limit(col){
 		// limit col between 0 and 255
 		// color is any int
-		return col = Math.min(Math.max(col, 0),255);
+		col = Math.min(Math.max(col, 0),255);
+		return col;
 	}
 
 	function split(hexCol){

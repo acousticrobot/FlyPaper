@@ -22,6 +22,7 @@ module.exports = function(grunt) {
 				'<file_strip_banner:src/core/head.js>',
 				'<file_strip_banner:src/core/string.js>',
 				'<file_strip_banner:src/core/info.js>',
+				'<file_strip_banner:src/core/event.js>',
 				'<file_strip_banner:src/layers.js>',
 				'<file_strip_banner:src/color.js>',
 				'<file_strip_banner:src/colorPalette.js>',
@@ -62,13 +63,14 @@ module.exports = function(grunt) {
       options: {
         curly: true,
         eqeqeq: true,
+		forin: true,
         immed: true,
         latedef: true,
         newcap: true,
         noarg: true,
         sub: true,
         undef: true,
-        boss: true,
+        boss: false,
         eqnull: true
       },
       globals: {

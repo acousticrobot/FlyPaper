@@ -350,15 +350,17 @@ fly.infoCtrlrInit = function(infoPrefs) {
 					if (force) { // recheck max width of infobox
 						var key;
 						for (key in members[i].info) {
-							try {
-								if (key === "name") {
-									updateWidth("name", members[i].info.name);
-								} else {
-									updateWidth(key, members[i].info[key].val);
+							if (members[i].info.hasOwnProperty(key)) {
+								try {
+									if (key === "name") {
+										updateWidth("name", members[i].info.name);
+									} else {
+										updateWidth(key, members[i].info[key].val);
+									}
 								}
-							}
-							catch(ex) {
-								return(ex);
+								catch(ex) {
+									return(ex);
+								}
 							}
 						}
 					}
