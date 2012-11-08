@@ -36,7 +36,7 @@ fly.init = function (args) {
 		fly.height = paper.view.viewSize.height;
 	}
 
-	var stageLayers = args.stageLayers || {};
+	var stageLayers = args.stageLayers || 1;
 	fly.initLayers(stageLayers);
 
 	var colorPalette = args.colorPalette || {};

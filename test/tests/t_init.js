@@ -44,58 +44,6 @@ test("the build", 11, function(){
 	ok(fly.infoCtrlr, "fly event controller exists");
 });
 
-test("toString", 10, function(){
-	equal(fly.toString([0,[1,2,3],[4,5,[6,7]]]),"[0,object,object]", "toString Method should match");
-	equal(fly.toString([0,[1,2,3],[4,5,[6,7]]],1),"[0,[1,2,3],[4,5,object]]", "toString Method should match");
-	equal(fly.toString([0,[1,2,3],[4,5,[6,[7]]]],2),"[0,[1,2,3],[4,5,[6,object]]]", "toString Method should match");
-	equal(fly.toString([0,[1,2,3],[4,5,[6,[7]]]],3,0),"[0,[1,2,3],[4,5,[6,[7]]]]", "toString Method should match");
-	equal(fly.toString({a:0,b:[0,[1,2,3],[4,5,{"six":6,"seven":"seven"}]]}),'{"a":0,"b":object}', "toString Method should match");
-	equal(fly.toString({a:0,b:[0,[1,2,3],[4,5,{"six":6,"seven":"seven"}]]},1),
-		'{"a":0,"b":[0,object,object]}', "toString Method should match");
-	equal(fly.toString({a:0,b:[0,[1,2,3],[4,5,{"six":6,"seven":"seven"}]]},2),
-		'{"a":0,"b":[0,[1,2,3],[4,5,object]]}', "toString Method should match");
-	equal(fly.toString({a:0,b:[0,[1,2,3],[4,5,{"six":6,"seven":"seven"}]]},3),
-		'{"a":0,"b":[0,[1,2,3],[4,5,{"six":6,"seven":"seven"}]]}', "toString Method should match");
-	equal(fly.toString(fly.base,2),
-		'{"name":"fly base","version":"0.5beta",toString(),addInfo(),deleteInfo(),info(),registerEvent(),deregisterEvent(),eventCall(),logEvents()}',
-		"toString Method should match");
-	equal(fly.base.toString(1),
-		'{"name":"fly base","version":"0.5beta",toString(),addInfo(),deleteInfo(),info(),registerEvent(),deregisterEvent(),eventCall(),logEvents()}',
-		"toString Method should match");
-});
-
-test("base", 6, function(){
-
-	// 1. Check base info object
-	var _i_string = fly.toString(fly.base.info(),2);
-	equal(_i_string, '{"name":"fly base","version":{"val":"0.5beta","type":"version"}}',"string should match");
-
-	// 2. Test adding single info
-	fly.base.addInfo({"foo":{"val":"bar","type":"string"}});
-	_i_string = fly.toString(fly.base.info(),2);
-	equal(_i_string, '{"name":"fly base","version":{"val":"0.5beta","type":"version"},"foo":{"val":"bar","type":"string"}}',"string should match");
-	
-	// 3. Test deleting single info
-	fly.base.deleteInfo("foo");
-	_i_string = fly.toString(fly.base.info(),2);
-	equal(_i_string, '{"name":"fly base","version":{"val":"0.5beta","type":"version"}}',"string should match");
-	
-	// 4. Test adding multiple info 
-	fly.base.addInfo({"foo":{"val":"bar","type":"string"},"ifoo":{"val":5,"type":"val"}});
-	_i_string = fly.toString(fly.base.info(),2);
-	equal(_i_string, '{"name":"fly base","version":{"val":"0.5beta","type":"version"},"foo":{"val":"bar","type":"string"},"ifoo":{"val":5,"type":"val"}}',"string should match");
-
-	// 5.Test deleteInfo
-	fly.base.deleteInfo(["foo","ifoo"]);
-	_i_string = fly.toString(fly.base.info(),2);
-	equal(_i_string, '{"name":"fly base","version":{"val":"0.5beta","type":"version"}}',"string should match");
-
-	// 6.Test chaining methods addInfo and deleteInfo
-	fly.base.addInfo({"foo":{"val":"bar","type":"string"},"ifoo":{"val":5,"type":"val"}}).deleteInfo(["foo","ifoo"]);
-	_i_string = fly.toString(fly.base.info(),2);
-	equal(_i_string, '{"name":"fly base","version":{"val":"0.5beta","type":"version"}}',"string should match");
-});
-
 test("infoCtrlr", 1, function(){
 	var ICinfo = fly.infoCtrlr.info();
 	var members = ICinfo.members;

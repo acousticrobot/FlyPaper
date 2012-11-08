@@ -11,18 +11,13 @@
  * add and delete items from the list.
  */
 
-fly.base = (function(){
+fly.base = function(n){
+	var o = {};
+	o.name =  "fly base",
+	o.version =  "0.5beta";
+	fly.grantString(o);
+	fly.grantInfo(o);
+	fly.grantEvents(o);
+	return o;
+};
 
-	var name =  "fly base",
-		version =  "0.5beta";
-
-	return {
-		name: name,
-		version: version
-	};
-
-})();
-
-fly.grantString(fly.base);
-fly.grantInfo(fly.base);
-fly.grantEvents(fly.base);
