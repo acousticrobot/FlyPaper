@@ -3,7 +3,7 @@
  * Author: Jonathan Gabel
  * Email: post@jonathangabel.com
  * URL: http://jonathangabel.com
- * Date: 2012-11-08 18:07:52
+ * Date: 2012-11-08 18:20:09
  * https://github.com/josankapo/FlyPaper
  * Copyright (c) 2012 Jonathan Gabel;
  * Licensed MIT 
@@ -406,6 +406,7 @@ fly.eventCtrlr = (function () {
 })();
 
 fly.grantString(fly.eventCtrlr);
+
 /*
  *  ## Layers
  *
@@ -512,9 +513,18 @@ fly.initLayers = function(layers,background){
 		return _i;
 	};
 	
+	fly.layers.toString = function(){
+		var s = '[',
+			i;
+		for (i=0; i < this.names.length; i++) {
+			s += '"' + this.names[i] + '",';
+		}
+		s = s.slice(0,-1);
+		s += ']';
+		return s;
+	};
+	
 };
-
-
 
 //--------------------- BEGIN COLORSPACE -----------------//
 /*

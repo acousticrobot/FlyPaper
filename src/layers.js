@@ -111,6 +111,15 @@ fly.initLayers = function(layers,background){
 		return _i;
 	};
 	
+	fly.layers.toString = function(){
+		var s = '[',
+			i;
+		for (i=0; i < this.names.length; i++) {
+			s += '"' + this.names[i] + '",';
+		}
+		s = s.slice(0,-1);
+		s += ']';
+		return s;
+	};
+	
 };
-
-
