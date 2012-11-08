@@ -17,7 +17,7 @@
  *  * fly.layers.stage: an array of layers for main drawing
  *    * pass number of layers or array of names for layers
  *    * defaults to one layer (fly.layers.stage[0])
- *  * fly.layers.infoLayer:
+ *  * fly.layer("info"):
  *     * 1 layer for info panel
  *
  */
@@ -69,10 +69,11 @@ fly.initLayers = function(layers,background){
 		return stage;
 	})();
 	
+
+	var infoLayer = new paper.Layer();
+	fly.layers.stage.push(infoLayer);
 	fly.layers.names.push("info");
-	fly.layers.infoLayer = new paper.Layer();
-	fly.layers.stage.push(fly.layers.infoLayer);
-	
+		
 	fly.layer = function(id) {
 		if (typeof id === "number" && fly.layers.stage[id]) {
 			return fly.layers.stage[id];
@@ -106,7 +107,7 @@ fly.initLayers = function(layers,background){
 		for (j=0; j < fly.layers.names.length; j++) {
 			_i[fly.layers.names[j]] = ipacket(fly.layers.stage[j]);
 		}
-//		_i["info layer"] = ipacket(fly.layers.infoLayer);
+//		_i["info layer"] = ipacket(fly.layer("info"));
 		return _i;
 	};
 	

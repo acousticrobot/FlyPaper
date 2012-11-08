@@ -249,7 +249,7 @@ fly.infoCtrlrInit = function(infoPrefs) {
 			infoGroup.box.clipped = true;
 			drawGrip();
 			drawBars();
-			fly.layers.infoLayer.visible = ibox.visible;
+			fly.layer("info").visible = ibox.visible;
 		}
 
 		//------------------- animation ----------------------//
@@ -260,7 +260,7 @@ fly.infoCtrlrInit = function(infoPrefs) {
 
 		function grab(point){
 			// ignore if not visible, else animate arrows and dragging
-			if (!fly.layers.infoLayer.visible) {
+			if (!fly.layer("info").visible) {
 				return;
 			}
 			for (var i=0; i < infoGroup.bars.children.length; i++) {
@@ -374,7 +374,7 @@ fly.infoCtrlrInit = function(infoPrefs) {
 			updateTime(args);
 
 					// only update panel if visible or visibility has changed
-			if (fly.layers.infoLayer.visible || ibox.visible) { 
+			if (fly.layer("info").visible || ibox.visible) { 
 				if (infoGroup.box.hasChildren()) {
 					infoGroup.box.removeChildren();
 				}

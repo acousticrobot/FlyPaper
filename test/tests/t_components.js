@@ -35,7 +35,7 @@ test("building layers", function(){
 		}
 		ok(fly.layers, "fly.layers exists");
 		ok(fly.layers.stage[0], "The stage layer exists.");
-		ok(fly.layers.infoLayer, "The info layer exists.");
+		ok(fly.layer("info"), "The info layer exists.");
 		
 		strictEqual(fly.layers.stage.length, n,
 			"'" + layers + ' and background is ' + background + "' should create " + n+ " stage layer.");
