@@ -148,12 +148,17 @@ fly.color = (function(args) {
 	}
 
 	function background (col) {
-		if (!fly.layers) {
-			fly.initLayers();
+		if (fly.layers && fly.layer("background")) {
+			if (fly.layers.backRect === undefined) {
+				var l = paper.project.activeLayer;
+				fly.layers.activate("background");
+				fly.layers.backRect = new paper.Path.Rectangle(paper.view.bounds);
+				l.activate();
+			}
+			bkgCol = col !== undefined ? col : bkgCol;
+			fly.layers.backRect.fillColor = bkgCol;
+			return bkgCol;
 		}
-		bkgCol = col !== undefined ? col : bkgCol;
-		fly.layers.backRect.fillColor = bkgCol;
-		return bkgCol;
 	}
 
 	return {

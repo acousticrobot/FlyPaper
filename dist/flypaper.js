@@ -3,7 +3,7 @@
  * Author: Jonathan Gabel
  * Email: post@jonathangabel.com
  * URL: http://jonathangabel.com
- * Date: 2012-11-08 14:59:45
+ * Date: 2012-11-08 17:58:07
  * https://github.com/josankapo/FlyPaper
  * Copyright (c) 2012 Jonathan Gabel;
  * Licensed MIT 
@@ -416,66 +416,76 @@ fly.grantString(fly.eventCtrlr);
  *    * 1 layer with 1 paper.Rectangle backRect
  *    * backRect is colored after fly.color init
  *  * fly.layers.stage: an array of layers for main drawing
- *    * pass number of layers in args as stageLayers
+ *    * pass number of layers or array of names for layers
  *    * defaults to one layer (fly.layers.stage[0])
  *  * fly.layers.infoLayer:
  *     * 1 layer for info panel
  *
  */
 
-fly.initLayers = function(args){
+fly.initLayers = function(layers,background){
 
-	args = args || 1;
-	
 	fly.layers = {
-		name: "layers",
-		version: "0.5beta"
+		"name": "layers",
+		"version": "0.5beta"
 	};
 	
-	fly.layers.names = (function(args){
-		var names = [],
+	fly.layers.names = (function(layers,background){
+		var names = background ? ["background"] : [],
 			i;
-		if (typeof args === "number") {
-			for (i=0; i < args; i++) {
-				names[i] = "stage-" + i;
+		if (typeof layers === "number") {
+			// sanity check
+			if (layers < 1 || layers > 100) {
+				layers = 1;
 			}
-		} else if (args instanceof Array ) {
-			for (i=0; i < args.length; i++) {
-				if (typeof args[i] === "string") {
-					names[i] = args[i];
+			for (i=0; i < layers; i++) {
+				names.push("stage " + names.length);
+			}
+		} else if (layers instanceof Array ) {
+			for (i=0; i < layers.length; i++) {
+				if (typeof layers[i] === "string") {
+					names.push(layers[i]);
 				} else {
-					names[i] = "stage-" + i;
+					names.push("stage-" + names.length);
 				}
 			}
 		}
 		return names;
-	})(args);
+	})(layers,background);
 	
-	// init background and fill with a rectangle	
-	fly.layers.background = paper.project.activeLayer;
-	fly.layers.backRect = new paper.Path.Rectangle(paper.view.bounds);
 	fly.layers.stage = (function(){
-		// TD: better error check only num or array
 		var stage = [],
 			i;
 		for (i=0; i < fly.layers.names.length; i++) {
-			stage[i] = new paper.Layer();
-			// paper error to investigate:
+			if (i === 0) {
+				stage[i] = paper.project.activeLayer;
+			} else {
+				stage[i] = new paper.Layer();
+			}
+			// error to investigate:
 			// TypeError: Cannot read property '_children' of undefined
-			// paper.js: 1873;
+			// paper.js: 1873; given when:
 			//stage[i].name = names[i];
 		}
 		return stage;
 	})();
 	
+	fly.layers.names.push("info");
 	fly.layers.infoLayer = new paper.Layer();
+	fly.layers.stage.push(fly.layers.infoLayer);
+	
+	fly.layer = function(id) {
+		if (typeof id === "number" && fly.layers.stage[id]) {
+			return fly.layers.stage[id];
+		} else if (typeof id === "string" && fly.layers.names.indexOf(id) > -1) {
+			return fly.layers.stage[fly.layers.names.indexOf(id)];
+		}
+		return false;
+	};
 	
 	fly.layers.activate = function(id) {
-		if (typeof id === "number" && fly.layers.stage[id]) {
-			fly.layers.stage[id].activate();
-		} else if (typeof id === "string" && fly.layers.names.indexOf(id) > -1) {
-			fly.layers.stage[fly.layers.names.indexOf(id)].activate();
-		}
+		// id of layer (by index number or name) to make the active layer
+		fly.layer(id).activate();
 	};
 			
 	fly.layers.info = function() {
@@ -493,11 +503,11 @@ fly.initLayers = function(args){
 			};
 
 		_i.name = this.name;
-		_i.background = ipacket(fly.layers.background);
+//		_i.background = ipacket(fly.layers.background);
 		for (j=0; j < fly.layers.names.length; j++) {
 			_i[fly.layers.names[j]] = ipacket(fly.layers.stage[j]);
 		}
-		_i["info layer"] = ipacket(fly.layers.infoLayer);
+//		_i["info layer"] = ipacket(fly.layers.infoLayer);
 		return _i;
 	};
 	
@@ -649,12 +659,17 @@ fly.color = (function(args) {
 	}
 
 	function background (col) {
-		if (!fly.layers) {
-			fly.initLayers();
+		if (fly.layers && fly.layer("background")) {
+			if (fly.layers.backRect === undefined) {
+				var l = paper.project.activeLayer;
+				fly.layers.activate("background");
+				fly.layers.backRect = new paper.Path.Rectangle(paper.view.bounds);
+				l.activate();
+			}
+			bkgCol = col !== undefined ? col : bkgCol;
+			fly.layers.backRect.fillColor = bkgCol;
+			return bkgCol;
 		}
-		bkgCol = col !== undefined ? col : bkgCol;
-		fly.layers.backRect.fillColor = bkgCol;
-		return bkgCol;
 	}
 
 	return {
@@ -1274,16 +1289,23 @@ fly.initPaperTool = function() {
 *		colorSet: [ ['red','#400000','#FF0000','#FFC0C0',],[.,.,.,.],...]
 *			colorSet is used when colorPalette is "custom"
 *		backgroundColor: "#F00F00", "red[4]"
+*		background: bool, adds background layer
 *		stageLayers: number of layers in fly.layers.stage[]
 *
 */
 //--------------------------------------------------------//
 
 fly.init = function (args) {
+	
 	if (args === undefined) {
 		args = {};
 	}
 	fly.debug = args.debug || false;
+	var layers = args.layers || 1,
+		background = args.background || true,
+		colorPalette = args.colorPalette || {},
+		colorSet = args.colorSet || {},
+		infoPrefs = args.infoPrefs || {};
 
 	if (args.width && args.height) {
 		fly.width = args.width; // canvas width
@@ -1294,13 +1316,6 @@ fly.init = function (args) {
 		fly.height = paper.view.viewSize.height;
 	}
 
-	var stageLayers = args.stageLayers || 1;
-	fly.initLayers(stageLayers);
-
-	var colorPalette = args.colorPalette || {};
-	var colorSet = args.colorSet || {};
-	fly.colorPalette(colorPalette,colorSet);
-
 	fly.grantInfo(fly);
 	fly.addInfo({
 		debug : { val: fly.debug, type: "bool" },
@@ -1309,10 +1324,17 @@ fly.init = function (args) {
 		"color palette" : { val: fly.color.palette, type: "val"}
 	});
 
-	var infoPrefs = args.infoPrefs || {};
+	fly.initLayers(layers,background);
+
+	fly.colorPalette(colorPalette,colorSet);
+
 	fly.infoCtrlrInit(infoPrefs);
 
-	fly.layers.activate(0);
+	if (fly.layer("background")) {
+		fly.layers.activate(1);
+	} else {
+		fly.layers.activate(0);
+	}
 
 	fly.initPaperTool();
 
@@ -1855,33 +1877,33 @@ fly.Ananda.prototype.init = function (args){
 
 fly.Ananda.prototype.info = function (){
 	// override this.info to add other info,
-	var i = this.anandaInfo();
-	// i.foo = {val:"foo",type:"val"};
-	return i;
+	var _i = this.anandaInfo();
+	// _i.foo = {val:"foo",type:"val"};
+	return _i;
 };
 
 fly.Ananda.prototype.anandaInfo = function () {
-	var i = {};
-	i.name = this.name;
-	i.version = { val: this.version, type: "version"};
+	var _i = {};
+	_i.name = this.name;
+	_i.version = { val: this.version, type: "version"};
 	if (fly.debug) {
-		// i.paperID = { val: this.handle.id, type: "val"};
-		i.build = { val: this.buildRecord, type: "string"};
+		// _i.paperID = { val: this.handle.id, type: "val"};
+		_i.build = { val: this.buildRecord, type: "string"};
 		if (this.handle) {
-			i.point = { val:this.handle.bounds.x.toFixed(2) + " x " +
+			_i.point = { val:this.handle.bounds.x.toFixed(2) + " x " +
 							this.handle.bounds.y.toFixed(2), type: "val"};
-			i.size = { val: this.handle.bounds.width.toFixed(2) + " x " +
+			_i.size = { val: this.handle.bounds.width.toFixed(2) + " x " +
 							this.handle.bounds.height.toFixed(2), type: "val"};
 		}
-		i.group = {val: this.group._children.length, type: "val"};
-		i.dragable = {val: this.dragable, type: "bool"};
-		i.moving = { val: this.moving, type: "bool" };
-		i.selectable = { val: this.selectable, type: "bool" };
-		i.selected = { val: this.group.selected, type: "bool" };
-		i.rotatable = {val: this.rotatable, type:"val"};
-		// i.speed = {val: this.speed().toFixed(2), type:"val"};
+		_i.group = {val: this.group._children.length, type: "val"};
+		_i.dragable = {val: this.dragable, type: "bool"};
+		_i.moving = { val: this.moving, type: "bool" };
+		_i.selectable = { val: this.selectable, type: "bool" };
+		_i.selected = { val: this.group.selected, type: "bool" };
+		_i.rotatable = {val: this.rotatable, type:"val"};
+		// _i.speed = {val: this.speed().toFixed(2), type:"val"};
 	}
-	return i;
+	return _i;
 };
 
 fly.Ananda.prototype.register = function (display) {

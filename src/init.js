@@ -16,16 +16,23 @@
 *		colorSet: [ ['red','#400000','#FF0000','#FFC0C0',],[.,.,.,.],...]
 *			colorSet is used when colorPalette is "custom"
 *		backgroundColor: "#F00F00", "red[4]"
+*		background: bool, adds background layer
 *		stageLayers: number of layers in fly.layers.stage[]
 *
 */
 //--------------------------------------------------------//
 
 fly.init = function (args) {
+	
 	if (args === undefined) {
 		args = {};
 	}
 	fly.debug = args.debug || false;
+	var layers = args.layers || 1,
+		background = args.background || true,
+		colorPalette = args.colorPalette || {},
+		colorSet = args.colorSet || {},
+		infoPrefs = args.infoPrefs || {};
 
 	if (args.width && args.height) {
 		fly.width = args.width; // canvas width
@@ -36,13 +43,6 @@ fly.init = function (args) {
 		fly.height = paper.view.viewSize.height;
 	}
 
-	var stageLayers = args.stageLayers || 1;
-	fly.initLayers(stageLayers);
-
-	var colorPalette = args.colorPalette || {};
-	var colorSet = args.colorSet || {};
-	fly.colorPalette(colorPalette,colorSet);
-
 	fly.grantInfo(fly);
 	fly.addInfo({
 		debug : { val: fly.debug, type: "bool" },
@@ -51,10 +51,17 @@ fly.init = function (args) {
 		"color palette" : { val: fly.color.palette, type: "val"}
 	});
 
-	var infoPrefs = args.infoPrefs || {};
+	fly.initLayers(layers,background);
+
+	fly.colorPalette(colorPalette,colorSet);
+
 	fly.infoCtrlrInit(infoPrefs);
 
-	fly.layers.activate(0);
+	if (fly.layer("background")) {
+		fly.layers.activate(1);
+	} else {
+		fly.layers.activate(0);
+	}
 
 	fly.initPaperTool();
 

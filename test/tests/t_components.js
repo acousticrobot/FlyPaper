@@ -18,26 +18,43 @@ test("building layers", function(){
 		delete fly.layers;
 		new paper.Project();
 	}
-	function buildLayers (stageLayers) {
-		fly.initLayers(stageLayers);
-		var n = stageLayers || 1;
+	function buildLayers (layers,background) {
+		var n;
+		if (typeof layers === "number") {
+			n = layers > 0 ? layers : 1;
+		} else if (layers instanceof Array ) {
+			n = layers.length;
+		}
+		n = background ? n + 2 : n + 1;
+		fly.initLayers(layers,background);
+		if (background) {
+			ok(fly.layer("background"),"Should have background layer");
+			equal(fly.layers.names[0], "background", "Background should be layer zero");
+		} else {
+			equal(fly.layers.names.indexOf("background"), -1, "Shouldn't have background layer");
+		}
 		ok(fly.layers, "fly.layers exists");
-		ok(fly.layers.background, "The background layer exists.");
 		ok(fly.layers.stage[0], "The stage layer exists.");
 		ok(fly.layers.infoLayer, "The info layer exists.");
+		
 		strictEqual(fly.layers.stage.length, n,
-			"'" + stageLayers + "' should create " + n + " stage layer.");
-		strictEqual(paper.project.layers.length, n + 2,
-			"'" + stageLayers + "' should create " + (n + 2) + " paper layers.");
+			"'" + layers + ' and background is ' + background + "' should create " + n+ " stage layer.");
+		strictEqual(paper.project.layers.length, n,
+			"'" + layers + ' and background is ' + background + "' should create " + n + " paper layers.");
 		resetStage();
 	}
+	var i;
 	if (fly.layers !== undefined) {
 		resetStage();
 	}
-	buildLayers(1);
-	for (var i=0; i < 3; i++) {
-		buildLayers(i);
+	for (i=0; i < 3; i++) {
+		buildLayers(i,true);
 	}
+	for (i=0; i < 3; i++) {
+		buildLayers(i,false);
+	}
+	buildLayers(["Mo","Larry","Curly"],true);
+	buildLayers(["Keaton","Arbuckle"],false);	
 });
 
 test("toString", 10, function(){

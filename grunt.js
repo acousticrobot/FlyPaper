@@ -49,7 +49,7 @@ module.exports = function(grunt) {
       }
     },
     qunit: {
-      files: ['test/test-components.html','test/test-init.html','test/test-layers.html'],
+      files: ['test/test-components.html','test/test-init.html'],
       scratch: ['test/test-scratch.html']
     },
     lint: {

@@ -35,9 +35,9 @@ test("the build", 11, function(){
 	ok(fly, "fly namespace exists");
 	equal(fly.debug,true, "fly.debug should be true");
 	ok(fly.layers, "fly.layers exists");
-	ok(fly.layers.background, "The background layer exists.");
-	ok(fly.layers.stage[0], "The stage layer exists.");
-	ok(fly.layers.infoLayer, "The info layer exists.");
+	ok(fly.layer("background"), "The background layer exists.");
+	ok(fly.layers.stage, "The stage array exists.");
+	ok(fly.layer("info"), "The info layer exists.");
 	ok(fly.color, "fly.color exists");
 	ok(fly.colorPalette, "fly.colorPalette exists");
 	ok(fly.eventCtrlr, "fly event controller exists");
