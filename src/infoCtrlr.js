@@ -20,7 +20,9 @@ fly.infoCtrlrInit = function(infoPrefs) {
 		var name = "infoCtrlr";
 		var version = "0.4";
 		// fly is members[0], infoCtlr is member[1] after infoCtrlr.init();
-		var members = [{obj:fly,display:false}];
+		var members = [ {obj:fly,display:false},
+						{obj:fly.eventCtrlr,display:false},
+						{obj:fly.layers,display:false}];
 		infoPrefs = infoPrefs || {};
 		if (fly.color.palette === "not yet defined") {
 			fly.colorPalette("default");
@@ -36,7 +38,7 @@ fly.infoCtrlrInit = function(infoPrefs) {
 			// colors matching value types:
 			style.val = infoPrefs.val || fly.color.green[2] || "#89C234";
 			style.string = infoPrefs.string || fly.color.grey[4] || "#691BE2";
-			style.btrue = infoPrefs.btrue || fly.color.orange[5] || "#66FF99";
+			style.btrue = infoPrefs.btrue || fly.color.orange[6] || "#66FF99";
 			style.bfalse = infoPrefs.bfalse || fly.color.orange[3]|| "#3D9199";
 			style.event = infoPrefs.event || fly.color.red[4]|| "#BC4500";
 			style.eventFiring = infoPrefs.eventFiring || fly.color.red[7]|| "#FF5E00";
@@ -322,20 +324,20 @@ fly.infoCtrlrInit = function(infoPrefs) {
 
 		function info(){
 		// for self-monitoring, also a model for member's info method 
-			var i = {};
-			i.name = name;
-			i.version = { val: version, type: "version"};
-			i.origin_pt = { val: ibox.origin, type: "val"};
-			i.members = { val: members.length, type:"val"};
-			// i.width = { val: ibox.txtWidth.toFixed(2), type: "val" };
-			i.frame = { val: _time.frame, type: "val"};
-			i.time = { val: _time.time.toFixed(2), type: "val"};
-			i.fpsAve = { val: _time.fps.ave.toFixed(2), type: "val"};
-			i.fpsCurr = {val: _time.fps.curr.toFixed(2), type:"val"};
-			// i.moving = { val: moving, type: "bool" };
-			i.mobile = { val: device.isMobile, type: "bool"};
-			i.ipad = { val: device.isIpad, type: "bool"};
-			return i;
+			var _i = {};
+			_i.name = name;
+			_i.version = { val: version, type: "version"};
+			_i.origin_pt = { val: ibox.origin, type: "val"};
+			_i.members = { val: members.length, type:"val"};
+			// _i.width = { val: ibox.txtWidth.toFixed(2), type: "val" };
+			_i.frame = { val: _time.frame, type: "val"};
+			_i.time = { val: _time.time.toFixed(2), type: "val"};
+			_i.fpsAve = { val: _time.fps.ave.toFixed(2), type: "val"};
+			_i.fpsCurr = {val: _time.fps.curr.toFixed(2), type:"val"};
+			// _i.moving = { val: moving, type: "bool" };
+			_i.mobile = { val: device.isMobile, type: "bool"};
+			_i.ipad = { val: device.isIpad, type: "bool"};
+			return _i;
 		}
 
 		function updateInfo(force){
@@ -441,7 +443,7 @@ fly.infoCtrlrInit = function(infoPrefs) {
 
 	fly.infoCtrlr.init();
 
-	fly.infoCtrlr.request(fly.eventCtrlr);
+//	fly.infoCtrlr.request(fly.eventCtrlr);
 
 }; // END infoCntrlrInit
 

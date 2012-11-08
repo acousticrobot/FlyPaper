@@ -194,33 +194,33 @@ fly.Ananda.prototype.init = function (args){
 
 fly.Ananda.prototype.info = function (){
 	// override this.info to add other info,
-	var i = this.anandaInfo();
-	// i.foo = {val:"foo",type:"val"};
-	return i;
+	var _i = this.anandaInfo();
+	// _i.foo = {val:"foo",type:"val"};
+	return _i;
 };
 
 fly.Ananda.prototype.anandaInfo = function () {
-	var i = {};
-	i.name = this.name;
-	i.version = { val: this.version, type: "version"};
+	var _i = {};
+	_i.name = this.name;
+	_i.version = { val: this.version, type: "version"};
 	if (fly.debug) {
-		// i.paperID = { val: this.handle.id, type: "val"};
-		i.build = { val: this.buildRecord, type: "val"};
+		// _i.paperID = { val: this.handle.id, type: "val"};
+		_i.build = { val: this.buildRecord, type: "string"};
 		if (this.handle) {
-			i.point = { val:this.handle.bounds.x.toFixed(2) + " x " +
+			_i.point = { val:this.handle.bounds.x.toFixed(2) + " x " +
 							this.handle.bounds.y.toFixed(2), type: "val"};
-			i.size = { val: this.handle.bounds.width.toFixed(2) + " x " +
+			_i.size = { val: this.handle.bounds.width.toFixed(2) + " x " +
 							this.handle.bounds.height.toFixed(2), type: "val"};
 		}
-		i.group = {val: this.group._children.length, type: "val"};
-		i.dragable = {val: this.dragable, type: "bool"};
-		i.moving = { val: this.moving, type: "bool" };
-		i.selectable = { val: this.selectable, type: "bool" };
-		i.selected = { val: this.group.selected, type: "bool" };
-		i.rotatable = {val: this.rotatable, type:"val"};
-		// i.speed = {val: this.speed().toFixed(2), type:"val"};
+		_i.group = {val: this.group._children.length, type: "val"};
+		_i.dragable = {val: this.dragable, type: "bool"};
+		_i.moving = { val: this.moving, type: "bool" };
+		_i.selectable = { val: this.selectable, type: "bool" };
+		_i.selected = { val: this.group.selected, type: "bool" };
+		_i.rotatable = {val: this.rotatable, type:"val"};
+		// _i.speed = {val: this.speed().toFixed(2), type:"val"};
 	}
-	return i;
+	return _i;
 };
 
 fly.Ananda.prototype.register = function (display) {

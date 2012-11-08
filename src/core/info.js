@@ -12,17 +12,17 @@ fly.grantInfo = function(o) {
 			version : { val: version, type: "version"}
 		};
 
-	function mergeInfo (i,args) {
+	function mergeInfo (_i,args) {
 		// private utility to add object in args to info i
 		var el, v, t;
 		for (el in args) {
 			if (args[el].val && args[el].type) {
 				v = args[el].val,
 				t = args[el].type;
-				i[el] = {"val":v,"type":t};
+				_i[el] = {"val":v,"type":t};
 			}
 		}
-		return i;
+		return _i;
 	}
 
 	o.addInfo = function(args){
@@ -52,11 +52,10 @@ fly.grantInfo = function(o) {
 	o.info = function(){
 		// method called by the InfoCtrlr, should return:
 		// { name: "name", var1:{val: var1, type:"val"},var2:{..}..},
-		var i = {},
-			el;
-		i.name = name;
-		i = mergeInfo(i,_info);
-		return i;
+		var _i = {};
+		_i.name = name;
+		_i = mergeInfo(_i,_info);
+		return _i;
 	};
 
 	return o;
