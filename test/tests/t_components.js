@@ -60,10 +60,10 @@ test("toString", 10, function(){
 		"toString Method should match");
 	var tester = fly.base();
 	equal(fly.toString(tester,2),
-		'{"name":"fly base","version":"0.5beta",toString(),addInfo(),deleteInfo(),info(),registerEvent(),deregisterEvent(),eventCall(),logEvents()}',
+		'{"name":"fly base","version":"0.5beta",register(),toString(),addInfo(),deleteInfo(),info(),registerEvent(),deregisterEvent(),eventCall(),logEvents()}',
 		"toString Method should match");
 	equal(tester.toString(1),
-		'{"name":"fly base","version":"0.5beta",toString(),addInfo(),deleteInfo(),info(),registerEvent(),deregisterEvent(),eventCall(),logEvents()}',
+		'{"name":"fly base","version":"0.5beta",register(),toString(),addInfo(),deleteInfo(),info(),registerEvent(),deregisterEvent(),eventCall(),logEvents()}',
 		"toString Method should match");
 });
 

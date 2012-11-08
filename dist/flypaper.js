@@ -3,7 +3,7 @@
  * Author: Jonathan Gabel
  * Email: post@jonathangabel.com
  * URL: http://jonathangabel.com
- * Date: 2012-11-07 21:25:46
+ * Date: 2012-11-08 14:59:45
  * https://github.com/josankapo/FlyPaper
  * Copyright (c) 2012 Jonathan Gabel;
  * Licensed MIT 
@@ -98,17 +98,17 @@ fly.grantInfo = function(o) {
 			version : { val: version, type: "version"}
 		};
 
-	function mergeInfo (i,args) {
+	function mergeInfo (_i,args) {
 		// private utility to add object in args to info i
 		var el, v, t;
 		for (el in args) {
 			if (args[el].val && args[el].type) {
 				v = args[el].val,
 				t = args[el].type;
-				i[el] = {"val":v,"type":t};
+				_i[el] = {"val":v,"type":t};
 			}
 		}
-		return i;
+		return _i;
 	}
 
 	o.addInfo = function(args){
@@ -138,11 +138,10 @@ fly.grantInfo = function(o) {
 	o.info = function(){
 		// method called by the InfoCtrlr, should return:
 		// { name: "name", var1:{val: var1, type:"val"},var2:{..}..},
-		var i = {},
-			el;
-		i.name = name;
-		i = mergeInfo(i,_info);
-		return i;
+		var _i = {};
+		_i.name = name;
+		_i = mergeInfo(_i,_info);
+		return _i;
 	};
 
 	return o;
@@ -225,8 +224,12 @@ fly.grantEvents = function (o) {
 
 fly.base = function(n){
 	var o = {};
-	o.name =  "fly base",
+	o.name =  n || "fly base",
 	o.version =  "0.5beta";
+	o.register = function () {
+		fly.infoCtrlr.register(this);
+	};
+	
 	fly.grantString(o);
 	fly.grantInfo(o);
 	fly.grantEvents(o);
@@ -259,154 +262,150 @@ fly.base = function(n){
  *      };
  */
 
-//fly.eventCtrlrInit = function() {
+fly.eventCtrlr = (function () {
 
-	fly.eventCtrlr = (function () {
+	var name = "eventCtrlr",
+		version = "0.5beta",
+		events = {},
+		firing = {}, //  used by isFiring
+		firePulse = 10, // isFiring countdown
+		keyRegex = /.*-key$/, // for matching key events
+		lastKey = "",
+		errors = [];
 
-		var name = "eventCtrlr",
-			version = "0.4",
-			events = {},
-			firing = {}, //  used by isFiring
-			firePulse = 10, // isFiring countdown
-			keyRegex = /.*-key$/, // for matching key events
-			lastKey = "",
-			errors = [];
-
-		function isFiring(e) {
-			// registers an event as firing for next
-			// firePulse number of events
-			// firing > 0 is sent to infoCtrlr as "firing"
-			var event;
-			for (event in firing) {
-				if (firing[event] > 0 ) {
-					firing[event] = firing[event] - 1;
-				}
-			}
-			firing[e] = firePulse;
-		}
-
-		function publish(e,args) {
-			if (fly.debug) {
-				isFiring(e);
-				if (e.match(keyRegex)) {
-					lastKey = e;
-				}
-			}
-			if (events[e]) {
-				for (var i=0; i < events[e].length; i++) {
-					try {
-						if (args !== undefined) {
-							events[e][i].eventCall(e,args);
-						} else {
-							events[e][i].eventCall(e);
-						}
-					}
-					catch(ex) {
-						addError(ex, events[e][i]);
-					}
-				}
+	function isFiring(e) {
+		// registers an event as firing for next
+		// firePulse number of events
+		// firing > 0 is sent to infoCtrlr as "firing"
+		var event;
+		for (event in firing) {
+			if (firing[event] > 0 ) {
+				firing[event] = firing[event] - 1;
 			}
 		}
+		firing[e] = firePulse;
+	}
 
-		function subscribe(e,o) {
-			// e can be string "event" or array ["event","event",...]
-			if (typeof e === 'string') {
-				e = [e];
-			}
-			for (var i=0, j = e.length; i < j ; i++) {
-				if (!events[e[i]]) {
-					// add to events
-					events[e[i]] = [o];
-					firing[e[i]] = firePulse;
-				} else {
-					events[e[i]].push(o);
-				}
+	function publish(e,args) {
+		if (fly.debug) {
+			isFiring(e);
+			if (e.match(keyRegex)) {
+				lastKey = e;
 			}
 		}
-
-		function unsubscribe(e,o) {
-			
-			var remove = function(_e) {
-				for (var i=0, j = events[_e].length; i < j; i++) {
-					if (events[_e][i] === o) {
-						events[_e].splice(i,1); // remove 0 events;
-					}
-					if (events[_e].length === 0) {
-						delete events[_e];
-					}
-				}
-			};
-			
-			// e = "single event" or "all" keyword to unsubscribe o from all events
-			if (e === "all") {
-				for (var event in events) {
-					if (events.hasOwnProperty[event]) {
-						remove(event);
-					}
-				}
-			} else {
-				if (events.hasOwnProperty(e)) {
-					remove(e);
-				}
-				
-			}
-		}
-
-		function register() {
-			// infoCtrlr requests registration
-			fly.infoCtrlr.register(this);
-		}
-
-		function info() {
-			var i = {
-				name: name,
-				v: { val: version, type: "version" },
-				errors: {val: errors.length, type: "val"}
-			};
-			var event, _t;
-			for (event in events) {
-				if (events.hasOwnProperty(event)) {
-					if (firing[event] > 0) {
-						_t = "eventFiring";
+		if (events[e]) {
+			for (var i=0; i < events[e].length; i++) {
+				try {
+					if (args !== undefined) {
+						events[e][i].eventCall(e,args);
 					} else {
-						_t = "event";
+						events[e][i].eventCall(e);
 					}
-					var subs = events[event].length > 1 ? " subscribers" : " subscriber";
-					i[event] = {val: events[event].length + subs, type: _t};
+				}
+				catch(ex) {
+					addError(ex, events[e][i]);
 				}
 			}
-			i.last_key = {val: lastKey, type: "string"};
-			return i;
 		}
+	}
 
-		function addError(ex,obj) {
-			var _er = "Error: ";
-			if (ex === "TypeError: events[e][i].eventCall is not a function") {
-				if (obj.info().name) {
-					_er += obj.info().name;
+	function subscribe(e,o) {
+		// e can be string "event" or array ["event","event",...]
+		if (typeof e === 'string') {
+			e = [e];
+		}
+		for (var i=0, j = e.length; i < j ; i++) {
+			if (!events[e[i]]) {
+				// add to events
+				events[e[i]] = [o];
+				firing[e[i]] = firePulse;
+			} else {
+				events[e[i]].push(o);
+			}
+		}
+	}
+
+	function unsubscribe(e,o) {
+		
+		var remove = function(_e) {
+			for (var i=0, j = events[_e].length; i < j; i++) {
+				if (events[_e][i] === o) {
+					events[_e].splice(i,1); // remove 0 events;
 				}
-				_er += " has no event call";
+				if (events[_e].length === 0) {
+					delete events[_e];
+				}
 			}
-			for (var i=0; i < errors.length; i++) {
-				if (errors[i] === _er) {return;}
-			}
-			errors.push(_er);
-		}
-
-		function reportErrors(){return errors;}
-
-		return {
-			publish: publish,
-			subscribe: subscribe,
-			unsubscribe: unsubscribe,
-			info: info,
-			reqInfo: register,	
-			logErrors: function() {return fly.toString(errors);},
-			logEvents: function() {return fly.toString(events);}
 		};
-	})();
+		
+		// e = "single event" or "all" keyword to unsubscribe o from all events
+		if (e === "all") {
+			for (var event in events) {
+				if (events.hasOwnProperty[event]) {
+					remove(event);
+				}
+			}
+		} else {
+			if (events.hasOwnProperty(e)) {
+				remove(e);
+			}
+			
+		}
+	}
 
-//};
+	function register() {
+		// infoCtrlr requests registration
+		fly.infoCtrlr.register(this);
+	}
+
+	function info() {
+		var _i = {
+			name: name,
+			v: { val: version, type: "version" },
+			errors: {val: errors.length, type: "val"}
+		};
+		var event, _t;
+		for (event in events) {
+			if (events.hasOwnProperty(event)) {
+				if (firing[event] > 0) {
+					_t = "eventFiring";
+				} else {
+					_t = "event";
+				}
+				var subs = events[event].length > 1 ? " subscribers" : " subscriber";
+				_i[event] = {val: events[event].length + subs, type: _t};
+			}
+		}
+		_i.last_key = {val: lastKey, type: "string"};
+		return _i;
+	}
+
+	function addError(ex,obj) {
+		var _er = "Error: ";
+		if (ex === "TypeError: events[e][i].eventCall is not a function") {
+			if (obj.info().name) {
+				_er += obj.info().name;
+			}
+			_er += " has no event call";
+		}
+		for (var i=0; i < errors.length; i++) {
+			if (errors[i] === _er) {return;}
+		}
+		errors.push(_er);
+	}
+
+	return {
+		publish: publish,
+		subscribe: subscribe,
+		unsubscribe: unsubscribe,
+		info: info,
+		reqInfo: register,	
+		logErrors: function() {return fly.toString(errors);},
+		logEvents: function() {return fly.toString(events);}
+	};
+})();
+
+fly.grantString(fly.eventCtrlr);
 /*
  *  ## Layers
  *
@@ -424,26 +423,42 @@ fly.base = function(n){
  *
  */
 
-fly.initLayers = function(stageLayers){
-		
-	fly.layers = fly.base("layers");
+fly.initLayers = function(args){
+
+	args = args || 1;
+	
+	fly.layers = {
+		name: "layers",
+		version: "0.5beta"
+	};
+	
+	fly.layers.names = (function(args){
+		var names = [],
+			i;
+		if (typeof args === "number") {
+			for (i=0; i < args; i++) {
+				names[i] = "stage-" + i;
+			}
+		} else if (args instanceof Array ) {
+			for (i=0; i < args.length; i++) {
+				if (typeof args[i] === "string") {
+					names[i] = args[i];
+				} else {
+					names[i] = "stage-" + i;
+				}
+			}
+		}
+		return names;
+	})(args);
+	
+	// init background and fill with a rectangle	
 	fly.layers.background = paper.project.activeLayer;
 	fly.layers.backRect = new paper.Path.Rectangle(paper.view.bounds);
-
-	fly.layers.stage = (function(stageLayers){
+	fly.layers.stage = (function(){
 		// TD: better error check only num or array
-		stageLayers = stageLayers || 1;
-		var names = [],
-			stage = [],
-			i = 0;
-		if (typeof stageLayers === "number") {
-			for (i=0; i < stageLayers; i++) {
-				names[i] = "layer-" + i;
-			}
-		} else if (stageLayers instanceof Array ) {
-			names = stageLayers;
-		}
-		for (i=0; i < names.length; i++) {
+		var stage = [],
+			i;
+		for (i=0; i < fly.layers.names.length; i++) {
 			stage[i] = new paper.Layer();
 			// paper error to investigate:
 			// TypeError: Cannot read property '_children' of undefined
@@ -451,12 +466,39 @@ fly.initLayers = function(stageLayers){
 			//stage[i].name = names[i];
 		}
 		return stage;
-	})(stageLayers);
+	})();
 	
 	fly.layers.infoLayer = new paper.Layer();
 	
-	fly.layers.remove = function(){
-		delete fly.layers;
+	fly.layers.activate = function(id) {
+		if (typeof id === "number" && fly.layers.stage[id]) {
+			fly.layers.stage[id].activate();
+		} else if (typeof id === "string" && fly.layers.names.indexOf(id) > -1) {
+			fly.layers.stage[fly.layers.names.indexOf(id)].activate();
+		}
+	};
+			
+	fly.layers.info = function() {
+		var _i = {},
+			j = 0,			
+			ipacket = function(layer) {
+				var v, t;
+				v = layer.children.length;
+				v += v === 1 ? " child" : " children";
+				t = layer === paper.project.activeLayer ? "btrue" : "string";
+				if (t === "btrue") {
+					v += " <active>";
+				}
+				return { 'val': v, 'type': t };
+			};
+
+		_i.name = this.name;
+		_i.background = ipacket(fly.layers.background);
+		for (j=0; j < fly.layers.names.length; j++) {
+			_i[fly.layers.names[j]] = ipacket(fly.layers.stage[j]);
+		}
+		_i["info layer"] = ipacket(fly.layers.infoLayer);
+		return _i;
 	};
 	
 };
@@ -736,7 +778,9 @@ fly.infoCtrlrInit = function(infoPrefs) {
 		var name = "infoCtrlr";
 		var version = "0.4";
 		// fly is members[0], infoCtlr is member[1] after infoCtrlr.init();
-		var members = [{obj:fly,display:false}];
+		var members = [ {obj:fly,display:false},
+						{obj:fly.eventCtrlr,display:false},
+						{obj:fly.layers,display:false}];
 		infoPrefs = infoPrefs || {};
 		if (fly.color.palette === "not yet defined") {
 			fly.colorPalette("default");
@@ -752,7 +796,7 @@ fly.infoCtrlrInit = function(infoPrefs) {
 			// colors matching value types:
 			style.val = infoPrefs.val || fly.color.green[2] || "#89C234";
 			style.string = infoPrefs.string || fly.color.grey[4] || "#691BE2";
-			style.btrue = infoPrefs.btrue || fly.color.orange[5] || "#66FF99";
+			style.btrue = infoPrefs.btrue || fly.color.orange[6] || "#66FF99";
 			style.bfalse = infoPrefs.bfalse || fly.color.orange[3]|| "#3D9199";
 			style.event = infoPrefs.event || fly.color.red[4]|| "#BC4500";
 			style.eventFiring = infoPrefs.eventFiring || fly.color.red[7]|| "#FF5E00";
@@ -1038,20 +1082,20 @@ fly.infoCtrlrInit = function(infoPrefs) {
 
 		function info(){
 		// for self-monitoring, also a model for member's info method 
-			var i = {};
-			i.name = name;
-			i.version = { val: version, type: "version"};
-			i.origin_pt = { val: ibox.origin, type: "val"};
-			i.members = { val: members.length, type:"val"};
-			// i.width = { val: ibox.txtWidth.toFixed(2), type: "val" };
-			i.frame = { val: _time.frame, type: "val"};
-			i.time = { val: _time.time.toFixed(2), type: "val"};
-			i.fpsAve = { val: _time.fps.ave.toFixed(2), type: "val"};
-			i.fpsCurr = {val: _time.fps.curr.toFixed(2), type:"val"};
-			// i.moving = { val: moving, type: "bool" };
-			i.mobile = { val: device.isMobile, type: "bool"};
-			i.ipad = { val: device.isIpad, type: "bool"};
-			return i;
+			var _i = {};
+			_i.name = name;
+			_i.version = { val: version, type: "version"};
+			_i.origin_pt = { val: ibox.origin, type: "val"};
+			_i.members = { val: members.length, type:"val"};
+			// _i.width = { val: ibox.txtWidth.toFixed(2), type: "val" };
+			_i.frame = { val: _time.frame, type: "val"};
+			_i.time = { val: _time.time.toFixed(2), type: "val"};
+			_i.fpsAve = { val: _time.fps.ave.toFixed(2), type: "val"};
+			_i.fpsCurr = {val: _time.fps.curr.toFixed(2), type:"val"};
+			// _i.moving = { val: moving, type: "bool" };
+			_i.mobile = { val: device.isMobile, type: "bool"};
+			_i.ipad = { val: device.isIpad, type: "bool"};
+			return _i;
 		}
 
 		function updateInfo(force){
@@ -1157,7 +1201,7 @@ fly.infoCtrlrInit = function(infoPrefs) {
 
 	fly.infoCtrlr.init();
 
-	fly.infoCtrlr.request(fly.eventCtrlr);
+//	fly.infoCtrlr.request(fly.eventCtrlr);
 
 }; // END infoCntrlrInit
 
@@ -1262,14 +1306,13 @@ fly.init = function (args) {
 		debug : { val: fly.debug, type: "bool" },
 		width : { val: fly.width, type: "val" },
 		height : { val: fly.height, type: "val" },
-		stage_layers : { val: fly.layers.stage.length, type: "val"},
-		color_palette : { val: fly.color.palette, type: "val"}
+		"color palette" : { val: fly.color.palette, type: "val"}
 	});
 
 	var infoPrefs = args.infoPrefs || {};
 	fly.infoCtrlrInit(infoPrefs);
 
-	fly.layers.stage[0].activate();
+	fly.layers.activate(0);
 
 	fly.initPaperTool();
 
@@ -1823,7 +1866,7 @@ fly.Ananda.prototype.anandaInfo = function () {
 	i.version = { val: this.version, type: "version"};
 	if (fly.debug) {
 		// i.paperID = { val: this.handle.id, type: "val"};
-		i.build = { val: this.buildRecord, type: "val"};
+		i.build = { val: this.buildRecord, type: "string"};
 		if (this.handle) {
 			i.point = { val:this.handle.bounds.x.toFixed(2) + " x " +
 							this.handle.bounds.y.toFixed(2), type: "val"};

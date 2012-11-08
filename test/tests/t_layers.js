@@ -33,7 +33,6 @@ window.onload = function() {
 		ok(fly.layers.background, "The background layer exists.");
 		ok(fly.layers.stage[0], "The stage layer exists.");
 		ok(fly.layers.infoLayer, "The info layer exists.");
-		document.write(fly.layers.toString());
 	});
 
 }; // end window.onload

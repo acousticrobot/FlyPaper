@@ -48,14 +48,13 @@ fly.init = function (args) {
 		debug : { val: fly.debug, type: "bool" },
 		width : { val: fly.width, type: "val" },
 		height : { val: fly.height, type: "val" },
-		stage_layers : { val: fly.layers.stage.length, type: "val"},
-		color_palette : { val: fly.color.palette, type: "val"}
+		"color palette" : { val: fly.color.palette, type: "val"}
 	});
 
 	var infoPrefs = args.infoPrefs || {};
 	fly.infoCtrlrInit(infoPrefs);
 
-	fly.layers.stage[0].activate();
+	fly.layers.activate(0);
 
 	fly.initPaperTool();
 

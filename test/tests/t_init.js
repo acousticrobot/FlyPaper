@@ -47,7 +47,7 @@ test("the build", 11, function(){
 test("infoCtrlr", 1, function(){
 	var ICinfo = fly.infoCtrlr.info();
 	var members = ICinfo.members;
-	equal(members.val,3, "the IC should have three members");
+	equal(members.val,4, "the IC should have four members");
 });
 
 }; // end window on-load
