@@ -13,8 +13,12 @@
 
 fly.base = function(n){
 	var o = {};
-	o.name =  "fly base",
+	o.name =  n || "fly base",
 	o.version =  "0.5beta";
+	o.register = function () {
+		fly.infoCtrlr.register(this);
+	};
+	
 	fly.grantString(o);
 	fly.grantInfo(o);
 	fly.grantEvents(o);

@@ -53,10 +53,6 @@ fly.initLayers = function(stageLayers){
 	
 	fly.layers.infoLayer = new paper.Layer();
 	
-	fly.layers.remove = function(){
-		delete fly.layers;
-	};
-	
 };
 
 

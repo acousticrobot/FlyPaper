@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>FlyPaper Tests</title>
+	<!-- Load local QUnit (grunt requires v1.0.0 or newer). -->
+	<link rel="stylesheet" href="../libs/qunit/qunit.css" media="screen">
+	<script src="../libs/qunit/qunit.js"></script>
+	<script src="../libs/paper.js"></script>
+
+	<!-- Load local lib. -->
+	<script src="../src/core/head.js"></script>
+	<script src="../src/core/string.js"></script>
+	<script src="../src/core/info.js"></script>
+	<script src="../src/core/event.js"></script>
+	<script src="../src/core/base.js"></script>
+	<script src="../src/eventCtrlr.js"></script>
+	<script src="../src/layers.js"></script>
+	<script src="../src/color.js"></script>
+	<script src="../src/colorPalette.js"></script>
+	<script src="../src/infoCtrlr.js"></script>
+	<script src="../src/paperTool.js"></script>
+	<script src="../src/init.js"></script>
+	<script src="../src/math.js"></script>
+	<script src="../src/motions/motion.js"></script>
+	<script src="../src/motions/scroll.js"></script>
+	<script src="../src/motions/bob.js"></script>
+	<script src="../src/motions/swing.js"></script>
+	<script src="../src/objects/Ananda.js"></script>
+	<script src="../src/objects/Pullbar.js"></script>
+
+  <!-- Load tests. -->
+  <script src="tests/t_components.js"></script>
+
+</head>
+<body>
+	<h1 id="qunit-header">Flypaper Tests</h1>
+	<h2 id="qunit-banner"></h2>
+	<div id="qunit-testrunner-toolbar"></div>
+	<h2 id="qunit-userAgent"></h2>
+	<ol id="qunit-tests"></ol>
+	<div id="qunit-fixture">
+		<span>lame test markup</span>
+		<span>normal test markup</span>
+		<span>awesome test markup</span>
+	</div>
+
+	<canvas id="ctx" ></canvas>
+
+</body>
+</html>
+
+
