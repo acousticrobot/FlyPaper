@@ -1,5 +1,5 @@
 /*
- * This file is part of the flypaper.js build. 
+ * This file is part of the flypaper.js build.
  * Use grunt to assemble the completed file.
  * Find the built file in dist/flypaper.js
  */
@@ -24,7 +24,7 @@ fly.Scroll = function (args){
 	this.curSpeed = 0;
 	this.repeat = args.repeat || true;
 		// when the moving point in position (x or y) reaches resetAt
-		// this.reset is set to true, 
+		// this.reset is set to true,
 		// if repeat is true, position is set to resetPosition;
 	this.reset = false;
 	this.resetAt = args.resetAt || fly.width;

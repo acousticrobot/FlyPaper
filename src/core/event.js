@@ -1,5 +1,5 @@
 /*
- * This file is part of the flypaper.js build. 
+ * This file is part of the flypaper.js build.
  * Use grunt to assemble the completed file.
  * Find the built file in dist/flypaper.js
  */
@@ -23,7 +23,7 @@ fly.grantEvents = function (o) {
 		}
 		return o;
 	};
-	
+
 	o.deregisterEvent = function (event) {
 		// events can be a string representing one event name, an
 		// array of events, or the string "all" to deregister all
@@ -64,10 +64,10 @@ fly.grantEvents = function (o) {
 		}
 		return o;
 	};
-	
+
 	o.logEvents = function(){
 		return fly.toString(registry);
 	};
-	
+
 	return o;
 };

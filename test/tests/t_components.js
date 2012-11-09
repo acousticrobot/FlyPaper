@@ -36,7 +36,7 @@ test("building layers", function(){
 		ok(fly.layers, "fly.layers exists");
 		ok(fly.layers.stage[0], "The stage layer exists.");
 		ok(fly.layer("info"), "The info layer exists.");
-		
+
 		strictEqual(fly.layers.stage.length, n,
 			"'" + layers + ' and background is ' + background + "' should create " + n+ " stage layer.");
 		strictEqual(paper.project.layers.length, n,
@@ -54,7 +54,7 @@ test("building layers", function(){
 		buildLayers(i,false);
 	}
 	buildLayers(["Mo","Larry","Curly"],true);
-	buildLayers(["Keaton","Arbuckle"],false);	
+	buildLayers(["Keaton","Arbuckle"],false);
 });
 
 test("toString", 10, function(){
@@ -73,7 +73,7 @@ test("toString", 10, function(){
 	equal(fly.toString({a:0,b:[0,[1,2,3],[4,5,{"six":6,"seven":"seven"}]]},2),
 		'{"a":0,"b":[0,[1,2,3],[4,5,object]]}', "toString Method should match");
 	equal(fly.toString({a:0,b:[0,[1,2,3],[4,5,{"six":6,"seven":"seven"}]]},3),
-		'{"a":0,"b":[0,[1,2,3],[4,5,{"six":6,"seven":"seven"}]]}', 
+		'{"a":0,"b":[0,[1,2,3],[4,5,{"six":6,"seven":"seven"}]]}',
 		"toString Method should match");
 	var tester = fly.base();
 	equal(fly.toString(tester,2),
@@ -97,7 +97,7 @@ test("base", 6, function(){
 	base.deleteInfo("foo");
 	_i_string = fly.toString(base.info(),2);
 	equal(_i_string, '{"name":"fly base","version":{"val":"0.5beta","type":"version"}}',"string should match");
-	// 4. Test adding multiple info 
+	// 4. Test adding multiple info
 	base.addInfo({"foo":{"val":"bar","type":"string"},"ifoo":{"val":5,"type":"val"}});
 	_i_string = fly.toString(base.info(),2);
 	equal(_i_string, '{"name":"fly base","version":{"val":"0.5beta","type":"version"},"foo":{"val":"bar","type":"string"},"ifoo":{"val":5,"type":"val"}}',"string should match");

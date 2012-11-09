@@ -21,7 +21,7 @@ fly.Pullbar = function (args){
 	this.version = "0.4";
 	args = args || {};
 	args.name = args.name + "'s pullbar" || "pullbar";
-	if (args.handle === undefined) { 
+	if (args.handle === undefined) {
 		args.handle = 10; // default size = 50;
 	}
 	fly.Ananda.call(this);
@@ -100,7 +100,7 @@ fly.Pullbar.prototype.reposition = function (point) {
 fly.Pullbar.prototype.build = function () {
 	this.locate();
 	this.bones = [];  // 0:center, 1:bar, 2 & 3:handles
-	this.bones[0] = new paper.Path.Circle(this.joints[0], 3); // center 
+	this.bones[0] = new paper.Path.Circle(this.joints[0], 3); // center
 	this.bones[1] = new paper.Path([this.joints[0],this.joints[1]]); // pull bar
 	this.bones[1].strokeWidth = 1.75;
 	this.bones[1].strokeColor = '#e4141b';
@@ -123,7 +123,7 @@ fly.Pullbar.prototype.build = function () {
 };
 
 fly.Pullbar.prototype.processVector = function (point) {
-	// 
+	//
 	this.vector = point.subtract(this.vectorCtr);
 	if (this.vectorPrevious) {
 		if (this.fixLength && this.fixAngle) {

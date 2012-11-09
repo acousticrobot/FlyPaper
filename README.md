@@ -1,6 +1,6 @@
 # FlyPaper.js
 
-version 0.4.0 
+version 0.4.0
 
 author [Jonathan Gabel](http://jonathangabel.com)
 
@@ -15,14 +15,14 @@ FlyPaper.js adds the fly namespace to a project using the [Paper.js](http://pape
 
 ## Setting up a scope
 
-basic-example.html contains everything you need to initialize FlyPaper and add a simple object. It calls templates.js, which contains the window.onload function required to initialize FlyPaper, and a couple examples of FlyPaper objects:  
+basic-example.html contains everything you need to initialize FlyPaper and add a simple object. It calls templates.js, which contains the window.onload function required to initialize FlyPaper, and a couple examples of FlyPaper objects:
 
 	window.onload = function() {
 		// start by initializing Paper.js
 		var canvas = document.getElementById('ctx');
 		paper.setup(canvas);
 
-		// initialize FlyPaper and set the canvas to 800 x 500 
+		// initialize FlyPaper and set the canvas to 800 x 500
 		fly.init({width:800,height:500});
 		// when fly.debug is set to true, the info panel is accessible
 		fly.debug = true;
@@ -33,7 +33,7 @@ basic-example.html contains everything you need to initialize FlyPaper and add a
 		fly.eventCtrlr.publish("frame",event);
 		};
 
-		// Now we can add a FlyPaper object 
+		// Now we can add a FlyPaper object
 		// fly.Template is a basic example of a FlyPaper object
 		var myFly = new fly.Template(
 			{name:"My Fly", handle:[100,100,300,250],
@@ -53,7 +53,7 @@ More information about this example below in [Template Objects: a basic example]
 
 ### Initialization: fly.init()
 
-fly.init() initializes the drawing space and inits other "smart" objects within the Paper.js context. 
+fly.init() initializes the drawing space and inits other "smart" objects within the Paper.js context.
 It accepts a number of arguments, all of them optional. Here is a quick rundown of possible args:
 
   * width & height: change the size of the canvass
@@ -65,7 +65,7 @@ It accepts a number of arguments, all of them optional. Here is a quick rundown 
 
 ### Layers: fly.layers
 
-FlyPaper is initialized with several layers: 
+FlyPaper is initialized with several layers:
 
   * background -- a background layer containing a colored rectangle the size of the canvass
   * stage -- an array of drawing layers for the main drawing
@@ -101,7 +101,7 @@ Here is the example from above with the default values for the info panel added 
 			keyTrigger: 'i-key', // if you need "i" for something else, change it here
 			screen : fly.color.grey[1], // the backround screen
 			screenBars : fly.color.grey[0], // the grip and title bars
-			opacity : .95, // the opacity of the screen 
+			opacity : .95, // the opacity of the screen
 			size : 11, // font size
 				// colors matching value types:
 			titles: fly.color.blue[9], // titles on the collapsing bars
@@ -117,7 +117,7 @@ Here is the example from above with the default values for the info panel added 
 		}
 	});
 
-## Ananda 
+## Ananda
 
 At the heart of FlyPaper objects is the abstract class Ananda. Ananda takes the arguments sent to and tries to initialize an object with them. The Ananda is initialized when the object calls this.init(args).  The args can take a number of forms:
 
@@ -129,7 +129,7 @@ At the heart of FlyPaper objects is the abstract class Ananda. Ananda takes the 
 		* [width, height]
 		* [xOrigin,yOrigin,w&h]
 		* [xOrigin,yOrigin,width,height]
-  * from rectangle: crates a handle 
+  * from rectangle: crates a handle
   * from object literal: {name:"my object",handle:[20]} (see another example in basic-example.html or basic-pullbar.html)
 
 The ananda can include a number of properties:
@@ -147,15 +147,15 @@ FlyPaper Objects, which is what you will be writing, all inherit from [Ananda][]
 
 ### Template Objects: a basic example
 
-Inside flyTemplates.js you will find the window.onload function from above (you can adapt this to your jQuery or equivalent load function), and a couple FlyPaper template objects, the most simple being fly.Template. This contains everything you need to plug into the FlyPaper functionality.  It builds a paper.Path.Oval so you can see it on the canvas. This call supplies two arguments: the name of the object "My Template Objects", and the handle.  If you supply a handle, the object will respond to drag and drop requests select and rotate requests by moving the handle.  
+Inside flyTemplates.js you will find the window.onload function from above (you can adapt this to your jQuery or equivalent load function), and a couple FlyPaper template objects, the most simple being fly.Template. This contains everything you need to plug into the FlyPaper functionality.  It builds a paper.Path.Oval so you can see it on the canvas. This call supplies two arguments: the name of the object "My Template Objects", and the handle.  If you supply a handle, the object will respond to drag and drop requests select and rotate requests by moving the handle.
 
-Open basic-example.html in your favorite browser (assuming it's not IE) and you should see a really simple oval. The only things that makes it different from your usual oval on rectangle is it has the capability to be dragged around, rotated with the "r" key, selected with the "s" key, and it is smart enough to tell you anything you want to know about it.  Press the "i" key and it should bring up the info panel. 
+Open basic-example.html in your favorite browser (assuming it's not IE) and you should see a really simple oval. The only things that makes it different from your usual oval on rectangle is it has the capability to be dragged around, rotated with the "r" key, selected with the "s" key, and it is smart enough to tell you anything you want to know about it.  Press the "i" key and it should bring up the info panel.
 
 
 #### Adding info to the fly.infoCtrlr
 
-Open the "My Fly" sub-panel (the name we gave it in the imbedded script) and you should see the information it is already set to give. The only information the template object itself is adding is the dummy variable "foo" which was set within the object to "bar".  The template is passing all of the other values through info() from the object's prototype [Ananda][].  You can pass them all in one go, or just select to see the ones that are relevant to your object. Here's a rundown of the values supplied by Ananda: 
-  
+Open the "My Fly" sub-panel (the name we gave it in the imbedded script) and you should see the information it is already set to give. The only information the template object itself is adding is the dummy variable "foo" which was set within the object to "bar".  The template is passing all of the other values through info() from the object's prototype [Ananda][].  You can pass them all in one go, or just select to see the ones that are relevant to your object. Here's a rundown of the values supplied by Ananda:
+
   * version: set within the object at init, or defaults to the prototype's
   * build: a string mash up of what went into the building of the object on init.
   * point: the upper left origin of the object
@@ -167,7 +167,7 @@ Open the "My Fly" sub-panel (the name we gave it in the imbedded script) and you
   * selected: boolean, currently selected
   * rotatable: boolean, set in the args
 
-Once your object had registered with the infoCtrlr, whenever the info panel is visible, and opened to your object, fly.infoCtrlr sends regular requests to  your object for info via YourObject.info(). It expects an object to be returned with the form: 
+Once your object had registered with the infoCtrlr, whenever the info panel is visible, and opened to your object, fly.infoCtrlr sends regular requests to  your object for info via YourObject.info(). It expects an object to be returned with the form:
 
 { name: "an identifying name", foo: {val:bar, type:"var"}, foo2: ... }
 
@@ -184,7 +184,7 @@ Back in basic-example.com, replace the fly.Template constructor with the followi
 		{name:"My Sizable Fly",handle:[200,200,300],
 	});
 
-This object creates it's own fly.Pullbar and uses it to resize the shapes in its group. Press the s key to bring up the pullbar, press the i key to watch how the information sent from the object's pullbar is used. 
+This object creates it's own fly.Pullbar and uses it to resize the shapes in its group. Press the s key to bring up the pullbar, press the i key to watch how the information sent from the object's pullbar is used.
 
 
 ----

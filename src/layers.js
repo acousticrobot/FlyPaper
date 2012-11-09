@@ -1,5 +1,5 @@
 /*
- * This file is part of the flypaper.js build. 
+ * This file is part of the flypaper.js build.
  * Use grunt to assemble the completed file.
  * Find the full file in dist/flypaper.js
  * globals paper, fly
@@ -9,7 +9,7 @@
  *  ## Layers
  *	*called on init, creates drawing layers in fly.layers*
  *
- *	### Creates layers in stage array.  
+ *	### Creates layers in stage array.
  *  Defaults to "background", "layer 1", and "info"
  *  ### Arguments passed from init:
  *
@@ -18,7 +18,7 @@
  *  Integer creates that many layers
  *   (plus the background and info layers),
  *   layers will be named "layer 1", "layer 2" etc.
- *  Array of names will create that many layers, 
+ *  Array of names will create that many layers,
  *   each referable by that name.
  *
  *  #### background
@@ -28,7 +28,7 @@
  *
  *  "background" and "info" are reserved layer names,
  *  background is primarily used for a solid color.
- *  See fly.color for setting background color. 
+ *  See fly.color for setting background color.
  */
 
 fly.initLayers = function(layers,background){
@@ -37,7 +37,7 @@ fly.initLayers = function(layers,background){
 		"name": "layers",
 		"version": "0.5beta"
 	};
-	
+
 	fly.layers.names = (function(layers,background){
 		var names = background ? ["background"] : [],
 			i;
@@ -60,7 +60,7 @@ fly.initLayers = function(layers,background){
 		}
 		return names;
 	})(layers,background);
-	
+
 	fly.layers.stage = (function(){
 		var stage = [],
 			i;
@@ -77,12 +77,12 @@ fly.initLayers = function(layers,background){
 		}
 		return stage;
 	})();
-	
+
 
 	var infoLayer = new paper.Layer();
 	fly.layers.stage.push(infoLayer);
 	fly.layers.names.push("info");
-		
+
 	fly.layer = function(id) {
 		if (typeof id === "number" && fly.layers.stage[id]) {
 			return fly.layers.stage[id];
@@ -91,15 +91,15 @@ fly.initLayers = function(layers,background){
 		}
 		return false;
 	};
-	
+
 	fly.layers.activate = function(id) {
 		// id of layer (by index number or name) to make the active layer
 		fly.layer(id).activate();
 	};
-			
+
 	fly.layers.info = function() {
 		var _i = {},
-			j = 0,			
+			j = 0,
 			ipacket = function(layer) {
 				var v, t;
 				v = layer.children.length;
@@ -119,7 +119,7 @@ fly.initLayers = function(layers,background){
 //		_i["info layer"] = ipacket(fly.layer("info"));
 		return _i;
 	};
-	
+
 	fly.layers.toString = function(){
 		var s = '[',
 			i;
@@ -130,5 +130,5 @@ fly.initLayers = function(layers,background){
 		s += ']';
 		return s;
 	};
-	
+
 };

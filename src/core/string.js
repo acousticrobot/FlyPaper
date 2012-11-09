@@ -1,12 +1,12 @@
 /*
- * This file is part of the flypaper.js build. 
+ * This file is part of the flypaper.js build.
  * Use grunt to assemble the completed file.
  * Find the built file in dist/flypaper.js
  */
 
 /*
  * To String recursive method, use through
- * fly.toString(object) or use mixin to 
+ * fly.toString(object) or use mixin to
  * grant string control
 */
 

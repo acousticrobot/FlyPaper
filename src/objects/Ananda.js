@@ -3,7 +3,7 @@
 *	abstract Class fly.Ananda
 *	v 0.4
 *
-* use as a drawing context and main handle for structures 
+* use as a drawing context and main handle for structures
 * creates an object with and optional rectangle handle
 * methods:
 * - Communication with infoCtrlr & eventCtrlr
@@ -39,14 +39,14 @@ fly.Ananda.prototype.init = function (args){
 		iA.ds = 50; // default size
 
 	function buildHandle() {
-		if (iA.Pt === undefined) { 
-			iA.Pt = new paper.Point(0,0); 
+		if (iA.Pt === undefined) {
+			iA.Pt = new paper.Point(0,0);
 		}
-		if (iA.Sz === undefined) { 
-			iA.Sz = new paper.Size(iA.ds,iA.ds); 
+		if (iA.Sz === undefined) {
+			iA.Sz = new paper.Size(iA.ds,iA.ds);
 		}
-		if (iA.Rect === undefined) { 
-			iA.Rect = new paper.Rectangle(iA.Pt,iA.Sz); 
+		if (iA.Rect === undefined) {
+			iA.Rect = new paper.Rectangle(iA.Pt,iA.Sz);
 		}
 
 		iA.handle = new paper.Path.Rectangle(iA.Rect);
@@ -59,7 +59,7 @@ fly.Ananda.prototype.init = function (args){
 	}
 
 	function initFromNum (n) {
-		if (args < 0) { // illegal value 
+		if (args < 0) { // illegal value
 						// or contructed w/ no parameters
 			iA.n = "born";
 			iA.Sz = new paper.Size(100,100);
@@ -117,14 +117,14 @@ fly.Ananda.prototype.init = function (args){
 		}
 		if (nArray) {  // array elements all numbers
 			initFromNumArray(a);
-		} else { 
+		} else {
 				// todo: array of objects? [pt,size]?
-			iA.n = "errorArray";  
+			iA.n = "errorArray";
 		}
 	}
 
 	function initFromRect(h) {
-		iA.Rect = new paper.Rectangle(h); 
+		iA.Rect = new paper.Rectangle(h);
 	}
 
 	function checkHandle (h) {
@@ -144,13 +144,13 @@ fly.Ananda.prototype.init = function (args){
 	}
 
 	function initFromObj (o) {
-		if (o.style) { // paper.js style 
+		if (o.style) { // paper.js style
 			iA.style = o.style;
 		}
 		if (o.visible) {
 			iA.visible = o.visible;
 		}
-		if (o.handle) { 
+		if (o.handle) {
 			checkHandle(o.handle);
 		}
 		if (o.name) {

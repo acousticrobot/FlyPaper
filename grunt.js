@@ -4,11 +4,11 @@ module.exports = function(grunt) {
   grunt.initConfig({
     pkg: '<json:package.json>',
     meta: {
-      banner: 
-		'/*!--------------------- FLYPAPER -------------------------//\n' + 
+      banner:
+		'/*!--------------------- FLYPAPER -------------------------//\n' +
 		' * <%= pkg.name %> - v<%= pkg.version %>\n' +
 		' * Author: <%= pkg.author.name %>\n' +
-		' * Email: <%= pkg.author.email %>\n' + 
+		' * Email: <%= pkg.author.email %>\n' +
 		' * URL: <%= pkg.author.url %>\n' +
         ' * Date: <%= grunt.template.today("yyyy-mm-dd HH:MM:ss") %>\n' +
         '<%= pkg.homepage ? " * " + pkg.homepage + "\n" : "" %>' +
@@ -18,7 +18,7 @@ module.exports = function(grunt) {
    },
     concat: {
       dist: {
-        src: [	'<banner:meta.banner>', 
+        src: [	'<banner:meta.banner>',
 				'<file_strip_banner:src/core/head.js>',
 				'<file_strip_banner:src/core/string.js>',
 				'<file_strip_banner:src/core/info.js>',
@@ -70,6 +70,7 @@ module.exports = function(grunt) {
         newcap: true,
         noarg: true,
         sub: true,
+		trailing: true,
         undef: true,
         boss: false,
         eqnull: true

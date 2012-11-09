@@ -1,5 +1,5 @@
 /*
- * This file is part of the flypaper.js build. 
+ * This file is part of the flypaper.js build.
  * Use grunt to assemble the completed file.
  * Find the built file in dist/flypaper.js
  */
@@ -7,7 +7,7 @@
 fly.infoCtrlrInit = function(infoPrefs) {
 
 	fly.infoCtrlr = ( function (infoPrefs) {
-	// new objects can register as a member with infoCtrlr 
+	// new objects can register as a member with infoCtrlr
 	// by sending the request: fly.infocontroller.register(this);
 	// optional second boolean parameter display: (this,false)
 	// will initialize this objects panel as open or closed.
@@ -94,7 +94,7 @@ fly.infoCtrlrInit = function(infoPrefs) {
 			for (var i=0; i < members.length; i++) {
 				if (members[i].obj === o) {
 					return "error: object already exists";
-				} 
+				}
 			}
 			members.push({ obj:o, display:d, info:{} });
 			updateInfo(true);
@@ -112,7 +112,7 @@ fly.infoCtrlrInit = function(infoPrefs) {
 		}
 
 		function request(o){
-			try { 
+			try {
 				o.reqInfo();
 			}
 			catch(ex) {
@@ -141,8 +141,8 @@ fly.infoCtrlrInit = function(infoPrefs) {
 				text.paragraphStyle.justification = 'left';
 				text.characterStyle.fontSize = style.size;
 			var _t = "";
-			if (val === "openTitle") { 
-					// object name line, style as title 
+			if (val === "openTitle") {
+					// object name line, style as title
 				_t += "\u25BC  " + key; // down triangle
 				text.fillColor = style.titles;
 			} else if (val === "closedTitle") {
@@ -209,7 +209,7 @@ fly.infoCtrlrInit = function(infoPrefs) {
 				var _s = new paper.Size( ibox.txtWidth + 2 * style.offset, style.spacing);
 				var bar = new paper.Path.Rectangle(ibox.titleBars[i], _s);
 					bar.fillColor = style.screenBars;
-				bar.opacity = 0.50; 
+				bar.opacity = 0.50;
 				infoGroup.bars.addChild(bar);
 			}
 		}
@@ -236,14 +236,14 @@ fly.infoCtrlrInit = function(infoPrefs) {
 			ibox.txtWidth = ibox.txtLen * style.size * 0.68;
 			ibox.boxWidth = ibox.txtWidth + 2 * style.offset;
 			var _s = new paper.Size (
-						ibox.boxWidth, 
+						ibox.boxWidth,
 						ibox.cursor.y - ibox.origin.y - style.offset
 						);
 			var _r = new paper.Rectangle(ibox.origin, _s);
 			var clipper = new paper.Path.RoundRectangle(_r, 10);
 			var screen = new paper.Path.Rectangle(_r);
 			screen.fillColor = style.screen;
-			screen.opacity = style.opacity; 
+			screen.opacity = style.opacity;
 			infoGroup.box.addChild(clipper);
 			infoGroup.box.addChild(screen);
 			infoGroup.box.clipped = true;
@@ -285,7 +285,7 @@ fly.infoCtrlrInit = function(infoPrefs) {
 		}
 
 		function drop(point) {
-			moving = false; 
+			moving = false;
 		}
 
 		function updateWidth (key,value) {
@@ -323,7 +323,7 @@ fly.infoCtrlrInit = function(infoPrefs) {
 		}
 
 		function info(){
-		// for self-monitoring, also a model for member's info method 
+		// for self-monitoring, also a model for member's info method
 			var _i = {};
 			_i.name = name;
 			_i.version = { val: version, type: "version"};
@@ -342,8 +342,8 @@ fly.infoCtrlrInit = function(infoPrefs) {
 
 		function updateInfo(force){
 			// v 0.3.6
-				//	gather most recent info 
-				//	from members with display = true 
+				//	gather most recent info
+				//	from members with display = true
 				//	use force === true on resistration or to update all
 				//	this is used to adjust width of box to lngth of info
 			for (var i=0; i < members.length; i++) {
@@ -374,7 +374,7 @@ fly.infoCtrlrInit = function(infoPrefs) {
 			updateTime(args);
 
 					// only update panel if visible or visibility has changed
-			if (fly.layer("info").visible || ibox.visible) { 
+			if (fly.layer("info").visible || ibox.visible) {
 				if (infoGroup.box.hasChildren()) {
 					infoGroup.box.removeChildren();
 				}
@@ -425,7 +425,7 @@ fly.infoCtrlrInit = function(infoPrefs) {
 		return {
 			moving: function () { return moving; },
 	// temp patch ???
-			fps : function () { return time.fps.ave; }, 
+			fps : function () { return time.fps.ave; },
 	//temp patch ???
 			isMobile :	function () {return device.isMobile; },
 			isIpad : function () {return device.isIpad; },

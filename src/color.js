@@ -1,26 +1,25 @@
 /*
- * This file is part of the flypaper.js build. 
+ * This file is part of the flypaper.js build.
  * Use grunt to assemble the completed file.
  * Find the built file in dist/flypaper.js
  */
 
-//--------------------- BEGIN COLORSPACE -----------------//
 /*
+*	## Colors
 *	Initialize color utility with methods for reading hex values
 *	and stored color presets.  Preset color arrays are made
 *	out of three values: darkest/saturated/lightest, two linear
 *	progression are made from the ends to the middle value.
-*	Color arrays default to 9 segments in length. 
+*	Color arrays default to 9 segments in length.
 *	Presets can be altered and new sets made through the
 *	public method spectrum. example use:
 *		fly.color.rainbow = fly.color.spectrum('#FF0000','#00FF00','0000FF',13);
-*	This creates an 13 segment color spectrum, fly.color.rainbow[7] == '#00FF00' 
-*	common variables: 
+*	This creates an 13 segment color spectrum, fly.color.rainbow[7] == '#00FF00'
+*	common variables:
 *		col is used for passed hex color values, ex. "#789ABC"
 *		cola for color arrays, [r,g,b] ex [0,127,255]
 *
 */
-//--------------------------------------------------------//
 
 fly.color = (function(args) {
 	args = args || {};
@@ -60,14 +59,14 @@ fly.color = (function(args) {
 			s = "0" + s;
 		}
 		s = "#" + s;
-		return s;	 
+		return s;
 	}
 
 	function mix(col1,col2,amt){
 		// mixes 2 hex colors together, amt (0 to 1) determines ratio
 		// amt defaults to .5, mixes 50/50
 
-		amt = amt !== undefined ? amt : 0.5; 
+		amt = amt !== undefined ? amt : 0.5;
 		var col1a = split(col1),
 			col2a = split(col2);
 		for (var i=0; i < col1a.length; i++) {
@@ -84,7 +83,7 @@ fly.color = (function(args) {
 
 	function bispectrum(col1,col2,seg){
 		// takes two colors, returns array of seg sements
-		// each a hex color. sent colors are first and last 
+		// each a hex color. sent colors are first and last
 		// colors in the array
 		seg = seg !== undefined ? seg : 5;
 		if (seg < 3) {
@@ -164,7 +163,7 @@ fly.color = (function(args) {
 	return {
 		// public vars
 		palette : palette,
-		// public methods 
+		// public methods
 		mix : mix,
 		totalValue : totalValue,
 		spectrum : spectrum,

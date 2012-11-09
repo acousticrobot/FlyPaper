@@ -1,27 +1,27 @@
 /*
- * This file is part of the flypaper.js build. 
+ * This file is part of the flypaper.js build.
  * Use grunt to assemble the completed file.
  * Find the built file in dist/flypaper.js
  */
 
 /*
  * ## EventCtrlr
- * eventCtrlr is the main pub/sub object, 
- * paper events all publish through it, 
- * objects subscribe to events which are 
+ * eventCtrlr is the main pub/sub object,
+ * paper events all publish through it,
+ * objects subscribe to events which are
  * handled through their eventCall method.
- * 
- * ### SUBSCRIBE to events with: 
+ *
+ * ### SUBSCRIBE to events with:
  *      fly.eventCtrlr.subscribe(["event1","event2",...],this);
- *  common events include: 
+ *  common events include:
  *  "mouse down","mouse drag", "mouse up",
  *  "frame", and "x-key" where x is any key
- *  
+ *
  * ### PUBLISH events with:
  *     fly.eventCtrlr.publish("mouse down",event);
  * mouse and key events are handled with paper tools
  * implemented within flypaper.
- * 
+ *
  *  **IMPORTANT** On-frame events must be initaited
  *  in the main javascript on window load. Use:
  *      paper.view.onFrame = function(event) {
@@ -93,7 +93,7 @@ fly.eventCtrlr = (function () {
 	}
 
 	function unsubscribe(e,o) {
-		
+
 		var remove = function(_e) {
 			for (var i=0, j = events[_e].length; i < j; i++) {
 				if (events[_e][i] === o) {
@@ -104,7 +104,7 @@ fly.eventCtrlr = (function () {
 				}
 			}
 		};
-		
+
 		// e = "single event" or "all" keyword to unsubscribe o from all events
 		if (e === "all") {
 			for (var event in events) {
@@ -116,7 +116,7 @@ fly.eventCtrlr = (function () {
 			if (events.hasOwnProperty(e)) {
 				remove(e);
 			}
-			
+
 		}
 	}
 
@@ -166,7 +166,7 @@ fly.eventCtrlr = (function () {
 		subscribe: subscribe,
 		unsubscribe: unsubscribe,
 		info: info,
-		reqInfo: register,	
+		reqInfo: register,
 		logErrors: function() {return fly.toString(errors);},
 		logEvents: function() {return fly.toString(events);}
 	};

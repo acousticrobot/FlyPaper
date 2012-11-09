@@ -3,7 +3,7 @@ window.onload = function() {
 	var canvas = document.getElementById('ctx');
 	paper.setup(canvas);
 
-	// initialize FlyPaper and set the canvas to 800 x 500 
+	// initialize FlyPaper and set the canvas to 800 x 500
 	fly.init({width:800,height:500});
 	// when fly.debug is set to true, the info panel is accessible
 	fly.debug = true;
@@ -14,7 +14,7 @@ window.onload = function() {
 	fly.eventCtrlr.publish("frame",event);
 	};
 
-	// Now we can add a FlyPaper object. 
+	// Now we can add a FlyPaper object.
 	// fly.Template is a basic example of a FlyPaper object.
 	var myFly = new fly.FlyMotion(
 		{name:"My Fly", handle:[200,200,300,250],
@@ -39,7 +39,7 @@ fly.FlyMotion = function (args){
 	fly.Ananda.call(this);
 
 	// initialize from args (in prototype Ananda)
-	this.init(args);	 
+	this.init(args);
 	this.delta = 30;
 	this.speed = args.speed !== undefined ? args.speed : 5;
 

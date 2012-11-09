@@ -1,5 +1,5 @@
 /*
- * This file is part of the flypaper.js build. 
+ * This file is part of the flypaper.js build.
  * Use grunt to assemble the completed file.
  * Find the built file in dist/flypaper.js
  */
@@ -20,7 +20,7 @@ fly.midpoint = function (p1,p2) {
 };
 
 fly.scatter = function (o,rect) {
-		// takes an object or array of objects o 
+		// takes an object or array of objects o
 		// and places it's center randomly within rectangle rect
 		// start in lower right corner, multiply x and y by random 0 to 1
 		// point will land somewhere in the rect
@@ -75,7 +75,7 @@ fly.gridPlot = function (c,r,rectangle,dir) {
 	// Use this to quickly change the orientation of an object
 	// aligned to a grid.
 	// CHANGE: rectangle is a paper.rectangle, not a path, use
-	// this.handle.bounds to send bounds 
+	// this.handle.bounds to send bounds
 	// note-to-self: this breaks junkaigo v 0.3.1 !!!
 	// TODO: accept both a rectangle and a path.Rectangle?
 
@@ -116,7 +116,7 @@ fly.initArray = function (c,r) {
 	for (var x=0; x < c; x++) {
 		a[x] = [];
 		for (var y=0; y < r; y++) {
-			a[x][y] = []; 
+			a[x][y] = [];
 		}
 	}
 	return a;
