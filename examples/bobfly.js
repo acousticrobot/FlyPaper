@@ -5,7 +5,7 @@ window.onload = function() {
 	var canvas = document.getElementById('ctx');
 	paper.setup(canvas);
 	fly.init({	width : 800, height : 500,
-				colorPalette : "sunny day",
+				colorPalette : "sunny day"
 			});
 	fly.debug = true;
 

@@ -3,7 +3,7 @@
  * Author: Jonathan Gabel
  * Email: post@jonathangabel.com
  * URL: http://jonathangabel.com
- * Date: 2012-11-08 18:20:09
+ * Date: 2012-11-08 21:39:56
  * https://github.com/josankapo/FlyPaper
  * Copyright (c) 2012 Jonathan Gabel;
  * Licensed MIT
@@ -409,19 +409,28 @@ fly.grantString(fly.eventCtrlr);
 
 /*
  *  ## Layers
- *
  *	*called on init, creates drawing layers in fly.layers*
  *
- *	### Creates layers in three parts:
- *  * fly.layers.background:
- *    * 1 layer with 1 paper.Rectangle backRect
- *    * backRect is colored after fly.color init
- *  * fly.layers.stage: an array of layers for main drawing
- *    * pass number of layers or array of names for layers
- *    * defaults to one layer (fly.layers.stage[0])
- *  * fly.layer("info"):
- *     * 1 layer for info panel
+ *	### Creates layers in stage array.
+ *  Defaults to "background", "layer 1", and "info"
+ *  ### Arguments passed from init:
  *
+ *  #### layers
+ *  Can be an *integer* or *array*, defaults to 1.
+ *  Integer creates that many layers
+ *   (plus the background and info layers),
+ *   layers will be named "layer 1", "layer 2" etc.
+ *  Array of names will create that many layers,
+ *   each referable by that name.
+ *
+ *  #### background
+ *  Bool, defaults true.
+ *  If set to false, no background layer is created,
+ *  first layer by integer is named "layer 0"
+ *
+ *  "background" and "info" are reserved layer names,
+ *  background is primarily used for a solid color.
+ *  See fly.color for setting background color.
  */
 
 fly.initLayers = function(layers,background){
@@ -526,8 +535,8 @@ fly.initLayers = function(layers,background){
 
 };
 
-//--------------------- BEGIN COLORSPACE -----------------//
 /*
+*	## Colors
 *	Initialize color utility with methods for reading hex values
 *	and stored color presets.  Preset color arrays are made
 *	out of three values: darkest/saturated/lightest, two linear
@@ -542,7 +551,6 @@ fly.initLayers = function(layers,background){
 *		cola for color arrays, [r,g,b] ex [0,127,255]
 *
 */
-//--------------------------------------------------------//
 
 fly.color = (function(args) {
 	args = args || {};
@@ -699,91 +707,102 @@ fly.color = (function(args) {
  * ## ColorPalette
  * Populate the colorspace with a colorset:
  * check args passed on init for color palette info.
- * paletteName is a string matched against predefined
+ * palette is a string matched against predefined
  * sets of colors. It can also be set to "custom", in
  * which case a second parameter, colorSet, should contain
  * the list of colors to be included in the set.
 */
 
-// beta5: palette = "name" || {name:"name",palette:[[]...]}
-// beta5: paletteName ! in predefined: colorSet? custom : default
+// palette = "name" || {name:"name",set:[[]...]}
 // beta5: add new sets in, check against registry
 
-fly.colorPalette = function(paletteName,colorSet){
+fly.colorPalette = function(palette){
 
-		// don't allow no-args reset to existing palette
-		if (fly.color.palette !== "not yet defined" && !paletteName) {
-			return fly.color.palette;
-		}
-		switch(paletteName) {
-			case "custom":
-				var set = colorSet || [];
-				break;
+	var _name, _set;
 
-			case "pastel":
-				set = [
-					['red','#F04510','#FF7070','#FFD3C0'],
-					['orange','#F28614','#FFB444','#FFE8C0'],
-					['yellow','#CDB211','#FFFF70','#FFFFC0'],
-					['green','#42622D','#89C234','#C0FFC0'],
-					['blue','#00597C','#00A9EB','#B0E5FF'],
-					['purple','#6F006F','#9F3DBF','#FFC0FF'],
-					['grey','#383633','#A7A097','#FFFFFF']
-				];
-				break;
+	// don't allow no-args passed to reset to existing palette
+	// returned defined palette name via fly.color instead
+	if (!palette && fly.color.palette !== "not yet defined") {
+		return fly.color.palette;
+	}
 
-			case "sunny day":
-				set = [
-					['red','#2F060D','#FF361F','#FFCFC5'],
-					['orange','#6D3200','#FF8125','#FFD1B6'],
-					['yellow','#D6FF43','#FFFA95','#F4FFDA'],
-					['green','#3B4D2A','#89C234','#A0FFA0'],
-					['blue','#1D3852','#00A9EB','#9BCAE1'],
-					['purple','#4C244C','#893DB3','#D0B8FF'],
-					['grey','#1E2421','#848179','#D3FFE9']
-				];
-				break;
+	if (typeof palette === "object" && palette.name && palette.set ) {
+		_name = 'custom';
+		_set = palette.set;
+	} else if (typeof palette === "string") {
+		_name = palette;
+	} else {
+		return new TypeError ('unknown type "palette" on init');
+	}
+	switch(palette) {
+		case "custom":
+			var set = _set;
+			break;
 
-			case "monotone":
-				set = [
-					['red','#1B1414','#584444','#FFE7E3'],
-					['orange','#2A2620','#4D463A','#FFE9CC'],
-					['yellow','#313125','#808061','#FAFFE0'],
-					['green','#111611','#6E936E','#E7FFD3'],
-					['blue','#0A0A0D','#696991','#E5D9FF'],
-					['purple','#0D090D','#684E68','#FFE3EC'],
-					['grey','#000000','#808080','#FFFFFF']
-				];
-				break;
+		case "pastel":
+			set = [
+				['red','#F04510','#FF7070','#FFD3C0'],
+				['orange','#F28614','#FFB444','#FFE8C0'],
+				['yellow','#CDB211','#FFFF70','#FFFFC0'],
+				['green','#42622D','#89C234','#C0FFC0'],
+				['blue','#00597C','#00A9EB','#B0E5FF'],
+				['purple','#6F006F','#9F3DBF','#FFC0FF'],
+				['grey','#383633','#A7A097','#FFFFFF']
+			];
+			break;
 
-			case "neon":
-				set = [
-					['red','#6A0032','#FF0023','#FFC0F2'],
-					['orange','#BD2E00','#FFA500','#FFE8C0'],
-					['yellow','#ACFF02','#FFFF00','#FFFFC0'],
-					['green','#133B0F','#38FF41','#BFFF68'],
-					['blue','#010654','#013BFF','#4FFFF8'],
-					['purple','#3B034C','#9800B3','#CC5FFF'],
-					['grey','#0A0511','#696281','#E3E8FF']
-				];
-				break;
+		case "sunny day":
+			set = [
+				['red','#2F060D','#FF361F','#FFCFC5'],
+				['orange','#6D3200','#FF8125','#FFD1B6'],
+				['yellow','#D6FF43','#FFFA95','#F4FFDA'],
+				['green','#3B4D2A','#89C234','#A0FFA0'],
+				['blue','#1D3852','#00A9EB','#9BCAE1'],
+				['purple','#4C244C','#893DB3','#D0B8FF'],
+				['grey','#1E2421','#848179','#D3FFE9']
+			];
+			break;
 
-			default:
-				paletteName = "default";
-				set = [
-					['red','#400000','#FF0000','#FFC0C0'],
-					['orange','#402900','#FFA500','#FFE8C0'],
-					['yellow','#404000','#FFFF00','#FFFFC0'],
-					['green','#004000','#00FF00','#C0FFC0'],
-					['blue','#000040','#0000FF','#C0C0FF'],
-					['purple','#400040','#800080','#FFC0FF'],
-					['grey','#000000','#808080','#FFFFFF']
-				];
-		} // end switch
+		case "monotone":
+			set = [
+				['red','#1B1414','#584444','#FFE7E3'],
+				['orange','#2A2620','#4D463A','#FFE9CC'],
+				['yellow','#313125','#808061','#FAFFE0'],
+				['green','#111611','#6E936E','#E7FFD3'],
+				['blue','#0A0A0D','#696991','#E5D9FF'],
+				['purple','#0D090D','#684E68','#FFE3EC'],
+				['grey','#000000','#808080','#FFFFFF']
+			];
+			break;
 
-		fly.color.palette = paletteName;
-		fly.color.setPalette(set);
-		fly.color.background();
+		case "neon":
+			set = [
+				['red','#6A0032','#FF0023','#FFC0F2'],
+				['orange','#BD2E00','#FFA500','#FFE8C0'],
+				['yellow','#ACFF02','#FFFF00','#FFFFC0'],
+				['green','#133B0F','#38FF41','#BFFF68'],
+				['blue','#010654','#013BFF','#4FFFF8'],
+				['purple','#3B034C','#9800B3','#CC5FFF'],
+				['grey','#0A0511','#696281','#E3E8FF']
+			];
+			break;
+
+		default:
+			palette = "default";
+			set = [
+				['red','#400000','#FF0000','#FFC0C0'],
+				['orange','#402900','#FFA500','#FFE8C0'],
+				['yellow','#404000','#FFFF00','#FFFFC0'],
+				['green','#004000','#00FF00','#C0FFC0'],
+				['blue','#000040','#0000FF','#C0C0FF'],
+				['purple','#400040','#800080','#FFC0FF'],
+				['grey','#000000','#808080','#FFFFFF']
+			];
+	} // end switch
+
+	fly.color.palette = palette;
+	fly.color.setPalette(set);
+	fly.color.background();
 
 };
 

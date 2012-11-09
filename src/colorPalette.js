@@ -15,24 +15,30 @@
  * the list of colors to be included in the set.
 */
 
-// beta5: palette = "name" || {name:"name",palette:[[]...]}
-// beta5: palette ! in predefined: colorSet? custom : default
+// palette = "name" || {name:"name",set:[[]...]}
 // beta5: add new sets in, check against registry
 
 fly.colorPalette = function(palette){
 
+	var _name, _set;
+
 	// don't allow no-args passed to reset to existing palette
 	// returned defined palette name via fly.color instead
-	if (fly.color.palette !== "not yet defined" && !palette) {
+	if (!palette && fly.color.palette !== "not yet defined") {
 		return fly.color.palette;
 	}
 
-	if (typeof palette === "object") {
-
+	if (typeof palette === "object" && palette.name && palette.set ) {
+		_name = 'custom';
+		_set = palette.set;
+	} else if (typeof palette === "string") {
+		_name = palette;
+	} else {
+		return new TypeError ('unknown type "palette" on init');
 	}
 	switch(palette) {
 		case "custom":
-			var set = colorSet || [];
+			var set = _set;
 			break;
 
 		case "pastel":

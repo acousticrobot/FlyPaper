@@ -13,7 +13,7 @@ module.exports = function(grunt) {
         ' * Date: <%= grunt.template.today("yyyy-mm-dd HH:MM:ss") %>\n' +
         '<%= pkg.homepage ? " * " + pkg.homepage + "\n" : "" %>' +
         ' * Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author.name %>;\n' +
-        ' * Licensed <%= _.pluck(pkg.licenses, "type").join(", ") %> \n */\n' +
+        ' * Licensed <%= _.pluck(pkg.licenses, "type").join(", ") %>\n */\n' +
 		' //--------------------------------------------------------//\n'
    },
     concat: {
