@@ -12,7 +12,7 @@ fly.grantInfo = function(o) {
 			version : { val: version, type: "version"}
 		};
 
-	function mergeInfo (o,_i,args) {
+	function mergeInfo (_i,args) {
 		// private utility to add object in args to info _i
 		// if type is "val", object[val] is used for val
 		var el, v, t;
@@ -20,9 +20,9 @@ fly.grantInfo = function(o) {
 			if (args[el].val && args[el].type) {
 				v = args[el].val,
 				t = args[el].type;
-				if (t === "val") {
-					v = o[v];
-				}
+//if (t === "val") {
+//v = o[v];
+//}
 				_i[el] = {"val":v,"type":t};
 			}
 		}
@@ -58,7 +58,7 @@ fly.grantInfo = function(o) {
 		// { name: "name", var1:{val: var1, type:"val"},var2:{..}..},
 		var _i = {};
 		_i.name = name;
-		_i = mergeInfo(this,_i,_info);
+		_i = mergeInfo(_i,_info);
 		return _i;
 	};
 

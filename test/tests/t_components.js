@@ -130,10 +130,9 @@ test("events", 4, function(){
 
 test("info", function(){
 	var dummy = {name:"dummy",age:"20"};
-	fly.grantInfo(dummy).addInfo({age:{val:age,type:"string"}});
+	fly.grantInfo(dummy).addInfo({age:{val:"age",type:"string"}});
 	ok(dummy.info,"should have info packet");
 	dummy.age = "40";
-	console.log(dummy.info());
 });
 
 test("color", function(){
