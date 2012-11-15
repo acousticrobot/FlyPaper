@@ -112,11 +112,9 @@ fly.initLayers = function(layers,background){
 			};
 
 		_i.name = this.name;
-//		_i.background = ipacket(fly.layers.background);
 		for (j=0; j < fly.layers.names.length; j++) {
 			_i[fly.layers.names[j]] = ipacket(fly.layers.stage[j]);
 		}
-//		_i["info layer"] = ipacket(fly.layer("info"));
 		return _i;
 	};
 
