@@ -3,7 +3,7 @@
  * Author: Jonathan Gabel
  * Email: post@jonathangabel.com
  * URL: http://jonathangabel.com
- * Date: 2012-11-15 16:42:06
+ * Date: 2012-11-15 17:09:48
  * https://github.com/josankapo/FlyPaper
  * Copyright (c) 2012 Jonathan Gabel;
  * Licensed MIT
@@ -90,6 +90,39 @@ fly.grantString = function(o) {
 	return o;
 };
 
+/*
+ * ## Info
+ * Any object that will communicate with the IC needs to
+ * have an info method that returns an info packet, which
+ * takes the form:
+ * { name:"myObj",
+ *   version:{val:"0.5",type:"string"},
+ *   aState:{val:"true",type:"bool"},
+ *   aNumber: {val: 5, type:"val"}}
+ * ### grantInfo
+ * grantInfo is a mixin that grants objects the ability
+ * to send info packets, and to define what properties
+ * will be sent in the info packet. The info is stored
+ * in a private property _info.
+ * #### Granting Info
+ * To grant info to your object use fly.grantInfo(myObject).
+ * Objects inhereting from fly.base already have been granted.
+ * #### Adding Info
+ * To add info to the infopacket, use addInfo()
+ * example:
+ * myObject.addInfo(
+ *   sleeping:{val:"sleeping",type:"bool"},
+ *   speed:{val:"speed",type:"val"})
+ * If the property type is "bool" or "val", these must be callable
+ * by your object to obtain the value as a string, number, or bool.
+ * So for the above example you need to be able to call:
+ * myObject["sleeping"] // true or false
+ * myObject["speed"] // number or string
+ * If you need to add anything more complicated into the info packet,
+ * you can override the info method. See eventCtrlr.js for an example
+ * of a custom info method
+ *
+ */
 fly.grantInfo = function(o) {
 	// store the properties sent to infoController via call to info()
 	var name = o.name || fly.name,
