@@ -10,7 +10,7 @@ if (typeof fly !== "object") {
 }
 
 fly.name = "flypaper";
-fly.version = "0.4";
+fly.version = "0.5beta";
 
 if (typeof Object.create !== 'function') {
     Object.create = function (o) {

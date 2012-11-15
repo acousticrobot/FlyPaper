@@ -22,7 +22,9 @@ fly.infoCtrlrInit = function(infoPrefs) {
 		// fly is members[0], infoCtlr is member[1] after infoCtrlr.init();
 		var members = [ {obj:fly,display:false},
 						{obj:fly.eventCtrlr,display:false},
-						{obj:fly.layers,display:false}];
+						{obj:fly.layers,display:false},
+						{obj:fly.color,display:false}
+						];
 		infoPrefs = infoPrefs || {};
 		if (fly.color.palette === "not yet defined") {
 			fly.colorPalette("default");

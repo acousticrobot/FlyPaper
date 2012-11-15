@@ -30,8 +30,7 @@ fly.init = function (args) {
 	fly.debug = args.debug || false;
 	var layers = args.layers || 1,
 		background = args.background || true,
-		colorPalette = args.colorPalette || {},
-		colorSet = args.colorSet || {},
+		colorPalette = args.colorPalette || "default",
 		infoPrefs = args.infoPrefs || {};
 
 	if (args.width && args.height) {
@@ -43,17 +42,16 @@ fly.init = function (args) {
 		fly.height = paper.view.viewSize.height;
 	}
 
-	fly.grantInfo(fly);
-	fly.addInfo({
+	fly.grantInfo(fly).addInfo({
 		debug : { val: fly.debug, type: "bool" },
 		width : { val: fly.width, type: "val" },
 		height : { val: fly.height, type: "val" },
-		"color palette" : { val: fly.color.palette, type: "val"}
+		"color palette" : { val: "foo", type: "val"}
 	});
 
 	fly.initLayers(layers,background);
 
-	fly.colorPalette(colorPalette,colorSet);
+	fly.colorPalette(colorPalette);
 
 	fly.infoCtrlrInit(infoPrefs);
 
