@@ -6,7 +6,7 @@
 
 /*
  * ## Info
- * Any object that will communicate with the IC needs to
+ * Any object that will communicate with the InfoCtrlr needs to
  * have an info method that returns an info packet, which
  * takes the form:
  * { name:"myObj",
@@ -33,7 +33,7 @@
  * myObject["sleeping"] // true or false
  * myObject["speed"] // number or string
  * If you need to add anything more complicated into the info packet,
- * you can override the info method. See eventCtrlr.js for an example
+ * you can override the info method. See eventCtrlr for an example
  * of a custom info method
  *
  */

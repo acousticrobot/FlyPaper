@@ -3,7 +3,7 @@
  * Author: Jonathan Gabel
  * Email: post@jonathangabel.com
  * URL: http://jonathangabel.com
- * Date: 2012-11-15 17:09:48
+ * Date: 2012-11-15 18:08:52
  * https://github.com/josankapo/FlyPaper
  * Copyright (c) 2012 Jonathan Gabel;
  * Licensed MIT
@@ -92,7 +92,7 @@ fly.grantString = function(o) {
 
 /*
  * ## Info
- * Any object that will communicate with the IC needs to
+ * Any object that will communicate with the InfoCtrlr needs to
  * have an info method that returns an info packet, which
  * takes the form:
  * { name:"myObj",
@@ -119,7 +119,7 @@ fly.grantString = function(o) {
  * myObject["sleeping"] // true or false
  * myObject["speed"] // number or string
  * If you need to add anything more complicated into the info packet,
- * you can override the info method. See eventCtrlr.js for an example
+ * you can override the info method. See eventCtrlr for an example
  * of a custom info method
  *
  */
@@ -652,6 +652,9 @@ fly.colorSets = [
  * ex:
  * fly.color.blue[5]
  *
+ * Initial color object is only used to test for
+ * a palette of "not yet defined", after init by
+ * the colorPalette, color is granted info.
 */
 
 fly.color = {

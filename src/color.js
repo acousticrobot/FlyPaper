@@ -14,6 +14,9 @@
  * ex:
  * fly.color.blue[5]
  *
+ * Initial color object is only used to test for
+ * a palette of "not yet defined", after init by
+ * the colorPalette, color is granted info.
 */
 
 fly.color = {

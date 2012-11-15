@@ -44,8 +44,9 @@ fly.colorPalette = function(args){
 			if (p.set[i] instanceof Array === false || p.set[i].length !== 4) {
 				return 'Palette set of unknown type';
 			}
-			if (p.set[i][0] === "palette") {
-				return 'palette is a reserved word in color sets';
+			var reserved = /palette|info|addInfo|deleteInfo/;
+			if (p.set[i][0].match(reserved)) {
+				return p.set[i][0] + ' is a reserved word in color sets';
 			}
 		}
 		return true;
@@ -89,18 +90,24 @@ fly.colorPalette = function(args){
 	}
 	
 	function resetColor(colorSet) {
+		// rebuild fly.Color with the new palette
 		fly.color = {
 			name: "color",
 			palette: colorSet.name
 		};
-		fly.grantInfo(fly.color).addInfo({
-			palette : {val: "palette", type: "val"}
-		});
+		var newInfo = {palette : {val: "palette", type: "val"}},
+			spec, v;
+		for (var i=0; i < colorSet.set.length; i++) {
+			spec = colorSet.set[i];
+			v = spec[1] + '-' + spec[2] + '-' + spec[3];
+			newInfo[spec[0]] = {val:v,type:"string"};
+		}
+		fly.grantInfo(fly.color).addInfo(newInfo);
 	}
 
 	function setPalette() {
-		// colorSet is an array of color arrays, example:
-		// [ ['red','#400000','#FF0000','#FFC0C0',],[.,.,.,.],...]
+		// colorSet is an object with a name and a set array
+		// see colorSets for formatting
 		var spec,
 			colorSet;
 		try {
