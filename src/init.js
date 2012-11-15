@@ -42,11 +42,11 @@ fly.init = function (args) {
 		fly.height = paper.view.viewSize.height;
 	}
 
+	fly.foo = "foo";
 	fly.grantInfo(fly).addInfo({
-		debug : { val: fly.debug, type: "bool" },
-		width : { val: fly.width, type: "val" },
-		height : { val: fly.height, type: "val" },
-		"color palette" : { val: "foo", type: "val"}
+		debug : { val: "debug", type: "bool" },
+		width : { val: "width", type: "val" },
+		height : { val: "height", type: "val" }
 	});
 
 	fly.initLayers(layers,background);

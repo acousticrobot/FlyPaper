@@ -12,17 +12,26 @@ fly.grantInfo = function(o) {
 			version : { val: version, type: "version"}
 		};
 
-	function mergeInfo (_i,args) {
-		// private utility to add object in args to info _i
-		// if type is "val", object[val] is used for val
-		var el, v, t;
+	function mergeInfo (o,_i,args) {
+		// private utility to add objects in args to info _i
+		// used by info() to return to IC, as well as addInfo
+		// to add into private _info object
+		// reading is tripped when exporting to IC, reading dynamic
+		// varibles rather than stored info
+		var el, v, t,
+			reading = false; // reading from object, not storing in _info
+		if (args === _info) {
+			reading = true;
+		}
 		for (el in args) {
 			if (args[el].val && args[el].type) {
 				v = args[el].val,
 				t = args[el].type;
-//if (t === "val") {
-//v = o[v];
-//}
+				if (reading) {
+					if (t === "val" || t === "bool") {
+					v = o[v];
+					}
+				}
 				_i[el] = {"val":v,"type":t};
 			}
 		}
@@ -33,7 +42,7 @@ fly.grantInfo = function(o) {
 		// add property to track to the infoArray
 		// ex. args = {info1:{val:"sam",type:"i am"}}
 		// ex. args = {info1:{val:"sam",type:"i am"},info2:{val:"foo",type:"bar"}}
-		mergeInfo(_info,args);
+		mergeInfo(this,_info,args);
 		return o;
 	};
 
@@ -58,7 +67,7 @@ fly.grantInfo = function(o) {
 		// { name: "name", var1:{val: var1, type:"val"},var2:{..}..},
 		var _i = {};
 		_i.name = name;
-		_i = mergeInfo(_i,_info);
+		_i = mergeInfo(this,_i,_info);
 		return _i;
 	};
 

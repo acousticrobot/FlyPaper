@@ -3,7 +3,7 @@
  * Author: Jonathan Gabel
  * Email: post@jonathangabel.com
  * URL: http://jonathangabel.com
- * Date: 2012-11-15 16:06:12
+ * Date: 2012-11-15 16:42:06
  * https://github.com/josankapo/FlyPaper
  * Copyright (c) 2012 Jonathan Gabel;
  * Licensed MIT
@@ -98,17 +98,26 @@ fly.grantInfo = function(o) {
 			version : { val: version, type: "version"}
 		};
 
-	function mergeInfo (_i,args) {
-		// private utility to add object in args to info _i
-		// if type is "val", object[val] is used for val
-		var el, v, t;
+	function mergeInfo (o,_i,args) {
+		// private utility to add objects in args to info _i
+		// used by info() to return to IC, as well as addInfo
+		// to add into private _info object
+		// reading is tripped when exporting to IC, reading dynamic
+		// varibles rather than stored info
+		var el, v, t,
+			reading = false; // reading from object, not storing in _info
+		if (args === _info) {
+			reading = true;
+		}
 		for (el in args) {
 			if (args[el].val && args[el].type) {
 				v = args[el].val,
 				t = args[el].type;
-//if (t === "val") {
-//v = o[v];
-//}
+				if (reading) {
+					if (t === "val" || t === "bool") {
+					v = o[v];
+					}
+				}
 				_i[el] = {"val":v,"type":t};
 			}
 		}
@@ -119,7 +128,7 @@ fly.grantInfo = function(o) {
 		// add property to track to the infoArray
 		// ex. args = {info1:{val:"sam",type:"i am"}}
 		// ex. args = {info1:{val:"sam",type:"i am"},info2:{val:"foo",type:"bar"}}
-		mergeInfo(_info,args);
+		mergeInfo(this,_info,args);
 		return o;
 	};
 
@@ -144,7 +153,7 @@ fly.grantInfo = function(o) {
 		// { name: "name", var1:{val: var1, type:"val"},var2:{..}..},
 		var _i = {};
 		_i.name = name;
-		_i = mergeInfo(_i,_info);
+		_i = mergeInfo(this,_i,_info);
 		return _i;
 	};
 
@@ -518,11 +527,9 @@ fly.initLayers = function(layers,background){
 			};
 
 		_i.name = this.name;
-//		_i.background = ipacket(fly.layers.background);
 		for (j=0; j < fly.layers.names.length; j++) {
 			_i[fly.layers.names[j]] = ipacket(fly.layers.stage[j]);
 		}
-//		_i["info layer"] = ipacket(fly.layer("info"));
 		return _i;
 	};
 
@@ -1160,11 +1167,11 @@ fly.init = function (args) {
 		fly.height = paper.view.viewSize.height;
 	}
 
+	fly.foo = "foo";
 	fly.grantInfo(fly).addInfo({
-		debug : { val: fly.debug, type: "bool" },
-		width : { val: fly.width, type: "val" },
-		height : { val: fly.height, type: "val" },
-		"color palette" : { val: "foo", type: "val"}
+		debug : { val: "debug", type: "bool" },
+		width : { val: "width", type: "val" },
+		height : { val: "height", type: "val" }
 	});
 
 	fly.initLayers(layers,background);

@@ -94,7 +94,7 @@ fly.colorPalette = function(args){
 			palette: colorSet.name
 		};
 		fly.grantInfo(fly.color).addInfo({
-			palette : {val: fly.color.palette, type: "string"}
+			palette : {val: "palette", type: "val"}
 		});
 	}
 
