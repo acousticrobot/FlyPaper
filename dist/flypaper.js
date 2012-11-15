@@ -3,7 +3,7 @@
  * Author: Jonathan Gabel
  * Email: post@jonathangabel.com
  * URL: http://jonathangabel.com
- * Date: 2012-11-15 18:36:36
+ * Date: 2012-11-15 18:44:24
  * https://github.com/josankapo/FlyPaper
  * Copyright (c) 2012 Jonathan Gabel;
  * Licensed MIT
@@ -601,7 +601,7 @@ fly.color = {
 
 
 /*
- * ## Color Aid Methods
+ * ## color Util Methods
  * Initialize color utility with methods for reading hex values
  * and stored color presets.  Preset color arrays are made
  * out of three values: darkest/saturated/lightest, two linear
@@ -610,7 +610,7 @@ fly.color = {
  * Presets can be altered and new sets made through the
  * public method spectrum.
  * example use:
- * rainbow = fly.colorAid.spectrum('#FF0000','#00FF00','0000FF',13);
+ * rainbow = fly.colorUtil.spectrum('#FF0000','#00FF00','0000FF',13);
  * This creates an 13 segment color spectrum, rainbow[7] == '#00FF00'
  * *common variables:*
  * col is used for passed hex color values, ex. "#789ABC"
@@ -618,7 +618,7 @@ fly.color = {
 *
 */
 
-fly.colorAid = {
+fly.colorUtil = {
 
 	limit : function(col){
 		// limit col between 0 and 255
@@ -729,7 +729,7 @@ fly.colorAid = {
 		return spec;
 	},
 
-	setBackground : function(col) {
+	background : function(col) {
 		if (fly.layers && fly.layer("background")) {
 			if (fly.layers.backRect === undefined) {
 				var l = paper.project.activeLayer;
@@ -928,7 +928,7 @@ fly.colorPalette = function(args){
 		
 		for (i=0; i < colorSet.set.length; i++) {
 			spec = colorSet.set[i];
-			fly.color[spec[0]] = fly.colorAid.spectrum(spec[0],spec[1],spec[2],spec[3]);
+			fly.color[spec[0]] = fly.colorUtil.spectrum(spec[0],spec[1],spec[2],spec[3]);
 		}
 	}
 

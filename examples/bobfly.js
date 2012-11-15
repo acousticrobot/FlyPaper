@@ -9,7 +9,7 @@ window.onload = function() {
 			});
 	fly.debug = true;
 
-	fly.color.background(fly.color.blue[4]);
+	fly.colorUtil.background(fly.color.blue[4]);
 
 	paper.view.onFrame = function(event) {
 		fly.eventCtrlr.publish("frame",event);
@@ -82,7 +82,7 @@ fly.BobFly.prototype.setStyle = function(args) {
 			};
 	this.style.face.mouth = args.mouth ||
 			{
-				fillColor: fly.color.background()
+				fillColor: fly.colorUtil.background()
 			};
 	this.style.legs = args.legs ||
 		{

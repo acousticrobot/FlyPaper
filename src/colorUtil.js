@@ -5,7 +5,7 @@
  */
 
 /*
- * ## Color Aid Methods
+ * ## color Util Methods
  * Initialize color utility with methods for reading hex values
  * and stored color presets.  Preset color arrays are made
  * out of three values: darkest/saturated/lightest, two linear
@@ -14,7 +14,7 @@
  * Presets can be altered and new sets made through the
  * public method spectrum.
  * example use:
- * rainbow = fly.colorAid.spectrum('#FF0000','#00FF00','0000FF',13);
+ * rainbow = fly.colorUtil.spectrum('#FF0000','#00FF00','0000FF',13);
  * This creates an 13 segment color spectrum, rainbow[7] == '#00FF00'
  * *common variables:*
  * col is used for passed hex color values, ex. "#789ABC"
@@ -22,7 +22,7 @@
 *
 */
 
-fly.colorAid = {
+fly.colorUtil = {
 
 	limit : function(col){
 		// limit col between 0 and 255
@@ -133,7 +133,7 @@ fly.colorAid = {
 		return spec;
 	},
 
-	setBackground : function(col) {
+	background : function(col) {
 		if (fly.layers && fly.layer("background")) {
 			if (fly.layers.backRect === undefined) {
 				var l = paper.project.activeLayer;

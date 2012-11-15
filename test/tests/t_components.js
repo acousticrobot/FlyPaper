@@ -143,16 +143,16 @@ test("info", function(){
 test("color", function(){
 	ok(fly.color, "color exists");
 	ok(fly.colorPalette, "colorPalette exists");
-	ok(fly.colorAid, "color aid exists");
-	equal(fly.colorAid.limit(700),255,"color should be limited to 255 max");
-	equal(fly.colorAid.limit(-70),0,"color should be limited to 0 min");
-	deepEqual(fly.colorAid.split("#102030"),[16,32,48],"hex color should be split into RGB");
-	strictEqual(fly.colorAid.splice([16,32,48]),"#102030","color array should translate to hex string");
-	strictEqual(fly.colorAid.mix("#F000FF","#0df0ff"),"#7e78ff","should mix to hex string");
-	strictEqual(fly.colorAid.totalValue("#102030"),96,"should mix componenst of hex color");
-	deepEqual(fly.colorAid.bispectrum("#000000","#FFFFFF",5),
+	ok(fly.colorUtil, "color Util exists");
+	equal(fly.colorUtil.limit(700),255,"color should be limited to 255 max");
+	equal(fly.colorUtil.limit(-70),0,"color should be limited to 0 min");
+	deepEqual(fly.colorUtil.split("#102030"),[16,32,48],"hex color should be split into RGB");
+	strictEqual(fly.colorUtil.splice([16,32,48]),"#102030","color array should translate to hex string");
+	strictEqual(fly.colorUtil.mix("#F000FF","#0df0ff"),"#7e78ff","should mix to hex string");
+	strictEqual(fly.colorUtil.totalValue("#102030"),96,"should mix componenst of hex color");
+	deepEqual(fly.colorUtil.bispectrum("#000000","#FFFFFF",5),
 		["#000000","#3f3f3f","#7f7f7f","#bfbfbf","#FFFFFF"],"colors in array should match");
-	deepEqual(fly.colorAid.trispectrum("#000000","#FF00FF","#FFFFFF"),
+	deepEqual(fly.colorUtil.trispectrum("#000000","#FF00FF","#FFFFFF"),
 		["#000000","#3f003f","#7f007f","#bf00bf","#FF00FF","#ff3fff","#ff7fff","#ffbfff","#FFFFFF"],
 		"colors in array should match");
 	strictEqual(fly.colorPalette(),"not yet defined","should return color.palette");

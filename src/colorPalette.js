@@ -126,7 +126,7 @@ fly.colorPalette = function(args){
 		
 		for (i=0; i < colorSet.set.length; i++) {
 			spec = colorSet.set[i];
-			fly.color[spec[0]] = fly.colorAid.spectrum(spec[0],spec[1],spec[2],spec[3]);
+			fly.color[spec[0]] = fly.colorUtil.spectrum(spec[0],spec[1],spec[2],spec[3]);
 		}
 	}
 

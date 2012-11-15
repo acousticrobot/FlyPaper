@@ -27,7 +27,7 @@ module.exports = function(grunt) {
 				'<file_strip_banner:src/eventCtrlr.js>',
 				'<file_strip_banner:src/layers.js>',
 				'<file_strip_banner:src/color.js>',
-				'<file_strip_banner:src/colorAid.js>',
+				'<file_strip_banner:src/colorUtil.js>',
 				'<file_strip_banner:src/colorSets.js>',
 				'<file_strip_banner:src/colorPalette.js>',
 				'<file_strip_banner:src/infoCtrlr.js>',
