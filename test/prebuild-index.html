@@ -2,13 +2,17 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<title>FlyPaper Tests</title>
-	<!-- Load local QUnit (grunt requires v1.0.0 or newer). -->
-	<link rel="stylesheet" href="../libs/qunit/qunit.css" media="screen">
-	<script src="../libs/qunit/qunit.js"></script>
+	<title>FlyPaper Prebuild Test</title>
+
+	<style type="text/css" media="screen">
+		#ctx {
+			border: 1px solid #999;
+		}
+	</style>
+
 	<script src="../libs/paper.js"></script>
 
-	<!-- Load local lib. -->
+	<!-- Load flypaper as a prebuld -->
 	<script src="../src/core/head.js"></script>
 	<script src="../src/core/string.js"></script>
 	<script src="../src/core/info.js"></script>
@@ -32,23 +36,12 @@
 	<script src="../src/objects/Pullbar.js"></script>
 
 
-  <!-- Load tests. -->
-  <script src="tests/t_init.js"></script>
+	<script src="../examples/templates.js"></script>
 
 </head>
 <body>
-	<h1 id="qunit-header">Flypaper Tests</h1>
-	<h2 id="qunit-banner"></h2>
-	<div id="qunit-testrunner-toolbar"></div>
-	<h2 id="qunit-userAgent"></h2>
-	<ol id="qunit-tests"></ol>
-	<div id="qunit-fixture">
-		<span>lame test markup</span>
-		<span>normal test markup</span>
-		<span>awesome test markup</span>
-	</div>
-
+	<h2>FlyPaper for Paper.js : Prebuild Test</h2>
 	<canvas id="ctx" ></canvas>
-
+	<p>This page should mimic index.html, but work on the source version of flypaper.</p>
 </body>
 </html>

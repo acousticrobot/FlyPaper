@@ -128,4 +128,42 @@ test("events", 4, function(){
 		'{}','events in EC should match');
 });
 
+test("info", function(){
+	var dummy = {name:"dummy",age:"20"};
+	fly.grantInfo(dummy).addInfo({age:{val:age,type:"string"}});
+	ok(dummy.info,"should have info packet");
+	dummy.age = "40";
+	console.log(dummy.info());
+});
+
+test("color", function(){
+	ok(fly.color, "color exists");
+	ok(fly.colorPalette, "colorPalette exists");
+	ok(fly.colorAid, "color aid exists");
+	equal(fly.colorAid.limit(700),255,"color should be limited to 255 max");
+	equal(fly.colorAid.limit(-70),0,"color should be limited to 0 min");
+	deepEqual(fly.colorAid.split("#102030"),[16,32,48],"hex color should be split into RGB");
+	strictEqual(fly.colorAid.splice([16,32,48]),"#102030","color array should translate to hex string");
+	strictEqual(fly.colorAid.mix("#F000FF","#0df0ff"),"#7e78ff","should mix to hex string");
+	strictEqual(fly.colorAid.totalValue("#102030"),96,"should mix componenst of hex color");
+	deepEqual(fly.colorAid.bispectrum("#000000","#FFFFFF",5),
+		["#000000","#3f3f3f","#7f7f7f","#bfbfbf","#FFFFFF"],"colors in array should match");
+	deepEqual(fly.colorAid.trispectrum("#000000","#FF00FF","#FFFFFF"),
+		["#000000","#3f003f","#7f007f","#bf00bf","#FF00FF","#ff3fff","#ff7fff","#ffbfff","#FFFFFF"],
+		"colors in array should match");
+	strictEqual(fly.colorPalette(),"not yet defined","should return color.palette");
+	fly.colorPalette("neon");
+	strictEqual(fly.color.red[4],"#FF0023","should return color.palette");
+	strictEqual(fly.color.palette,"neon","palette name should be neon");
+	strictEqual(fly.colorPalette(),"neon","should return color.palette");
+	var drab = { name: "drab", set: [
+		['red','#000000','#FF8080','#FFDDDD'],
+		['green','#000000','#80FF80','#DDFFDD'],
+		['pal','#000000','#8080FF','#DDDDFF'],
+		['grubby','#000000','#808080','#FFFFFF']
+		]};
+	fly.colorPalette(drab);
+	strictEqual(fly.color.palette,"drab","palette name should be drab");
+});
+
 }; // end window on-load
