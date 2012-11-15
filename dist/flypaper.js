@@ -3,7 +3,7 @@
  * Author: Jonathan Gabel
  * Email: post@jonathangabel.com
  * URL: http://jonathangabel.com
- * Date: 2012-11-15 18:08:52
+ * Date: 2012-11-15 18:36:36
  * https://github.com/josankapo/FlyPaper
  * Copyright (c) 2012 Jonathan Gabel;
  * Licensed MIT
@@ -580,6 +580,171 @@ fly.initLayers = function(layers,background){
 };
 
 /*
+ * ## Color
+ * color maintains an palette of colors
+ * defined by the colorPalette. It is reinitialized
+ * and repopulated every time the colorPalette is reset.
+ * When a color is defined in a palette (ex. 'blue'),
+ * its colors are accesible as an array via color.
+ * ex:
+ * fly.color.blue[5]
+ *
+ * Initial color object is only used to test for
+ * a palette of "not yet defined", after init by
+ * the colorPalette, color is granted info.
+*/
+
+fly.color = {
+	name: "color",
+	palette : "not yet defined"
+};
+
+
+/*
+ * ## Color Aid Methods
+ * Initialize color utility with methods for reading hex values
+ * and stored color presets.  Preset color arrays are made
+ * out of three values: darkest/saturated/lightest, two linear
+ * progression are made from the ends to the middle value.
+ * Color arrays default to 9 segments in length.
+ * Presets can be altered and new sets made through the
+ * public method spectrum.
+ * example use:
+ * rainbow = fly.colorAid.spectrum('#FF0000','#00FF00','0000FF',13);
+ * This creates an 13 segment color spectrum, rainbow[7] == '#00FF00'
+ * *common variables:*
+ * col is used for passed hex color values, ex. "#789ABC"
+ * cola for color arrays, [r,g,b] ex [0,127,255]
+*
+*/
+
+fly.colorAid = {
+
+	limit : function(col){
+		// limit col between 0 and 255
+		// color is any int
+		col = Math.min(Math.max(col, 0),255);
+		return col;
+	},
+
+	split : function(hexCol){
+		// split a hex color into array [r,g,b]
+		//assumes hex color w/ leading #
+		var col = hexCol.slice(1);
+		col = parseInt(col,16);
+		var r = (col >> 16);
+		var g = ((col >> 8) & 0xFF);
+		var b = (col & 0xFF);
+		return([r,g,b]);
+	},
+
+	splice : function(cola){
+		// takes a cola and returns the hex string value
+		// cola is a color array [r,g,b], are all int
+		var r = cola[0],
+			g = cola[1],
+			b = cola[2];
+		var s = ((r << 16) | (g << 8) | b ).toString(16);
+		// if r < 10, pad with a zero in front
+		while (s.length < 6) {
+			s = "0" + s;
+		}
+		s = "#" + s;
+		return s;
+	},
+
+	mix : function(col1,col2,amt){
+		// mixes 2 hex colors together, amt (0 to 1) determines ratio
+		// amt defaults to .5, mixes 50/50
+
+		amt = amt !== undefined ? amt : 0.5;
+		var col1a = this.split(col1),
+			col2a = this.split(col2);
+		for (var i=0; i < col1a.length; i++) {
+			col1a[i] = (col1a[i]*(1-amt)) + (col2a[i]*(amt));
+		}
+		return this.splice(col1a);
+	},
+
+	totalValue  : function(col) {
+		// adds the R,G,B values together
+		var cola = this.split(col);
+		return cola[0] + cola[1] + cola[2];
+	},
+
+	bispectrum : function(col1,col2,seg){
+		// takes two colors, returns array of seg sements
+		// each a hex color. sent colors are first and last
+		// colors in the array
+		seg = seg !== undefined ? seg : 5;
+		if (seg < 3) {
+			return [col1,col2];
+		}
+		var spec = [col1];
+		for (var i=1; i < seg-1; i++) {
+			spec.push(this.mix(col1,col2,i/(seg-1)));
+		}
+		spec.push(col2);
+		return spec;
+	},
+
+	trispectrum : function(col1,col2,col3,seg) {
+		// takes three hex colors and creates a (default 9)
+		// segment spectrum. made for bringing saturated
+		// colors to light and dark.
+		// standard use: (lightest, saturated, darkest)
+		// sent colors are first, middle, and last of the array
+		// spectrum length defaults to 9, and will always be odd
+		seg = seg !== undefined ? seg : 9;
+		var midseg = Math.ceil(seg/2);
+		var lights = this.bispectrum(col1,col2,midseg),
+			darks = this.bispectrum(col2,col3,midseg);
+			// remove duplicate color in middle and merge
+			lights.pop();
+			var spec = lights.concat(darks);
+			return spec;
+	},
+
+	spectrum : function(name,col1,col2,col3,seg) {
+		// name: string for name of color set
+		// send two hex colors for a bispectrum
+		// three colors for a trispectrum
+		// possible args sent:
+		//	(name,col1,col2)
+		//	(name,col1,col2,seg)
+		//	(name,col1,col2,col3)
+		//	(name,col1,col2,col3,seg)
+		fly.colorSets.push(name);
+		var spec;
+		if (col3 !== undefined) {
+			if (typeof col3 === "string" ) {
+				spec = this.trispectrum(col1,col2,col3,seg);
+			} else if (typeof col3 === "number" ) {
+				// col3 is actually seg
+				spec = this.bispectrum(col1,col2,col3);
+			} else {
+				seg = this.bispectrum(col1,col2);
+			}
+		}
+		return spec;
+	},
+
+	setBackground : function(col) {
+		if (fly.layers && fly.layer("background")) {
+			if (fly.layers.backRect === undefined) {
+				var l = paper.project.activeLayer;
+				fly.layers.activate("background");
+				fly.layers.backRect = new paper.Path.Rectangle(paper.view.bounds);
+				l.activate();
+			}
+			col = col !== undefined ? col : "#FFFFFF";
+			fly.layers.backRect.fillColor = col;
+		}
+	}
+
+};
+
+/*
  * ## Color Sets
  * FlyPaper color sets are used to quickly establish
  * a color palette that can be changed dyamically.
@@ -643,24 +808,142 @@ fly.colorSets = [
 	];
 
 /*
- * ## Color
- * color maintains an palette of colors
- * defined by the colorPalette. It is reinitialized
- * and repopulated every time the colorPalette is reset.
- * When a color is defined in a palette (ex. 'blue'),
- * its colors are accesible as an array via color.
- * ex:
- * fly.color.blue[5]
+ * ## Color Palette
+ * Populates  fly.color with a colorset.
+ * checks args passed on init for color palette info.
+ * args can be a string matched against predefined
+ * sets of colors in colorSets. args can also be an
+ * object containing a name and a color set (see
+ * fly.colorSets for the pattern). If the set is
+ * legit, it will be added to the colorSets array,
+ * if the name exists already, the new set will
+ * replace the old.
  *
- * Initial color object is only used to test for
- * a palette of "not yet defined", after init by
- * the colorPalette, color is granted info.
+ * *ex. args:*
+ * "neon"
+ * {name:"new neon",set:[['red','#400000','#FF0000','#FFC0C0',],...]}
+ *
 */
 
-fly.color = {
-	name: "color",
-	palette : "not yet defined"
+
+fly.colorPalette = function(args){
+
+	var i,
+		index = -1;
+
+	function checkSet(p) {
+		// sanity type check args args:
+		if (!p.name || !p.set) {
+			return 'Palette must have a name and a set';
+		}
+		if (typeof p.name !== "string") {
+			return 'Palette name must be string';
+		}
+		if (p.set instanceof Array === false) {
+			return 'Palette set must be an array';
+		}
+		for (i=0; i < p.set.length; i++) {
+			if (p.set[i] instanceof Array === false || p.set[i].length !== 4) {
+				return 'Palette set of unknown type';
+			}
+			var reserved = /palette|info|addInfo|deleteInfo/;
+			if (p.set[i][0].match(reserved)) {
+				return p.set[i][0] + ' is a reserved word in color sets';
+			}
+		}
+		return true;
+	}
+
+	function findInSet(n) {
+		for (i=0; i < fly.colorSets.length; i++) {
+			if (fly.colorSets[i].name === n) {
+				return i;
+			}
+		}
+		return -1;
+	}
+
+	function prepSet() {
+		// type check args, add set to colorSets if new
+		var check;
+		if (typeof args === "object" && args.name && args.set ) {
+			check = checkSet(args);
+			if (check !== true) {
+				throw new TypeError (check);
+			}
+			index = findInSet(args.name);
+			if (index === -1) {
+				// create a new set
+				index = fly.colorSets.length;
+				fly.colorSets.push(args);
+			} else {
+				// replace old set with new one
+				fly.colorSets[index].set = args.set;
+			}
+
+		} else if (typeof args === "string") {
+			index = findInSet(args);
+			if (index === -1) {
+				index = 0; // use default set
+			}
+		} else {
+			return new TypeError ('Unknown type sent as args to color palette');
+		}
+	}
+	
+	function resetColor(colorSet) {
+		// rebuild fly.Color with the new palette
+		fly.color = {
+			name: "color",
+			palette: colorSet.name
+		};
+		var newInfo = {palette : {val: "palette", type: "val"}},
+			spec, v;
+		for (var i=0; i < colorSet.set.length; i++) {
+			spec = colorSet.set[i];
+			v = spec[1] + '-' + spec[2] + '-' + spec[3];
+			newInfo[spec[0]] = {val:v,type:"string"};
+		}
+		fly.grantInfo(fly.color).addInfo(newInfo);
+	}
+
+	function setPalette() {
+		// colorSet is an object with a name and a set array
+		// see colorSets for formatting
+		var spec,
+			colorSet;
+		try {
+			prepSet();
+		}
+		catch(e) {
+			if (fly.color.palette === "not yet defined") {
+				index = 0;
+			} else {
+				return(e);
+			}
+		}
+		
+		colorSet = fly.colorSets[index];
+		resetColor(colorSet);
+		
+		for (i=0; i < colorSet.set.length; i++) {
+			spec = colorSet.set[i];
+			fly.color[spec[0]] = fly.colorAid.spectrum(spec[0],spec[1],spec[2],spec[3]);
+		}
+	}
+
+	// If no-args passed, return existing palette
+	if (!args) {
+		return fly.color.palette;
+	}
+	
+	setPalette();
+
 };
+
+// TODO: add colors to current set: fly.colorPalette.add ...
+// add into current in colorSets
+// add into fly.color
 
 
 fly.infoCtrlrInit = function(infoPrefs) {
