@@ -3,7 +3,7 @@
  * Author: Jonathan Gabel
  * Email: post@jonathangabel.com
  * URL: http://jonathangabel.com
- * Date: 2012-11-15 18:44:24
+ * Date: 2012-11-15 19:20:03
  * https://github.com/josankapo/FlyPaper
  * Copyright (c) 2012 Jonathan Gabel;
  * Licensed MIT
@@ -460,7 +460,6 @@ fly.grantString(fly.eventCtrlr);
  *	### Creates layers in stage array.
  *  Defaults to "background", "layer 1", and "info"
  *  ### Arguments passed from init:
- *
  *  #### layers
  *  Can be an *integer* or *array*, defaults to 1.
  *  Integer creates that many layers
@@ -468,7 +467,6 @@ fly.grantString(fly.eventCtrlr);
  *   layers will be named "layer 1", "layer 2" etc.
  *  Array of names will create that many layers,
  *   each referable by that name.
- *
  *  #### background
  *  Bool, defaults true.
  *  If set to false, no background layer is created,
@@ -476,7 +474,7 @@ fly.grantString(fly.eventCtrlr);
  *
  *  "background" and "info" are reserved layer names,
  *  background is primarily used for a solid color.
- *  See fly.color for setting background color.
+ *  See fly.colorUtil for setting background color.
  */
 
 fly.initLayers = function(layers,background){
@@ -730,6 +728,12 @@ fly.colorUtil = {
 	},
 
 	background : function(col) {
+		if(!col) {
+			if (fly.layers.backRect) {
+				return fly.layers.backRect.fillColor;
+			}
+			return "none set";
+		}
 		if (fly.layers && fly.layer("background")) {
 			if (fly.layers.backRect === undefined) {
 				var l = paper.project.activeLayer;
