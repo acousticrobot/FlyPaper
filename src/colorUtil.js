@@ -134,6 +134,12 @@ fly.colorUtil = {
 	},
 
 	background : function(col) {
+		if(!col) {
+			if (fly.layers.backRect) {
+				return fly.layers.backRect.fillColor;
+			}
+			return "none set";
+		}
 		if (fly.layers && fly.layer("background")) {
 			if (fly.layers.backRect === undefined) {
 				var l = paper.project.activeLayer;
