@@ -8,7 +8,7 @@
  * ## InfoCtrlr (IC)
  * The info controller allows information to be displayed
  * in a window within the canvas.  Objects register to
- * be tracked by the IC. They must have a method "info"
+ * be tracked by the IC. They must have a method info
  * which returns an info packet to the IC.
  * ### register
  * New objects can register as a member with infoCtrlr
@@ -26,8 +26,8 @@ fly.infoCtrlrInit = function(infoPrefs) {
 
 	fly.infoCtrlr = (function(infoPrefs) {
 
-		var name = "Info Controler";
-		var version = "0.5beta";
+		var name = 'Info Controller';
+		var version = '0.5beta';
 		// register members who already exist
 		var members = [ {
 			obj : fly,
@@ -43,22 +43,24 @@ fly.infoCtrlrInit = function(infoPrefs) {
 			display : false
 		} ];
 		infoPrefs = infoPrefs || {};
-		if (fly.color.palette === "not yet defined") {
-			fly.colorPalette("default");
+		if (fly.color.palette === 'not yet defined') {
+			fly.colorPalette('default');
 		}
 		var keyTrigger = infoPrefs.keyTrigger || 'i-key';
-		var style = {};
-		var fullcolor = true;
-		// check that we have all the colors needed
-		for ( var col in [ 'blue', 'grey', 'green', 'orange', 'red', 'purple']) {
-			if (!fly.color[col] || fly.color[col].length > 8) {
+		var style = {},
+			fullcolor = true,
+			// check that we have all the colors needed
+			colors = ['blue', 'grey', 'green', 'orange', 'red', 'purple'];
+		for ( var i = 0; i < colors.length; i++) {
+			if (!fly.color[colors[i]] || fly.color[colors[i]].length < 8) {
 				fullcolor = false;
 				break;
 			}
 		}
 		if (fullcolor) {
 			// base text colors:
-			style.titles = infoPrefs.titleBar || fly.color.blue[8];
+			style.titles = infoPrefs.titleBar || fly.color.blue[7];
+			style.plain = fly.color.grey[4] || '#89C234';
 			// screen and bar colors:
 			style.screen = infoPrefs.screen || fly.color.grey[1];
 			style.screenBars = infoPrefs.screenBars || fly.color.grey[0];
@@ -70,22 +72,23 @@ fly.infoCtrlrInit = function(infoPrefs) {
 			style.event = infoPrefs.event || fly.color.red[4];
 			style.eventFiring = infoPrefs.eventFiring || fly.color.red[7];
 			style.version = infoPrefs.version || fly.color.grey[5];
-			style.info = infoPrefs.info || fly.color.purple[4];
+			style.info = infoPrefs.info || fly.color.blue[7];
 		} else {
 			// base text colors:
-			style.titles = infoPrefs.titleBar || "#9BCAE1";
+			style.titles = infoPrefs.titleBar || '#9BCAE1';
+			style.plain = '#89C234';
 			// screen and bar colors:
-			style.screen = infoPrefs.screen || "#0D1927";
+			style.screen = infoPrefs.screen || '#0D1927';
 			style.screenBars = infoPrefs.screenBars || 'black';
 			// colors matching value types:
-			style.val = infoPrefs.val || "#89C234";
-			style.string = infoPrefs.string || "#691BE2";
-			style.btrue = infoPrefs.btrue || "#66FF99";
-			style.bfalse = infoPrefs.bfalse || "#3D9199";
-			style.event = infoPrefs.event || "#BC4500";
-			style.eventFiring = infoPrefs.eventFiring || "#FF5E00";
-			style.version = infoPrefs.version || "#8A8A39";
-			style.info = infoPrefs.info || "#8A8A39";
+			style.val = infoPrefs.val || '#89C234';
+			style.string = infoPrefs.string || '#691BE2';
+			style.btrue = infoPrefs.btrue || '#66FF99';
+			style.bfalse = infoPrefs.bfalse || '#3D9199';
+			style.event = infoPrefs.event || '#BC4500';
+			style.eventFiring = infoPrefs.eventFiring || '#FF5E00';
+			style.version = infoPrefs.version || '#8A8A39';
+			style.info = infoPrefs.info || '#CCB599';
 		}
 		// font styles
 		style.size = infoPrefs.size || 11;
@@ -110,15 +113,15 @@ fly.infoCtrlrInit = function(infoPrefs) {
 		var moving = false;
 		// time counter, eventually to base speed on environment
 		var _time = {};
-		_time._c = 0;
+		_time.refresh = 0;
 		_time.frame = 0;
 		_time.time = 0;
 		_time.fps = {
 			curr : 0,
-			ave : 0
+			avg : 0
 		};
 		var device = {}; // for device detection
-		device.isIpad = navigator.userAgent.match(/iPad/i) !== null;
+		device.isIpad = navigator.userAgent.match(/iPad/) !== null;
 		device.isMobile = (function() {
 			var user = navigator.userAgent.toLowerCase();
 			var agents = /android|webos|iphone/;
@@ -128,30 +131,17 @@ fly.infoCtrlrInit = function(infoPrefs) {
 			return false;
 		})();
 
-		// ------------------- initialize ----------------------//
-
-		function init() {
-			fly.infoCtrlr.register(this);
-			fly.eventCtrlr.subscribe( [ keyTrigger, "frame", "mouse down",
-					"mouse drag", "mouse up" ], this);
-		}
-
-		function request(o) {
-			try {
-				o.reqInfo();
-			} catch (ex) {
-				return ("error request did not go through");
-			}
-		}
-
 		// ------------------- registration --------------------//
 
 		function register(o, d) {
+			// override register function from grantInfo
+			// the IC gets requests via register,
+			// everything else requests via resister to the IC
 			d = typeof (d) !== 'undefined' ? d : false;
 			// new objects register to become a member
 			for ( var i = 0; i < members.length; i++) {
 				if (members[i].obj === o) {
-					return "error: object already exists";
+					return 'error: object already exists';
 				}
 			}
 			members.push( {
@@ -183,28 +173,28 @@ fly.infoCtrlrInit = function(infoPrefs) {
 
 		function printTxtLine(key, val) {
 			// printText() sends:
-			// (name,"openTitle) or (name,"closedTitle")
+			// (name,'openTitle) or (name,'closedTitle')
 			// or (key,{v:val,t:type})
 			if (key === undefined || val === undefined) {
-				return "Error printing info";
+				return 'Error printing info';
 			}
 			updateWidth(key, val);
 			var text = new paper.PointText(ibox.cursor);
 			text.paragraphStyle.justification = 'left';
 			text.characterStyle.fontSize = style.size;
-			var _t = "";
-			if (val === "openTitle") {
+			var _t = '';
+			if (val === 'openTitle') {
 				// object name line, style as title
-				_t += "\u25BC  " + key; // down triangle
+				_t += '\u25BC  ' + key; // down triangle
 				text.fillColor = style.titles;
-			} else if (val === "closedTitle") {
-				_t += "\u25B6 " + key; // right triangle
+			} else if (val === 'closedTitle') {
+				_t += '\u25B6 ' + key; // right triangle
 				text.fillColor = style.titles;
 				ibox.cursor.y += 2;
 			} else { // styles for other items
 				var _s; // style by type
-				if (val.type === "bool") {
-					_s = "b" + val.val; // btrue or bfalse
+				if (val.type === 'bool') {
+					_s = 'b' + val.val; // btrue or bfalse
 				} else {
 					_s = val.type;
 				}
@@ -213,7 +203,7 @@ fly.infoCtrlrInit = function(infoPrefs) {
 				} else {
 					text.fillColor = style.plain;
 				}
-				_t += key + ": " + val.val;
+				_t += key + ': ' + val.val;
 			}
 			text.content = _t;
 			infoGroup.txt.addChild(text);
@@ -229,15 +219,15 @@ fly.infoCtrlrInit = function(infoPrefs) {
 				setBars();
 				if (members[i].display === true) {
 					// add line with name
-					printTxtLine(members[i].info.name, "openTitle");
+					printTxtLine(members[i].info.name, 'openTitle');
 					// if member's display, make line for each in
 					for ( var item in members[i].info) {
-						if (item !== "name") {
+						if (item !== 'name') {
 							printTxtLine(item, members[i].info[item]);
 						}
 					}
 				} else {
-					printTxtLine(members[i].info.name, "closedTitle");
+					printTxtLine(members[i].info.name, 'closedTitle');
 				}
 			}
 		}
@@ -270,16 +260,15 @@ fly.infoCtrlrInit = function(infoPrefs) {
 		function drawGrip() {
 			var _s2 = new paper.Size(ibox.boxWidth, 30);
 			var grip = new paper.Path.Rectangle(ibox.origin, _s2);
-			grip.name = "grip";
+			grip.name = 'grip';
 			grip.fillColor = style.plain; // needs a fill color to work!
 			grip.visible = false;
 			infoGroup.box.addChild(grip);
 
 			for ( var i = 0; i < 7; i++) {
 				var from = new paper.Point(
-								ibox.origin.x,
-								ibox.origin.y + 0.3 * style.size * i + 2
-								);
+						ibox.origin.x,
+						ibox.origin.y + 0.3 * style.size * i + 2);
 				var to = new paper.Point(from.x + ibox.boxWidth, from.y);
 				var gripLine = new paper.Path.Line(from, to);
 				gripLine.strokeColor = style.screenBars;
@@ -292,8 +281,8 @@ fly.infoCtrlrInit = function(infoPrefs) {
 			ibox.txtWidth = ibox.txtLen * style.size * 0.68;
 			ibox.boxWidth = ibox.txtWidth + 2 * style.offset;
 			var _s = new paper.Size(
-							ibox.boxWidth,
-							ibox.cursor.y - ibox.origin.y - style.offset);
+					ibox.boxWidth,
+					ibox.cursor.y - ibox.origin.y - style.offset);
 			var _r = new paper.Rectangle(ibox.origin, _s);
 			var clipper = new paper.Path.RoundRectangle(_r, 10);
 			var screen = new paper.Path.Rectangle(_r);
@@ -304,7 +293,7 @@ fly.infoCtrlrInit = function(infoPrefs) {
 			infoGroup.box.clipped = true;
 			drawGrip();
 			drawBars();
-			fly.layer("info").visible = ibox.visible;
+			fly.layer('info').visible = ibox.visible;
 		}
 
 		// ------------------- animation ----------------------//
@@ -315,7 +304,7 @@ fly.infoCtrlrInit = function(infoPrefs) {
 
 		function grab(point) {
 			// ignore if not visible, else animate arrows and dragging
-			if (!fly.layer("info").visible) {
+			if (!fly.layer('info').visible) {
 				return;
 			}
 			for ( var i = 0; i < infoGroup.bars.children.length; i++) {
@@ -359,69 +348,65 @@ fly.infoCtrlrInit = function(infoPrefs) {
 		}
 
 		// ------------------- information collection ---------//
-		function time() {
-			return _time;
-		}
 
 		function updateTime(args) {
-			// v 0.3.6
-			// args from frameUpdate {delta,time,count}
-			// if args is undefined, check paper onFrame is publishing:
-			// ("frame",event);
-			if (args === undefined) {
-				_time.frame++;
-				return;
-			}
 			_time.frame = args.count; // frames since start
 			_time.time = args.time; // seconds since start
-			_time.fps.ave = args.count / args.time;
-			_time.fps.curr = 1 / args.delta;
+			if (args.time - _time.refresh > 0.1) {
+				_time.refresh = args.time;
+				_time.fps.avg = _time.frame / _time.time;
+				_time.fps.curr = 1 / args.delta;
+			}
 		}
 
-		function info() {
-			// for self-monitoring, also a model for member's info method
-			var _i = {};
-			_i.name = name;
-			_i.version = {
-				val : version,
-				type : "version"
-			};
-			_i.origin_pt = {
-				val : ibox.origin,
-				type : "val"
-			};
-			_i.members = {
-				val : members.length,
-				type : "val"
-			};
-			// _i.width = { val: ibox.txtWidth.toFixed(2), type: "val" };
-			_i.frame = {
-				val : _time.frame,
-				type : "val"
-			};
-			_i.time = {
-				val : _time.time.toFixed(2),
-				type : "val"
-			};
-			_i.fpsAve = {
-				val : _time.fps.ave.toFixed(2),
-				type : "val"
-			};
-			_i.fpsCurr = {
-				val : _time.fps.curr.toFixed(2),
-				type : "val"
-			};
-			// _i.moving = { val: moving, type: "bool" };
-			_i.mobile = {
-				val : device.isMobile,
-				type : "bool"
-			};
-			_i.ipad = {
-				val : device.isIpad,
-				type : "bool"
-			};
-			return _i;
-		}
+// NOTE: info is now controlled via grantInfo methods for the IC as well
+// this is here to view past info monitoring, once time is adjusted,
+// this can be removed
+
+//		function info() {
+//			// for self-monitoring, also a model for member's info method
+//			var _i = {};
+//			_i.name = name;
+//			_i.version = {
+//				val : version,
+//				type : 'version'
+//			};
+//			_i.origin_pt = {
+//				val : ibox.origin,
+//				type : 'val'
+//			};
+//			_i.members = {
+//				val : members.length,
+//				type : 'val'
+//			};
+//			// _i.width = { val: ibox.txtWidth.toFixed(2), type: 'val' };
+//			_i.frame = {
+//				val : _time.frame,
+//				type : 'val'
+//			};
+//			_i.time = {
+//				val : _time.time.toFixed(2),
+//				type : 'val'
+//			};
+//			_i.fpsAve = {
+//				val : _time.fps.avg.toFixed(2),
+//				type : 'val'
+//			};
+//			_i.fpsCurr = {
+//				val : _time.fps.curr.toFixed(2),
+//				type : 'val'
+//			};
+//			// _i.moving = { val: moving, type: 'bool' };
+//			_i.mobile = {
+//				val : device.isMobile,
+//				type : 'bool'
+//			};
+//			_i.ipad = {
+//				val : device.isIpad,
+//				type : 'bool'
+//			};
+//			return _i;
+//		}
 
 		function updateInfo(force) {
 			// v 0.3.6
@@ -437,8 +422,8 @@ fly.infoCtrlrInit = function(infoPrefs) {
 						for (key in members[i].info) {
 							if (members[i].info.hasOwnProperty(key)) {
 								try {
-									if (key === "name") {
-										updateWidth("name",
+									if (key === 'name') {
+										updateWidth('name',
 												members[i].info.name);
 									} else {
 										updateWidth(key,
@@ -458,7 +443,7 @@ fly.infoCtrlrInit = function(infoPrefs) {
 			updateTime(args);
 
 			// only update panel if visible or visibility has changed
-			if (fly.layer("info").visible || ibox.visible) {
+			if (fly.layer('info').visible || ibox.visible) {
 				if (infoGroup.box.hasChildren()) {
 					infoGroup.box.removeChildren();
 				}
@@ -489,16 +474,16 @@ fly.infoCtrlrInit = function(infoPrefs) {
 					}
 				}
 				break;
-			case "frame":
+			case 'frame':
 				update(args);
 				break;
-			case "mouse down":
+			case 'mouse down':
 				grab(args.point);
 				break;
-			case "mouse drag":
+			case 'mouse drag':
 				drag(args.point);
 				break;
-			case "mouse up":
+			case 'mouse up':
 				drop(args.point);
 				break;
 			default:
@@ -506,33 +491,71 @@ fly.infoCtrlrInit = function(infoPrefs) {
 		}
 
 		return {
+//			_i.fpsAve = {
+//			val : _time.fps.avg.toFixed(2),
+//			type : 'val'
+//		};
+//		_i.fpsCurr = {
+//			val : ,
+//			type : 'val'
+//		};
+
+			name: name,
+			version: version,
+			'key trigger': keyTrigger,
+			members: members,
+			numMembers: function(){
+				return members.length;
+			},
+			// time information:
+			frame : function() {
+				return _time.frame;
+			},
+			time : function() {
+				return _time;
+			},
+			"time passed": function () {
+				return _time.time.toFixed(1);
+			},
+			fps: function() {
+				return _time.fps.curr.toFixed(1);
+			},
+			fpsAvg: function() {
+				return _time.fps.avg.toFixed(1);
+			},
 			moving : function() {
 				return moving;
 			},
-			// temp patch ???
-			fps : function() {
-				return time.fps.ave;
-			},
-			// temp patch ???
 			isMobile : function() {
 				return device.isMobile;
 			},
 			isIpad : function() {
 				return device.isIpad;
 			},
-			init : init,
-			time : time,
 			register : register,
 			deregister : deregister,
-			request : request,
-			info : info,
-			eventCall : eventCall,
-			members : members
+			eventCall : eventCall
 		};
 
-	})(infoPrefs); // END infoCntrlr
+	})(infoPrefs); // END infoCntrlr construction
 
-	fly.infoCtrlr.init();
+	// ------------------- initialize ----------------------//
 
+	fly.grantString(fly.infoCtrlr);
+	fly.grantInfo(fly.infoCtrlr).addInfo({
+		'key trigger': { val: 'key trigger', type: 'val' },
+		'members' : { val: 'numMembers', type: 'func' },
+		'time passed' : {val: 'time passed', type: 'func'},
+		'frames per second' : {val: 'fps', type: 'func'},
+		'fps average' : {val: 'fpsAvg',type: 'func'},
+//		'moving': {val: 'moving', type: 'func'}
+		'mobile': {val: 'isMobile', type: 'func'},
+		'ipad' : {val: 'isIpad', type: 'func'}
+	});
+	fly.infoCtrlr.register(fly.infoCtrlr);
+//	fly.grantEvents(fly.infoCtrlr);
+	fly.eventCtrlr.subscribe( [ fly.infoCtrlr['key trigger'], 'frame', 'mouse down',
+			'mouse drag', 'mouse up' ], fly.infoCtrlr);
+	
 }; // END infoCntrlrInit
 

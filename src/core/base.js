@@ -15,8 +15,10 @@ fly.base = function(n){
 	var o = {};
 	o.name =  n || "fly base",
 	o.version =  "0.5beta";
+
 	o.register = function () {
 		fly.infoCtrlr.register(this);
+		return this;
 	};
 
 	fly.grantString(o);

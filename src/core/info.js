@@ -1,7 +1,7 @@
 /*
  * This file is part of the flypaper.js build.
  * Use grunt to assemble the completed file.
- * Find the build file in dist/flypaper.js
+ * Find the built file in dist/flypaper.js
  */
 
 /*
@@ -20,7 +20,7 @@
  * in a private property _info.
  * #### Granting Info
  * To grant info to your object use fly.grantInfo(myObject).
- * Objects inheriting from fly.base already have been granted.
+ * Objects inhereting from fly.base already have been granted.
  * #### Adding Info
  * To add info to the infopacket, use addInfo()
  * example:
@@ -62,7 +62,14 @@ fly.grantInfo = function(o) {
 				t = args[el].type;
 				if (reading) {
 					if (t === "val" || t === "bool") {
-					v = o[v];
+						v = o[v];
+					} else if (t.match(/^f$|func|function/)) {
+						v = o[v]();
+						t = 'val';
+					}
+					// type cast bool style values as bool
+					if (v === true || v === false) {
+						t = 'bool';
 					}
 				}
 				_i[el] = {"val":v,"type":t};
@@ -103,7 +110,7 @@ fly.grantInfo = function(o) {
 		_i = mergeInfo(this,_i,_info);
 		return _i;
 	};
-
+	
 	return o;
 
 };

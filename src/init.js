@@ -44,7 +44,7 @@ fly.init = function (args) {
 
 	fly.foo = "foo";
 	fly.grantInfo(fly).addInfo({
-		debug : { val: "debug", type: "bool" },
+		debug : { val: "debug", type: "val" },
 		width : { val: "width", type: "val" },
 		height : { val: "height", type: "val" }
 	});
