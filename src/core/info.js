@@ -1,7 +1,7 @@
 /*
  * This file is part of the flypaper.js build.
  * Use grunt to assemble the completed file.
- * Find the built file in dist/flypaper.js
+ * Find the build file in dist/flypaper.js
  */
 
 /*
@@ -20,7 +20,7 @@
  * in a private property _info.
  * #### Granting Info
  * To grant info to your object use fly.grantInfo(myObject).
- * Objects inhereting from fly.base already have been granted.
+ * Objects inheriting from fly.base already have been granted.
  * #### Adding Info
  * To add info to the infopacket, use addInfo()
  * example:
