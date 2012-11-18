@@ -7,26 +7,25 @@
 
 /*
  * ## Layers
- *	*called on init, creates drawing layers in fly.layers*
- *
- *	### Creates layers in stage array.
+ * Called on init, creates drawing layers in fly.layers
+ * Creates layers in stage array.
  * Defaults to "background", "layer 1", and "info"
  * ### Arguments passed from init:
  * #### layers
  * Can be an *integer* or *array*, defaults to 1.
  * Integer creates that many layers
- *  (plus the background and info layers),
- *  layers will be named "layer 1", "layer 2" etc.
+ * (plus the background and info layers),
+ * layers will be named "layer 1", "layer 2" etc.
  * Array of names will create that many layers,
- *  each referable by that name.
+ * each can be referanced by that name.
  * #### background
  * Bool, defaults true.
  * If set to false, no background layer is created,
  * first layer by integer is named "layer 0"
- *
+ * ### reserved words
  * "background" and "info" are reserved layer names,
  * background is primarily used for a solid color.
- * See fly.colorUtil.background for setting background 
+ * See fly.colorUtil.background for setting background
  * color.
  */
 
