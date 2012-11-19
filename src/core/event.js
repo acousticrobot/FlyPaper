@@ -4,15 +4,44 @@
  * Find the built file in dist/flypaper.js
  */
 
-//  private registry = {"frame":"update","beat wing":"updateWing",...etc.}
+/*
+
+## Events
+Objects can subscribe to event through the event Controller (EC)
+Grant events will give any object all the necessary functions to
+register and receive events.
+
+### Registry
+The registry is a private object pairing events and handlers.
+    {"frame":"update","beat wing":"updateWing",...}
+
+### Register Event
+RegisterEvent adds events to the registry and subscribes to events
+through the EC. Event objects take the form:
+    {"event 1":"handlerOne","event 2":"handlerTwo",...}
+Each handler should be a public method which can accept the event
+args. Events can be any event expected from another object, or any
+paper.js events ("mouse up","frame" etc.). For paper events, expect
+the event args passed by paper.js. If events already exist in the
+objects registry, they will be replaced with the new handler.
+
+### Deregister Event
+DeregisterEvent(event) unsubscribes the event from the EC and removes
+it from the registry. (event) can be a string representing one event
+name, an array of events, or the string "all" to deregister from all
+events.
+
+### Event Call
+eventCall(event,args) is the method called by eventCtrlr for registered
+events. event is a string which should match the event in the registry.
+
+*/
+
 
 fly.grantEvents = function (o) {
 	var registry = {};
 
 	o.registerEvent = function (eventObj) {
-		// eventObj = {"event 1":"handlerOne","event 2":"handlerTwo",...}
-		// record event(s) and handling method in registry
-		// if event exists in registry, the handler will be replaced.
 		for ( var event in eventObj ) {
 			if (eventObj.hasOwnProperty(event)) {
 				if (!registry.hasOwnProperty(event)) {
@@ -25,8 +54,6 @@ fly.grantEvents = function (o) {
 	};
 
 	o.deregisterEvent = function (event) {
-		// events can be a string representing one event name, an
-		// array of events, or the string "all" to deregister all
 		var e;
 		var	dereg = function (e) {
 			if (registry.hasOwnProperty(e)) {
@@ -55,12 +82,9 @@ fly.grantEvents = function (o) {
 	};
 
 	o.eventCall = function (event,args) {
-		// method called by eventCtrlr for registered events
-		// event = "event" as string
-		// optional args contain the event (usually as sent by paper.js)
 		if (registry.hasOwnProperty(event) && o.hasOwnProperty(registry[event])) {
 			var func = registry[event];
-			o[func](args);
+			this[func](args);
 		}
 		return o;
 	};

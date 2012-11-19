@@ -3,7 +3,7 @@
  * Author: Jonathan Gabel
  * Email: post@jonathangabel.com
  * URL: http://jonathangabel.com
- * Date: 2012-11-18 14:01:48
+ * Date: 2012-11-18 20:38:12
  * https://github.com/josankapo/FlyPaper
  * Copyright (c) 2012 Jonathan Gabel;
  * Licensed MIT
@@ -91,38 +91,43 @@ fly.grantString = function(o) {
 };
 
 /*
- * ## Info
- * Any object that will communicate with the InfoCtrlr needs to
- * have an info method that returns an info packet, which
- * takes the form:
- * { name:"myObj",
- *   version:{val:"0.5",type:"string"},
- *   aState:{val:"true",type:"bool"},
- *   aNumber: {val: 5, type:"val"}}
- * ### grantInfo
- * grantInfo is a mixin that grants objects the ability
- * to send info packets, and to define what properties
- * will be sent in the info packet. The info is stored
- * in a private property _info.
- * #### Granting Info
- * To grant info to your object use fly.grantInfo(myObject).
- * Objects inhereting from fly.base already have been granted.
- * #### Adding Info
- * To add info to the infopacket, use addInfo()
- * example:
- * myObject.addInfo(
- *   sleeping:{val:"sleeping",type:"bool"},
- *   speed:{val:"speed",type:"val"})
- * If the property type is "bool" or "val", these must be callable
- * by your object to obtain the value as a string, number, or bool.
- * So for the above example you need to be able to call:
- * myObject["sleeping"] // true or false
- * myObject["speed"] // number or string
- * If you need to add anything more complicated into the info packet,
- * you can override the info method. See eventCtrlr for an example
- * of a custom info method
- *
- */
+## Info
+Any object that will communicate with the InfoCtrlr needs to
+have an info method that returns an info packet, which
+takes the form:
+{ name:"myObj",
+  version:{val:"0.5",type:"string"},
+  aState:{val:"true",type:"bool"},
+  aNumber: {val: 5, type:"val"}}
+
+### grantInfo
+grantInfo is a mixin that grants objects the ability
+to send info packets, and to define what properties
+will be sent in the info packet. The info is stored
+in a private property _info.
+
+#### Granting Info
+To grant info to your object use fly.grantInfo(myObject).
+Your object must also register with the IC -- see register
+in fly.base. Objects inheriting from fly.base already have
+granted info methods.
+
+#### Adding Info
+To add info to the infopacket, use addInfo()
+example:
+myObject.addInfo(
+  sleeping:{val:"sleeping",type:"bool"},
+  speed:{val:"speed",type:"val"})
+If the property type is "bool" or "val", these must be callable
+by your object to obtain the value as a string, number, or bool.
+So for the above example you need to be able to call:
+myObject["sleeping"] // true or false
+myObject["speed"] // number or string
+If you need to add anything more complicated into the info packet,
+you can override the info method. See eventCtrlr for an example
+of a custom info method
+*/
+
 fly.grantInfo = function(o) {
 	// store the properties sent to infoController via call to info()
 	var name = o.name || fly.name,
@@ -201,15 +206,44 @@ fly.grantInfo = function(o) {
 
 };
 
-//  private registry = {"frame":"update","beat wing":"updateWing",...etc.}
+/*
+
+## Events
+Objects can subscribe to event through the event Controller (EC)
+Grant events will give any object all the necessary functions to
+register and receive events.
+
+### Registry
+The registry is a private object pairing events and handlers.
+    {"frame":"update","beat wing":"updateWing",...}
+
+### Register Event
+RegisterEvent adds events to the registry and subscribes to events
+through the EC. Event objects take the form:
+    {"event 1":"handlerOne","event 2":"handlerTwo",...}
+Each handler should be a public method which can accept the event
+args. Events can be any event expected from another object, or any
+paper.js events ("mouse up","frame" etc.). For paper events, expect
+the event args passed by paper.js. If events already exist in the
+objects registry, they will be replaced with the new handler.
+
+### Deregister Event
+DeregisterEvent(event) unsubscribes the event from the EC and removes
+it from the registry. (event) can be a string representing one event
+name, an array of events, or the string "all" to deregister from all
+events.
+
+### Event Call
+eventCall(event,args) is the method called by eventCtrlr for registered
+events. event is a string which should match the event in the registry.
+
+*/
+
 
 fly.grantEvents = function (o) {
 	var registry = {};
 
 	o.registerEvent = function (eventObj) {
-		// eventObj = {"event 1":"handlerOne","event 2":"handlerTwo",...}
-		// record event(s) and handling method in registry
-		// if event exists in registry, the handler will be replaced.
 		for ( var event in eventObj ) {
 			if (eventObj.hasOwnProperty(event)) {
 				if (!registry.hasOwnProperty(event)) {
@@ -222,8 +256,6 @@ fly.grantEvents = function (o) {
 	};
 
 	o.deregisterEvent = function (event) {
-		// events can be a string representing one event name, an
-		// array of events, or the string "all" to deregister all
 		var e;
 		var	dereg = function (e) {
 			if (registry.hasOwnProperty(e)) {
@@ -252,12 +284,9 @@ fly.grantEvents = function (o) {
 	};
 
 	o.eventCall = function (event,args) {
-		// method called by eventCtrlr for registered events
-		// event = "event" as string
-		// optional args contain the event (usually as sent by paper.js)
 		if (registry.hasOwnProperty(event) && o.hasOwnProperty(registry[event])) {
 			var func = registry[event];
-			o[func](args);
+			this[func](args);
 		}
 		return o;
 	};
@@ -978,6 +1007,8 @@ fly.colorPalette = function(args){
  */
 
 fly.infoCtrlrInit = function(infoPrefs) {
+	
+	var events, key;
 
 	fly.infoCtrlr = (function(infoPrefs) {
 
@@ -1254,10 +1285,20 @@ fly.infoCtrlrInit = function(infoPrefs) {
 		// ------------------- animation ----------------------//
 
 		function toggleDisplay() {
-			ibox.visible = !ibox.visible;
+			if (fly.debug) {
+				ibox.visible = !ibox.visible;
+				if (ibox.origin.x < 1 || ibox.origin.x > fly.height ||
+						ibox.origin.y < 1 || ibox.origin.y > fly.width) {
+						ibox.origin.x = 10;
+						ibox.origin.y = 10;
+						ibox.txtOrigin = ibox.origin.add(ibox.txtOffset);
+						resetBars();
+				}
+			}
 		}
 
-		function grab(point) {
+		function grab(args) {
+			var point = args.point;
 			// ignore if not visible, else animate arrows and dragging
 			if (!fly.layer('info').visible) {
 				return;
@@ -1275,7 +1316,8 @@ fly.infoCtrlrInit = function(infoPrefs) {
 			}
 		}
 
-		function drag(point) {
+		function drag(args) {
+			var point = args.point;
 			if (moving) {
 				ibox.origin = point.subtract(ibox.handle.or);
 				ibox.txtOrigin = ibox.origin.add(ibox.txtOffset);
@@ -1283,7 +1325,8 @@ fly.infoCtrlrInit = function(infoPrefs) {
 			}
 		}
 
-		function drop(point) {
+		function drop(args) {
+			var point = args.point;
 			moving = false;
 		}
 
@@ -1396,7 +1439,6 @@ fly.infoCtrlrInit = function(infoPrefs) {
 
 		function update(args) {
 			updateTime(args);
-
 			// only update panel if visible or visibility has changed
 			if (fly.layer('info').visible || ibox.visible) {
 				if (infoGroup.box.hasChildren()) {
@@ -1414,47 +1456,38 @@ fly.infoCtrlrInit = function(infoPrefs) {
 			}
 		}
 
-		function eventCall(e, args) {
-			switch (e) {
-			case keyTrigger:
-				if (fly.debug) {
-					toggleDisplay();
-					// make sure handle isn't off screen:
-					if (ibox.origin.x < 1 || ibox.origin.x > fly.height ||
-						ibox.origin.y < 1 || ibox.origin.y > fly.width) {
-						ibox.origin.x = 10;
-						ibox.origin.y = 10;
-						ibox.txtOrigin = ibox.origin.add(ibox.txtOffset);
-						resetBars();
-					}
-				}
-				break;
-			case 'frame':
-				update(args);
-				break;
-			case 'mouse down':
-				grab(args.point);
-				break;
-			case 'mouse drag':
-				drag(args.point);
-				break;
-			case 'mouse up':
-				drop(args.point);
-				break;
-			default:
-			}
-		}
+//		function eventCall(e, args) {
+//			switch (e) {
+//			case keyTrigger:
+//				if (fly.debug) {
+//					toggleDisplay();
+//					// make sure handle isn't off screen:
+//					if (ibox.origin.x < 1 || ibox.origin.x > fly.height ||
+//						ibox.origin.y < 1 || ibox.origin.y > fly.width) {
+//						ibox.origin.x = 10;
+//						ibox.origin.y = 10;
+//						ibox.txtOrigin = ibox.origin.add(ibox.txtOffset);
+//						resetBars();
+//					}
+//				}
+//				break;
+//			case 'frame':
+//				update(args);
+//				break;
+//			case 'mouse down':
+//				grab(args.point);
+//				break;
+//			case 'mouse drag':
+//				drag(args.point);
+//				break;
+//			case 'mouse up':
+//				drop(args.point);
+//				break;
+//			default:
+//			}
+//		}
 
 		return {
-//			_i.fpsAve = {
-//			val : _time.fps.avg.toFixed(2),
-//			type : 'val'
-//		};
-//		_i.fpsCurr = {
-//			val : ,
-//			type : 'val'
-//		};
-
 			name: name,
 			version: version,
 			'key trigger': keyTrigger,
@@ -1487,9 +1520,14 @@ fly.infoCtrlrInit = function(infoPrefs) {
 			isIpad : function() {
 				return device.isIpad;
 			},
+			update: update,
 			register : register,
 			deregister : deregister,
-			eventCall : eventCall
+			toggleDisplay : toggleDisplay,
+			grab: grab,
+			drag: drag,
+			drop: drop
+//			eventCall : eventCall
 		};
 
 	})(infoPrefs); // END infoCntrlr construction
@@ -1508,9 +1546,18 @@ fly.infoCtrlrInit = function(infoPrefs) {
 		'ipad' : {val: 'isIpad', type: 'func'}
 	});
 	fly.infoCtrlr.register(fly.infoCtrlr);
-//	fly.grantEvents(fly.infoCtrlr);
-	fly.eventCtrlr.subscribe( [ fly.infoCtrlr['key trigger'], 'frame', 'mouse down',
-			'mouse drag', 'mouse up' ], fly.infoCtrlr);
+	events = {
+		'frame': "update",
+		'mouse down': 'grab',
+		'mouse drag': 'drag',
+		'mouse up' : 'drop'
+	},
+		key = fly.infoCtrlr['key trigger'];
+	events[key] = "toggleDisplay";
+	fly.grantEvents(fly.infoCtrlr).registerEvent(events);
+	fly.infoCtrlr.toggleDisplay();
+//	fly.eventCtrlr.subscribe( [ fly.infoCtrlr['key trigger'], 'frame', 'mouse down',
+//			'mouse drag', 'mouse up' ], fly.infoCtrlr);
 	
 }; // END infoCntrlrInit
 
