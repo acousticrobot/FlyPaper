@@ -5,22 +5,25 @@
  */
 
 /*
- * ## InfoCtrlr (IC)
- * The info controller allows information to be displayed
- * in a window within the canvas.  Objects register to
- * be tracked by the IC. They must have a method info
- * which returns an info packet to the IC.
- * ### register
- * New objects can register as a member with infoCtrlr
- * by sending the request: fly.infocontroller.register(this);
- * optional second boolean parameter display: (this,false)
- * will initialize this objects panel as open or closed.
- * ### info method
- * On frame events, infoCtrlr sends a request to members
- * for an info packet.	Info packets are of the form:
- * { name: "name", var1:{val: var1, type:"val"},var2:{..}..},
- * See info in grantinfo for details on the info packet.
- */
+## InfoCtrlr (IC)
+The info controller allows information to be displayed
+in a window within the canvas.  Objects register to
+be tracked by the IC. They must have a method info
+which returns an info packet to the IC.
+
+### register
+New objects can register as a member with infoCtrlr
+by sending the request: fly.infocontroller.register(this);
+optional second boolean parameter display: (this,false)
+will initialize this objects panel as open or closed.
+
+### info
+On frame events, infoCtrlr sends a request to members
+via object.info() for an info packet.
+Info packets are of the form:
+    { name: "name", var1:{val: var1, type:"val"},var2:{..}..},
+See info in grantinfo for details on the info packet.
+*/
 
 fly.infoCtrlrInit = function(infoPrefs) {
 	
@@ -373,54 +376,6 @@ fly.infoCtrlrInit = function(infoPrefs) {
 			}
 		}
 
-// NOTE: info is now controlled via grantInfo methods for the IC as well
-// this is here to view past info monitoring, once time is adjusted,
-// this can be removed
-
-//		function info() {
-//			// for self-monitoring, also a model for member's info method
-//			var _i = {};
-//			_i.name = name;
-//			_i.version = {
-//				val : version,
-//				type : 'version'
-//			};
-//			_i.origin_pt = {
-//				val : ibox.origin,
-//				type : 'val'
-//			};
-//			_i.members = {
-//				val : members.length,
-//				type : 'val'
-//			};
-//			// _i.width = { val: ibox.txtWidth.toFixed(2), type: 'val' };
-//			_i.frame = {
-//				val : _time.frame,
-//				type : 'val'
-//			};
-//			_i.time = {
-//				val : _time.time.toFixed(2),
-//				type : 'val'
-//			};
-//			_i.fpsAve = {
-//				val : _time.fps.avg.toFixed(2),
-//				type : 'val'
-//			};
-//			_i.fpsCurr = {
-//				val : _time.fps.curr.toFixed(2),
-//				type : 'val'
-//			};
-//			// _i.moving = { val: moving, type: 'bool' };
-//			_i.mobile = {
-//				val : device.isMobile,
-//				type : 'bool'
-//			};
-//			_i.ipad = {
-//				val : device.isIpad,
-//				type : 'bool'
-//			};
-//			return _i;
-//		}
 
 		function updateInfo(force) {
 			// v 0.3.6
@@ -472,37 +427,6 @@ fly.infoCtrlrInit = function(infoPrefs) {
 			}
 		}
 
-//		function eventCall(e, args) {
-//			switch (e) {
-//			case keyTrigger:
-//				if (fly.debug) {
-//					toggleDisplay();
-//					// make sure handle isn't off screen:
-//					if (ibox.origin.x < 1 || ibox.origin.x > fly.height ||
-//						ibox.origin.y < 1 || ibox.origin.y > fly.width) {
-//						ibox.origin.x = 10;
-//						ibox.origin.y = 10;
-//						ibox.txtOrigin = ibox.origin.add(ibox.txtOffset);
-//						resetBars();
-//					}
-//				}
-//				break;
-//			case 'frame':
-//				update(args);
-//				break;
-//			case 'mouse down':
-//				grab(args.point);
-//				break;
-//			case 'mouse drag':
-//				drag(args.point);
-//				break;
-//			case 'mouse up':
-//				drop(args.point);
-//				break;
-//			default:
-//			}
-//		}
-
 		return {
 			name: name,
 			version: version,
@@ -543,7 +467,6 @@ fly.infoCtrlrInit = function(infoPrefs) {
 			grab: grab,
 			drag: drag,
 			drop: drop
-//			eventCall : eventCall
 		};
 
 	})(infoPrefs); // END infoCntrlr construction
@@ -557,7 +480,6 @@ fly.infoCtrlrInit = function(infoPrefs) {
 		'time passed' : {val: 'time passed', type: 'func'},
 		'frames per second' : {val: 'fps', type: 'func'},
 		'fps average' : {val: 'fpsAvg',type: 'func'},
-//		'moving': {val: 'moving', type: 'func'}
 		'mobile': {val: 'isMobile', type: 'func'},
 		'ipad' : {val: 'isIpad', type: 'func'}
 	});
@@ -572,8 +494,6 @@ fly.infoCtrlrInit = function(infoPrefs) {
 	events[key] = "toggleDisplay";
 	fly.grantEvents(fly.infoCtrlr).registerEvent(events);
 	fly.infoCtrlr.toggleDisplay();
-//	fly.eventCtrlr.subscribe( [ fly.infoCtrlr['key trigger'], 'frame', 'mouse down',
-//			'mouse drag', 'mouse up' ], fly.infoCtrlr);
 	
 }; // END infoCntrlrInit
 
