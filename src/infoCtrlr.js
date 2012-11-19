@@ -23,6 +23,8 @@
  */
 
 fly.infoCtrlrInit = function(infoPrefs) {
+	
+	var events, key;
 
 	fly.infoCtrlr = (function(infoPrefs) {
 
@@ -299,10 +301,20 @@ fly.infoCtrlrInit = function(infoPrefs) {
 		// ------------------- animation ----------------------//
 
 		function toggleDisplay() {
-			ibox.visible = !ibox.visible;
+			if (fly.debug) {
+				ibox.visible = !ibox.visible;
+				if (ibox.origin.x < 1 || ibox.origin.x > fly.height ||
+						ibox.origin.y < 1 || ibox.origin.y > fly.width) {
+						ibox.origin.x = 10;
+						ibox.origin.y = 10;
+						ibox.txtOrigin = ibox.origin.add(ibox.txtOffset);
+						resetBars();
+				}
+			}
 		}
 
-		function grab(point) {
+		function grab(args) {
+			var point = args.point;
 			// ignore if not visible, else animate arrows and dragging
 			if (!fly.layer('info').visible) {
 				return;
@@ -320,7 +332,8 @@ fly.infoCtrlrInit = function(infoPrefs) {
 			}
 		}
 
-		function drag(point) {
+		function drag(args) {
+			var point = args.point;
 			if (moving) {
 				ibox.origin = point.subtract(ibox.handle.or);
 				ibox.txtOrigin = ibox.origin.add(ibox.txtOffset);
@@ -328,7 +341,8 @@ fly.infoCtrlrInit = function(infoPrefs) {
 			}
 		}
 
-		function drop(point) {
+		function drop(args) {
+			var point = args.point;
 			moving = false;
 		}
 
@@ -441,7 +455,6 @@ fly.infoCtrlrInit = function(infoPrefs) {
 
 		function update(args) {
 			updateTime(args);
-
 			// only update panel if visible or visibility has changed
 			if (fly.layer('info').visible || ibox.visible) {
 				if (infoGroup.box.hasChildren()) {
@@ -459,47 +472,38 @@ fly.infoCtrlrInit = function(infoPrefs) {
 			}
 		}
 
-		function eventCall(e, args) {
-			switch (e) {
-			case keyTrigger:
-				if (fly.debug) {
-					toggleDisplay();
-					// make sure handle isn't off screen:
-					if (ibox.origin.x < 1 || ibox.origin.x > fly.height ||
-						ibox.origin.y < 1 || ibox.origin.y > fly.width) {
-						ibox.origin.x = 10;
-						ibox.origin.y = 10;
-						ibox.txtOrigin = ibox.origin.add(ibox.txtOffset);
-						resetBars();
-					}
-				}
-				break;
-			case 'frame':
-				update(args);
-				break;
-			case 'mouse down':
-				grab(args.point);
-				break;
-			case 'mouse drag':
-				drag(args.point);
-				break;
-			case 'mouse up':
-				drop(args.point);
-				break;
-			default:
-			}
-		}
+//		function eventCall(e, args) {
+//			switch (e) {
+//			case keyTrigger:
+//				if (fly.debug) {
+//					toggleDisplay();
+//					// make sure handle isn't off screen:
+//					if (ibox.origin.x < 1 || ibox.origin.x > fly.height ||
+//						ibox.origin.y < 1 || ibox.origin.y > fly.width) {
+//						ibox.origin.x = 10;
+//						ibox.origin.y = 10;
+//						ibox.txtOrigin = ibox.origin.add(ibox.txtOffset);
+//						resetBars();
+//					}
+//				}
+//				break;
+//			case 'frame':
+//				update(args);
+//				break;
+//			case 'mouse down':
+//				grab(args.point);
+//				break;
+//			case 'mouse drag':
+//				drag(args.point);
+//				break;
+//			case 'mouse up':
+//				drop(args.point);
+//				break;
+//			default:
+//			}
+//		}
 
 		return {
-//			_i.fpsAve = {
-//			val : _time.fps.avg.toFixed(2),
-//			type : 'val'
-//		};
-//		_i.fpsCurr = {
-//			val : ,
-//			type : 'val'
-//		};
-
 			name: name,
 			version: version,
 			'key trigger': keyTrigger,
@@ -532,9 +536,14 @@ fly.infoCtrlrInit = function(infoPrefs) {
 			isIpad : function() {
 				return device.isIpad;
 			},
+			update: update,
 			register : register,
 			deregister : deregister,
-			eventCall : eventCall
+			toggleDisplay : toggleDisplay,
+			grab: grab,
+			drag: drag,
+			drop: drop
+//			eventCall : eventCall
 		};
 
 	})(infoPrefs); // END infoCntrlr construction
@@ -553,9 +562,18 @@ fly.infoCtrlrInit = function(infoPrefs) {
 		'ipad' : {val: 'isIpad', type: 'func'}
 	});
 	fly.infoCtrlr.register(fly.infoCtrlr);
-//	fly.grantEvents(fly.infoCtrlr);
-	fly.eventCtrlr.subscribe( [ fly.infoCtrlr['key trigger'], 'frame', 'mouse down',
-			'mouse drag', 'mouse up' ], fly.infoCtrlr);
+	events = {
+		'frame': "update",
+		'mouse down': 'grab',
+		'mouse drag': 'drag',
+		'mouse up' : 'drop'
+	},
+		key = fly.infoCtrlr['key trigger'];
+	events[key] = "toggleDisplay";
+	fly.grantEvents(fly.infoCtrlr).registerEvent(events);
+	fly.infoCtrlr.toggleDisplay();
+//	fly.eventCtrlr.subscribe( [ fly.infoCtrlr['key trigger'], 'frame', 'mouse down',
+//			'mouse drag', 'mouse up' ], fly.infoCtrlr);
 	
 }; // END infoCntrlrInit
 
