@@ -1,19 +1,42 @@
-/**
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: flypaper.js</title>
+    
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+    
+    <h1 class="page-title">Source: flypaper.js</h1>
+    
+    
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source"><code>/**
  * FlyPaper --v0.4.5
- *
- * Date 2013-02-21 22:46:49
+ * @version 0.4.5-0221223838
  * @author Jonathan Gabel
  * @email post@jonathangabel.com
- * http://jonathangabel.com
+ * @URL http://jonathangabel.com
+ * @Date 2013-02-21 22:38:38
  * https://github.com/josankapo/FlyPaper
- * @Copyright (C) 2013
+ * @Copyright (C) 2013 Jonathan Gabel;
  * @Licensed MIT
- *
- * @version 0.4.5-130221224649
  * @namespace fly  
 */
-
-
 var fly = fly === undefined ? {} : fly ;
 if (typeof fly !== "object") {
 	throw new Error("fly is not an object!");
@@ -33,6 +56,8 @@ if (typeof Object.create !== 'function') {
 		return new F();
 	};
 }
+
+
 /**
  * A recursive method for parsing an object or array to a string. An object can be passed to fly.toString(object),
  * or the method can be granted to an object using grantString.
@@ -57,7 +82,6 @@ if (typeof Object.create !== 'function') {
  * myObject.toString(2)
  * // returns: '{"a":0,"b":[0,[1,2,3],[4,5,object]]}'
  */
-
 fly.toString = function(o,toDepth,currDepth) {
 	// initial depth = 0, toDepth is the last depth examined
 	o = o || this;
@@ -83,7 +107,7 @@ fly.toString = function(o,toDepth,currDepth) {
 			if (typeof o[p] === "function") {
 				s += p + "()";
 			} else if (typeof o[p] === "object") {
-				if (currDepth < toDepth) {
+				if (currDepth &lt; toDepth) {
 					s += fly.toString(o[p],toDepth,currDepth+1);
 				} else {
 					s += "object";
@@ -215,7 +239,7 @@ fly.grantInfo = function(o) {
 			delete _info[args];
 		} else if (args instanceof Array) {
 			var el;
-			for (var i=0; i < args.length; i++) {
+			for (var i=0; i &lt; args.length; i++) {
 				if (args[i] in _info) {
 					delete _info[args[i]];
 				}
@@ -409,7 +433,7 @@ fly.eventCtrlr = (function () {
 			}
 		}
 		if (events[e]) {
-			for (var i=0; i < events[e].length; i++) {
+			for (var i=0; i &lt; events[e].length; i++) {
 				try {
 					if (args !== undefined) {
 						events[e][i].eventCall(e,args);
@@ -429,7 +453,7 @@ fly.eventCtrlr = (function () {
 		if (typeof e === 'string') {
 			e = [e];
 		}
-		for (var i=0, j = e.length; i < j ; i++) {
+		for (var i=0, j = e.length; i &lt; j ; i++) {
 			if (!events[e[i]]) {
 				// add to events
 				events[e[i]] = [o];
@@ -443,7 +467,7 @@ fly.eventCtrlr = (function () {
 	function unsubscribe(e,o) {
 
 		var remove = function(_e) {
-			for (var i=0, j = events[_e].length; i < j; i++) {
+			for (var i=0, j = events[_e].length; i &lt; j; i++) {
 				if (events[_e][i] === o) {
 					events[_e].splice(i,1); // remove 0 events;
 				}
@@ -503,7 +527,7 @@ fly.eventCtrlr = (function () {
 			}
 			_er += " has no event call";
 		}
-		for (var i=0; i < errors.length; i++) {
+		for (var i=0; i &lt; errors.length; i++) {
 			if (errors[i] === _er) {return;}
 		}
 		errors.push(_er);
@@ -558,14 +582,14 @@ fly.initLayers = function(layers,background){
 			i;
 		if (typeof layers === "number") {
 			// sanity check
-			if (layers < 1 || layers > 100) {
+			if (layers &lt; 1 || layers > 100) {
 				layers = 1;
 			}
-			for (i=0; i < layers; i++) {
+			for (i=0; i &lt; layers; i++) {
 				names.push("stage " + names.length);
 			}
 		} else if (layers instanceof Array ) {
-			for (i=0; i < layers.length; i++) {
+			for (i=0; i &lt; layers.length; i++) {
 				if (typeof layers[i] === "string") {
 					names.push(layers[i]);
 				} else {
@@ -579,7 +603,7 @@ fly.initLayers = function(layers,background){
 	fly.layers.stage = (function(){
 		var stage = [],
 			i;
-		for (i=0; i < fly.layers.names.length; i++) {
+		for (i=0; i &lt; fly.layers.names.length; i++) {
 			if (i === 0) {
 				stage[i] = paper.project.activeLayer;
 			} else {
@@ -621,13 +645,13 @@ fly.initLayers = function(layers,background){
 				v += v === 1 ? " child" : " children";
 				t = layer === paper.project.activeLayer ? "btrue" : "string";
 				if (t === "btrue") {
-					v += " <active>";
+					v += " &lt;active>";
 				}
 				return { 'val': v, 'type': t };
 			};
 
 		_i.name = this.name;
-		for (j=0; j < fly.layers.names.length; j++) {
+		for (j=0; j &lt; fly.layers.names.length; j++) {
 			_i[fly.layers.names[j]] = ipacket(fly.layers.stage[j]);
 		}
 		return _i;
@@ -636,7 +660,7 @@ fly.initLayers = function(layers,background){
 	fly.layers.toString = function(){
 		var s = '[',
 			i;
-		for (i=0; i < this.names.length; i++) {
+		for (i=0; i &lt; this.names.length; i++) {
 			s += '"' + this.names[i] + '",';
 		}
 		s = s.slice(0,-1);
@@ -711,9 +735,9 @@ fly.colorUtil = {
 		var r = cola[0],
 			g = cola[1],
 			b = cola[2];
-		var s = ((r << 16) | (g << 8) | b ).toString(16);
-		// if r < 10, pad with a zero in front
-		while (s.length < 6) {
+		var s = ((r &lt;&lt; 16) | (g &lt;&lt; 8) | b ).toString(16);
+		// if r &lt; 10, pad with a zero in front
+		while (s.length &lt; 6) {
 			s = "0" + s;
 		}
 		s = "#" + s;
@@ -727,7 +751,7 @@ fly.colorUtil = {
 		amt = amt !== undefined ? amt : 0.5;
 		var col1a = this.split(col1),
 			col2a = this.split(col2);
-		for (var i=0; i < col1a.length; i++) {
+		for (var i=0; i &lt; col1a.length; i++) {
 			col1a[i] = (col1a[i]*(1-amt)) + (col2a[i]*(amt));
 		}
 		return this.splice(col1a);
@@ -744,11 +768,11 @@ fly.colorUtil = {
 		// each a hex color. sent colors are first and last
 		// colors in the array
 		seg = seg !== undefined ? seg : 5;
-		if (seg < 3) {
+		if (seg &lt; 3) {
 			return [col1,col2];
 		}
 		var spec = [col1];
-		for (var i=1; i < seg-1; i++) {
+		for (var i=1; i &lt; seg-1; i++) {
 			spec.push(this.mix(col1,col2,i/(seg-1)));
 		}
 		spec.push(col2);
@@ -915,7 +939,7 @@ fly.colorPalette = function(args){
 		if (p.set instanceof Array === false) {
 			return 'Palette set must be an array';
 		}
-		for (i=0; i < p.set.length; i++) {
+		for (i=0; i &lt; p.set.length; i++) {
 			if (p.set[i] instanceof Array === false || p.set[i].length !== 4) {
 				return 'Palette set of unknown type';
 			}
@@ -928,7 +952,7 @@ fly.colorPalette = function(args){
 	}
 
 	function findInSet(n) {
-		for (i=0; i < fly.colorSets.length; i++) {
+		for (i=0; i &lt; fly.colorSets.length; i++) {
 			if (fly.colorSets[i].name === n) {
 				return i;
 			}
@@ -972,7 +996,7 @@ fly.colorPalette = function(args){
 		};
 		var newInfo = {palette : {val: "palette", type: "val"}},
 			spec, v;
-		for (var i=0; i < colorSet.set.length; i++) {
+		for (var i=0; i &lt; colorSet.set.length; i++) {
 			spec = colorSet.set[i];
 			v = spec[1] + '-' + spec[2] + '-' + spec[3];
 			newInfo[spec[0]] = {val:v,type:"string"};
@@ -999,7 +1023,7 @@ fly.colorPalette = function(args){
 		colorSet = fly.colorSets[index];
 		resetColor(colorSet);
 		
-		for (i=0; i < colorSet.set.length; i++) {
+		for (i=0; i &lt; colorSet.set.length; i++) {
 			spec = colorSet.set[i];
 			fly.color[spec[0]] = fly.colorUtil.spectrum(spec[0],spec[1],spec[2],spec[3]);
 		}
@@ -1071,8 +1095,8 @@ fly.infoCtrlrInit = function(infoPrefs) {
 			fullcolor = true,
 			// check that we have all the colors needed
 			colors = ['blue', 'grey', 'green', 'orange', 'red', 'purple'];
-		for ( var i = 0; i < colors.length; i++) {
-			if (!fly.color[colors[i]] || fly.color[colors[i]].length < 8) {
+		for ( var i = 0; i &lt; colors.length; i++) {
+			if (!fly.color[colors[i]] || fly.color[colors[i]].length &lt; 8) {
 				fullcolor = false;
 				break;
 			}
@@ -1159,7 +1183,7 @@ fly.infoCtrlrInit = function(infoPrefs) {
 			// everything else requests via resister to the IC
 			d = typeof (d) !== 'undefined' ? d : false;
 			// new objects register to become a member
-			for ( var i = 0; i < members.length; i++) {
+			for ( var i = 0; i &lt; members.length; i++) {
 				if (members[i].obj === o) {
 					return 'error: object already exists';
 				}
@@ -1174,7 +1198,7 @@ fly.infoCtrlrInit = function(infoPrefs) {
 		}
 
 		function deregister(o) {
-			for ( var i = 0; i < members.length; i++) {
+			for ( var i = 0; i &lt; members.length; i++) {
 				if (members[i].obj === o) {
 					members.splice(i, 1);
 					return;
@@ -1234,7 +1258,7 @@ fly.infoCtrlrInit = function(infoPrefs) {
 			// starting at text origin point
 			// create each new line of text
 			ibox.cursor = new paper.Point(ibox.txtOrigin);
-			for ( var i = 0; i < members.length; i++) {
+			for ( var i = 0; i &lt; members.length; i++) {
 				// add location to titleBar array
 				setBars();
 				if (members[i].display === true) {
@@ -1267,7 +1291,7 @@ fly.infoCtrlrInit = function(infoPrefs) {
 		}
 
 		function drawBars() {
-			for ( var i = 0; i < ibox.titleBars.length; i++) {
+			for ( var i = 0; i &lt; ibox.titleBars.length; i++) {
 				var _s = new paper.Size(ibox.txtWidth + 2 * style.offset,
 						style.spacing);
 				var bar = new paper.Path.Rectangle(ibox.titleBars[i], _s);
@@ -1285,7 +1309,7 @@ fly.infoCtrlrInit = function(infoPrefs) {
 			grip.visible = false;
 			infoGroup.box.addChild(grip);
 
-			for ( var i = 0; i < 7; i++) {
+			for ( var i = 0; i &lt; 7; i++) {
 				var from = new paper.Point(
 						ibox.origin.x,
 						ibox.origin.y + 0.3 * style.size * i + 2);
@@ -1321,8 +1345,8 @@ fly.infoCtrlrInit = function(infoPrefs) {
 		function toggleDisplay() {
 			if (fly.debug) {
 				ibox.visible = !ibox.visible;
-				if (ibox.origin.x < 1 || ibox.origin.x > fly.height ||
-						ibox.origin.y < 1 || ibox.origin.y > fly.width) {
+				if (ibox.origin.x &lt; 1 || ibox.origin.x > fly.height ||
+						ibox.origin.y &lt; 1 || ibox.origin.y > fly.width) {
 						ibox.origin.x = 10;
 						ibox.origin.y = 10;
 						ibox.txtOrigin = ibox.origin.add(ibox.txtOffset);
@@ -1337,7 +1361,7 @@ fly.infoCtrlrInit = function(infoPrefs) {
 			if (!fly.layer('info').visible) {
 				return;
 			}
-			for ( var i = 0; i < infoGroup.bars.children.length; i++) {
+			for ( var i = 0; i &lt; infoGroup.bars.children.length; i++) {
 				if (infoGroup.bars.children[i].hitTest(point)) {
 					members[i].display = !members[i].display;
 					reset(); // clear & force reset;
@@ -1398,7 +1422,7 @@ fly.infoCtrlrInit = function(infoPrefs) {
 			// from members with display === true
 			// use force === true on resistration or to update all
 			// this is used to adjust width of box to length of info
-			for ( var i = 0; i < members.length; i++) {
+			for ( var i = 0; i &lt; members.length; i++) {
 				if (members[i].display || force) {
 					members[i].info = members[i].obj.info();
 					if (force) { // recheck max width of infobox
@@ -1654,7 +1678,7 @@ fly.scatter = function (o,rect) {
 	if (o instanceof Array === false) {
 		o = [o];
 	}
-	for (var i=0; i < o.length; i++) {
+	for (var i=0; i &lt; o.length; i++) {
 		var randPoint = new paper.Point(	// point at lower right corner
 			rect.width,rect.height
 		);
@@ -1684,8 +1708,8 @@ fly.eachCell = function (o,f) {
 	// call by object o to iterate through grid[x][y]
 	// call: fly.eachCell(this,function (o,x,y) { ... });
 	// "this" o must have this.cols and this.rows
-	for (var x=0; x < o.cols; x++) {
-		for (var y=0; y < o.rows; y++) {
+	for (var x=0; x &lt; o.cols; x++) {
+		for (var y=0; y &lt; o.rows; y++) {
 			f(o,x,y);
 		}
 	}
@@ -1708,13 +1732,13 @@ fly.gridPlot = function (c,r,rectangle,dir) {
 	dir = dir || "down-left";
 	var rect = new paper.Path.Rectangle(rectangle);
 	var points = [];
-	for (var i=0; i <= c; i++) {
+	for (var i=0; i &lt;= c; i++) {
 		points[i] = [];
 	}
 	var w = rect.bounds.width / c;
 	var h = rect.bounds.height / r;
-	for (var x=0; x <= c; x++) {
-		for (var y=0; y <= r; y++) {
+	for (var x=0; x &lt;= c; x++) {
+		for (var y=0; y &lt;= r; y++) {
 			var pt = new paper.Point( rect.bounds.x + x * w,
 								rect.bounds.y + y * h);
 			switch (dir) {
@@ -1739,9 +1763,9 @@ fly.gridPlot = function (c,r,rectangle,dir) {
 fly.initArray = function (c,r) {
 	// init 3-d array
 	var a = [];
-	for (var x=0; x < c; x++) {
+	for (var x=0; x &lt; c; x++) {
 		a[x] = [];
-		for (var y=0; y < r; y++) {
+		for (var y=0; y &lt; r; y++) {
 			a[x][y] = [];
 		}
 	}
@@ -1808,7 +1832,7 @@ fly.Scroll.prototype.update = function (args) {
 	switch (this.direction) {
 		case "up" :
 			this.position.y -= this.curSpeed;
-			if (this.position.y < this.resetAt) {
+			if (this.position.y &lt; this.resetAt) {
 				this.reset = true;
 			}
 			break;
@@ -1820,7 +1844,7 @@ fly.Scroll.prototype.update = function (args) {
 			break;
 		case "right" :
 			this.position.x -= this.curSpeed;
-			if (this.position.x < this.resetAt) {
+			if (this.position.x &lt; this.resetAt) {
 				this.reset = true;
 			}
 			break;
@@ -1944,7 +1968,7 @@ fly.Swing.prototype.add = function () {
 	if (this.velocity > 0) {
 		this.velocity += this.force / 10 ;
 	}
-	else if (this.velocity < 0) {
+	else if (this.velocity &lt; 0) {
 		this.velocity -= this.force / 10;
 	}
 };
@@ -1964,7 +1988,7 @@ fly.Swing.prototype.rotation = function () {
 		this.deg = this.maxR;
 		this.velocity = 0;
 	}
-	else if (this.deg < 0 && this.deg < -this.maxR) {
+	else if (this.deg &lt; 0 && this.deg &lt; -this.maxR) {
 		this.deg = -this.maxR;
 		this.velocity = 0;
 	}
@@ -2032,7 +2056,7 @@ fly.Ananda.prototype.init = function (args){
 	}
 
 	function initFromNum (n) {
-		if (args < 0) { // illegal value
+		if (args &lt; 0) { // illegal value
 						// or contructed w/ no parameters
 			iA.n = "born";
 			iA.Sz = new paper.Size(100,100);
@@ -2082,7 +2106,7 @@ fly.Ananda.prototype.init = function (args){
 	function checkArray (a) {
 			// check all elements are numbers
 		var nArray = true;
-		for (var i=0; i < a.length; i++) {
+		for (var i=0; i &lt; a.length; i++) {
 			if (typeof a[i] !== "number") {
 				nArray = false;
 				break;
@@ -2410,7 +2434,7 @@ fly.Pullbar.prototype.build = function () {
 	this.bones[2] = new paper.Group([o1,o2]);
 	this.bones[3] = this.bones[2].clone();	// second grip handle
 	this.bones[3].position = this.joints[1];
-	for (var i=0; i < this.bones.length; i++) {
+	for (var i=0; i &lt; this.bones.length; i++) {
 		this.bones[i].strokeWidth = 1.75;
 		this.bones[i].strokeColor = this.color;
 		this.bones[i].fillColor = 'white';
@@ -2474,4 +2498,25 @@ fly.Pullbar.prototype.drop = function (event) {
 		this.vectorPrevious = this.vector;
 		this.moving = false;
 	}
-};
+};</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Index</a></h2><h3>Namespaces</h3><ul><li><a href="fly.html">fly</a></li></ul>
+</nav>
+
+<br clear="both">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Thu Feb 21 2013 22:38:44 GMT-0500 (EST)
+</footer>
+
+<script> prettyPrint(); </script>
+</body>
+</html>

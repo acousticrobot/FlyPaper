@@ -4,46 +4,65 @@
  * Find the built file in dist/flypaper.js
  */
 
-/*
- * To String recursive method, use through
- * fly.toString(object) or use mixin to
- * grant string control
-*/
+/**
+ * A recursive method for parsing an object or array to a string. An object can be passed to fly.toString(object),
+ * or the method can be granted to an object using grantString.
+ *
+ * @param  {Object|Array} o The object to parse as string, not used if calling object.toString()
+ * @param  {Number} toDepth=0] used to increase the depth of recursion
+ * @param  {Number} [currDepth=0] Used by function on recursive call, don't use on initial call
+ *
+ * @returns {String} A string version of the object or array
+ *
+ * @example
+ * myObject = {a:0,b:[0,[1,2,3],[4,5,{"six":6,"seven":"seven"}]]};
+ * // call using an object as a parameter
+ * fly.toString(myObject);
+ * // returns: '{"a":0,"b":object}'
+ * fly.toString(myObject,3);
+ * // returns: '{"a":0,"b":[0,[1,2,3],[4,5,{"six":6,"seven":"seven"}]]}'
+ *
+ * // grant the method to an object
+ * fly.grantString(myObject);
+ * // then call the method on the object
+ * myObject.toString(2)
+ * // returns: '{"a":0,"b":[0,[1,2,3],[4,5,object]]}'
+ */
 
-fly.toString = function(args,toDepth,currDepth) {
+fly.toString = function(o,toDepth,currDepth) {
 	// initial depth = 0, toDepth is the last depth examined
-	args = args || this;
+	o = o || this;
 	var s = "",
 		p,
 		ends = "",
 		isarray = false;
-	if (args instanceof Array) {
+	if (o instanceof Array) {
 		s += "[";
 		isarray = true;
 		ends = "]";
-	} else if (typeof args === "object") {
+	} else if (typeof o === "object") {
 		s += "{";
 		ends = "}";
 	}
 	toDepth = toDepth || 0;
 	currDepth = currDepth || 0;
-	for (p in args) {
-		if (args.hasOwnProperty(p)) {
-			if (!isarray && typeof args[p] !== "function") {
+	for (p in o) {
+		if (o.hasOwnProperty(p)) {
+			if (!isarray && typeof o[p] !== "function") {
 				s += '"' + p + '":';
 			}
-			if (typeof args[p] === "function") {
+			if (typeof o[p] === "function") {
 				s += p + "()";
-			} else if (typeof args[p] === "object") {
+			} else if (typeof o[p] === "object") {
 				if (currDepth < toDepth) {
-					s += fly.toString(args[p],toDepth,currDepth+1);
+					s += fly.toString(o[p],toDepth,currDepth+1);
 				} else {
 					s += "object";
 				}
-			} else if (typeof args[p] === "string") {
-				s += '"' + args[p] + '"';
+			} else if (typeof o[p] === "string") {
+				s += '"' + o[p] + '"';
 			} else {
-				s += args[p];
+				s += o[p];
 			}
 			s += ",";
 		}
@@ -55,6 +74,17 @@ fly.toString = function(args,toDepth,currDepth) {
 	return s;
 };
 
+/**
+ * Mixin to grant toString method to an object
+ * @param {Object} o
+ * @returns {Object} with new method toString()
+ *
+ * @example
+ * // grant the method to an object
+ * fly.grantString(myObject);
+ * // then call the method on the object
+ * myObject.toString()
+ */
 fly.grantString = function(o) {
 	o.toString = function(depth){
 		return fly.toString(this,depth,0);
