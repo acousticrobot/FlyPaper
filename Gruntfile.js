@@ -6,16 +6,16 @@ module.exports = function(grunt) {
       options: {
         stripBanners: true,
         banner:
-        '/**\n * <%= pkg.name %> --v<%= pkg.version %>\n *\n' +
-        ' * Date <%= grunt.template.today("yyyy-mm-dd HH:MM:ss") %>\n' +
+        '/**\n * <%= pkg.name %> --v <%= pkg.version %> <%= pkg.dev_stage %>\n *\n' +
+        ' * Date <%= grunt.template.today("yyyy-mm-dd HH:MM:ss") %>\n *\n' +
+        ' * @name flypaper\n' +
         ' * @author <%= pkg.author.name %>\n' +
-        ' * @email <%= pkg.author.email %>\n' +
-        ' * <%= pkg.author.url %>\n' +
-        '<%= pkg.homepage ? " * " + pkg.homepage + "\\n" : "" %>' +
+        ' * @email <%= pkg.author.email %>}\n' +
+        ' * {@linkplain <%= pkg.author.url %>}\n' +
+        '<%= pkg.homepage ? " * {@linkplain " + pkg.homepage + "}\\n" : "" %>' +
         ' * @Copyright (C) <%= grunt.template.today("yyyy") %>\n' +
-        ' * @Licensed <%= _.pluck(pkg.licenses, "type").join(", ") %>\n *\n' +
-        ' * @version <%= pkg.version %>-<%= grunt.template.today("yymmddHHMMss") %>\n' +
-        ' * @namespace fly  \n*/\n\n\n'
+        ' * @License <%= _.pluck(pkg.licenses, "type").join(", ") %>\n *\n' +
+        ' */\n\n\n'
       },
       dist: {
         src: [
@@ -83,27 +83,41 @@ module.exports = function(grunt) {
         }
       }
     },
-    yuidoc: {
-      compile: {
-        name: '<%= pkg.name %>',
-        description: '<%= pkg.description %>',
-        version: '<%= pkg.version %>',
-        url: '<%= pkg.homepage %>',
-        options: {
-          paths: ['dist/'],
-          outdir: 'docs-yui'
-        }
-      }
+    clean: {
+      docs: ['docs']
     },
     jsdoc : {
         dist : {
-            src: 'dist/flypaper.js',
+            src: ['README.md','dist/flypaper.js'],
             dest: 'docs'
         }
+    },
+    bump: {
+      patch: {
+        options: {part: 'patch'},
+        src: [ 'package.json' ]
+      },
+      build: {
+        options: {part: 'build'},
+        src: [ 'package.json' ]
+      }
     },
     watch: {
       files: ['<%= jshint.files %>'],
       tasks: ['jshint', 'qunit']
+    },
+    exec: {
+      tag: {
+        cmd: function() {
+          var pkg = grunt.file.readJSON('package.json');
+          return 'git tag ' + pkg.version; }
+      },
+      commit: {
+         cmd: function() {
+          var d = new Date().toUTCString();
+          return 'git add . ; git commit -a -m "' + d + '"';
+          }
+      }
     }
   });
 
@@ -112,16 +126,17 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-qunit');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-concat');
-  grunt.loadNpmTasks('grunt-contrib-yuidoc');
+  grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-jsdoc');
+  grunt.loadNpmTasks('grunt-bumpx');
+  grunt.loadNpmTasks('grunt-exec');
+
 
   grunt.registerTask('test', ['jshint', 'qunit']);
-
-  grunt.registerTask('ydocs', ['yuidoc']);
-  grunt.registerTask('jdocs', ['jsdoc']);
-
+  grunt.registerTask('jsdocs', ['jsdoc']);
   grunt.registerTask('build-only', ['concat']);
 
-  grunt.registerTask('default', ['jshint', 'qunit', 'concat', 'uglify']);
+  grunt.registerTask('default', ['clean', 'jshint', 'qunit', 'bump:build', 'concat', 'jsdoc']);
+  grunt.registerTask('build', ['clean', 'jshint', 'qunit', 'bump:build', 'concat', 'uglify', 'jsdoc', 'exec:commit', 'exec:tag' ]);
 
 };

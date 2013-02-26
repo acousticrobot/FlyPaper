@@ -20,7 +20,7 @@
 */
 
 fly.color = {
-	name: "color",
-	palette : "not yet defined"
+    name: "color",
+    palette : "not yet defined"
 };
 

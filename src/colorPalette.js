@@ -26,116 +26,116 @@
 
 fly.colorPalette = function(args){
 
-	var i,
-		index = -1;
+    var i,
+        index = -1;
 
-	function checkSet(p) {
-		// sanity type check args args:
-		if (!p.name || !p.set) {
-			return 'Palette must have a name and a set';
-		}
-		if (typeof p.name !== "string") {
-			return 'Palette name must be string';
-		}
-		if (p.set instanceof Array === false) {
-			return 'Palette set must be an array';
-		}
-		for (i=0; i < p.set.length; i++) {
-			if (p.set[i] instanceof Array === false || p.set[i].length !== 4) {
-				return 'Palette set of unknown type';
-			}
-			var reserved = /palette|info|addInfo|deleteInfo/;
-			if (p.set[i][0].match(reserved)) {
-				return p.set[i][0] + ' is a reserved word in color sets';
-			}
-		}
-		return true;
-	}
+    function checkSet(p) {
+        // sanity type check args args:
+        if (!p.name || !p.set) {
+            return 'Palette must have a name and a set';
+        }
+        if (typeof p.name !== "string") {
+            return 'Palette name must be string';
+        }
+        if (p.set instanceof Array === false) {
+            return 'Palette set must be an array';
+        }
+        for (i=0; i < p.set.length; i++) {
+            if (p.set[i] instanceof Array === false || p.set[i].length !== 4) {
+                return 'Palette set of unknown type';
+            }
+            var reserved = /palette|info|addInfo|deleteInfo/;
+            if (p.set[i][0].match(reserved)) {
+                return p.set[i][0] + ' is a reserved word in color sets';
+            }
+        }
+        return true;
+    }
 
-	function findInSet(n) {
-		for (i=0; i < fly.colorSets.length; i++) {
-			if (fly.colorSets[i].name === n) {
-				return i;
-			}
-		}
-		return -1;
-	}
+    function findInSet(n) {
+        for (i=0; i < fly.colorSets.length; i++) {
+            if (fly.colorSets[i].name === n) {
+                return i;
+            }
+        }
+        return -1;
+    }
 
-	function prepSet() {
-		// type check args, add set to colorSets if new
-		var check;
-		if (typeof args === "object" && args.name && args.set ) {
-			check = checkSet(args);
-			if (check !== true) {
-				throw new TypeError (check);
-			}
-			index = findInSet(args.name);
-			if (index === -1) {
-				// create a new set
-				index = fly.colorSets.length;
-				fly.colorSets.push(args);
-			} else {
-				// replace old set with new one
-				fly.colorSets[index].set = args.set;
-			}
+    function prepSet() {
+        // type check args, add set to colorSets if new
+        var check;
+        if (typeof args === "object" && args.name && args.set ) {
+            check = checkSet(args);
+            if (check !== true) {
+                throw new TypeError (check);
+            }
+            index = findInSet(args.name);
+            if (index === -1) {
+                // create a new set
+                index = fly.colorSets.length;
+                fly.colorSets.push(args);
+            } else {
+                // replace old set with new one
+                fly.colorSets[index].set = args.set;
+            }
 
-		} else if (typeof args === "string") {
-			index = findInSet(args);
-			if (index === -1) {
-				index = 0; // use default set
-			}
-		} else {
-			return new TypeError ('Unknown type sent as args to color palette');
-		}
-	}
-	
-	function resetColor(colorSet) {
-		// rebuild fly.Color with the new palette
-		fly.color = {
-			name: "color",
-			palette: colorSet.name
-		};
-		var newInfo = {palette : {val: "palette", type: "val"}},
-			spec, v;
-		for (var i=0; i < colorSet.set.length; i++) {
-			spec = colorSet.set[i];
-			v = spec[1] + '-' + spec[2] + '-' + spec[3];
-			newInfo[spec[0]] = {val:v,type:"string"};
-		}
-		fly.grantInfo(fly.color).addInfo(newInfo);
-	}
+        } else if (typeof args === "string") {
+            index = findInSet(args);
+            if (index === -1) {
+                index = 0; // use default set
+            }
+        } else {
+            return new TypeError ('Unknown type sent as args to color palette');
+        }
+    }
 
-	function setPalette() {
-		// colorSet is an object with a name and a set array
-		// see colorSets for formatting
-		var spec,
-			colorSet;
-		try {
-			prepSet();
-		}
-		catch(e) {
-			if (fly.color.palette === "not yet defined") {
-				index = 0;
-			} else {
-				return(e);
-			}
-		}
-		
-		colorSet = fly.colorSets[index];
-		resetColor(colorSet);
-		
-		for (i=0; i < colorSet.set.length; i++) {
-			spec = colorSet.set[i];
-			fly.color[spec[0]] = fly.colorUtil.spectrum(spec[0],spec[1],spec[2],spec[3]);
-		}
-	}
+    function resetColor(colorSet) {
+        // rebuild fly.Color with the new palette
+        fly.color = {
+            name: "color",
+            palette: colorSet.name
+        };
+        var newInfo = {palette : {val: "palette", type: "val"}},
+            spec, v;
+        for (var i=0; i < colorSet.set.length; i++) {
+            spec = colorSet.set[i];
+            v = spec[1] + '-' + spec[2] + '-' + spec[3];
+            newInfo[spec[0]] = {val:v,type:"string"};
+        }
+        fly.grantInfo(fly.color).addInfo(newInfo);
+    }
 
-	// If no-args passed, return existing palette
-	if (!args) {
-		return fly.color.palette;
-	}
-	
-	setPalette();
+    function setPalette() {
+        // colorSet is an object with a name and a set array
+        // see colorSets for formatting
+        var spec,
+            colorSet;
+        try {
+            prepSet();
+        }
+        catch(e) {
+            if (fly.color.palette === "not yet defined") {
+                index = 0;
+            } else {
+                return(e);
+            }
+        }
+
+        colorSet = fly.colorSets[index];
+        resetColor(colorSet);
+
+        for (i=0; i < colorSet.set.length; i++) {
+            spec = colorSet.set[i];
+            fly.color[spec[0]] = fly.colorUtil.spectrum(spec[0],spec[1],spec[2],spec[3]);
+        }
+    }
+
+    // If no-args passed, return existing palette
+    if (!args) {
+        return fly.color.palette;
+    }
+
+    setPalette();
 
 };
 

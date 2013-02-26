@@ -6,8 +6,8 @@
 
 //------------- BEGIN FLYPAPER MOTION --------------------//
 /*
-*	Motion	Methods
+*   Motion  Methods
 *
-*	version 0.4
+*   version 0.4
 */
 //--------------------------------------------------------//

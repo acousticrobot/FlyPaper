@@ -38,16 +38,13 @@
     
     
         
-            <div class="description">FlyPaper --v0.4.5</div>
+            <div class="description"><p>All flypaper objects and methods reside in the fly namespace</p></div>
         
         
         
 <dl class="details">
     
         
-    
-    <dt class="tag-version">Version:</dt>
-    <dd class="tag-version"><ul class="dummy"><li>0.4.5-0221223838</li></ul></dd>
     
     
     
@@ -57,17 +54,7 @@
     
     
     
-    <dt class="tag-author">Author:</dt>
-    <dd class="tag-author">
-        <ul>
-            <li>Jonathan Gabel</li>
-        </ul>
-    </dd>
     
-    
-    
-    <dt class="tag-copyright">Copyright:</dt>
-    <dd class="tag-copyright"><ul class="dummy"><li>(C) 2013 Jonathan Gabel;</li></ul></dd>
     
     
     
@@ -77,7 +64,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="flypaper.js.html">flypaper.js</a>, line 1
+        <a href="flypaper.js.html">flypaper.js</a>, line 4
     </li></ul></dd>
     
     
@@ -99,6 +86,13 @@
     
     
     
+    
+        <h3 class="subsection-title">Classes</h3>
+        
+        <dl>
+            <dt><a href="fly.eventCtrlr.html">eventCtrlr</a></dt>
+            <dd></dd>
+        </dl>
     
     
     
@@ -111,7 +105,7 @@
         <dl>
             
 <dt>
-    <h4 class="name" id="grantString"><span class="type-signature">&lt;static> </span>grantString<span class="signature">(o)</span><span class="type-signature"> &rarr; {Object}</span></h4>
+    <h4 class="name" id="toString"><span class="type-signature">&lt;static> </span>toString<span class="signature">(o, <span class="optional">toDepth</span>)</span><span class="type-signature"> &rarr; {String}</span></h4>
     
     
 </dt>
@@ -119,151 +113,9 @@
     
     
     <div class="description">
-        Mixin to grant toString method to an object
-    </div>
-    
-
-    
-    
-    
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>o</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last"></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="flypaper.js.html">flypaper.js</a>, line 114
-    </li></ul></dd>
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    with new method toString()
-</div>
-
-
-
-<dl>
-	<dt>
-		Type
-	</dt>
-	<dd>
-		
-<span class="param-type">Object</span>
-
-
-	</dd>
-</dl>
-
-        
-    
-    
-        <h5>Example</h5>
-        
-    <pre class="prettyprint"><code>// grant the method to an object
-fly.grantString(myObject);
-// then call the method on the object
-myObject.toString()</code></pre>
-
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="toString"><span class="type-signature">&lt;static> </span>toString<span class="signature">(o, toDepth=0], <span class="optional">currDepth</span>)</span><span class="type-signature"> &rarr; {String}</span></h4>
-    
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        A recursive method for parsing an object or array to a string. An object can be passed to fly.toString(object),
-or the method can be granted to an object using grantString.
+        <p>A recursive method for parsing an object or array to a string.
+An object can be passed to <code>fly.toString(object)</code>,
+or the method can be granted to an object using fly.grantString.</p>
     </div>
     
 
@@ -330,47 +182,14 @@ or the method can be granted to an object using grantString.
                 </td>
             
             
-            <td class="description last">The object to parse as string, not used if calling object.toString()</td>
+            <td class="description last"><p>The object to parse as string, not used if calling object.toString()</p></td>
         </tr>
 	
 	
 	
         <tr>
             
-                <td class="name"><code>toDepth=0]</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Number</span>
-
-
-            
-            </td>
-            
-            
-                <td class="attributes">
-                
-                    
-                
-                </td>
-            
-            
-            
-                <td class="default">
-                
-                </td>
-            
-            
-            <td class="description last">used to increase the depth of recursion</td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>currDepth</code></td>
+                <td class="name"><code>toDepth</code></td>
             
             
             <td class="type">
@@ -400,7 +219,7 @@ or the method can be granted to an object using grantString.
                 </td>
             
             
-            <td class="description last">Used by function on recursive call, don't use on initial call</td>
+            <td class="description last"><p>used to increase the depth of recursion</p></td>
         </tr>
 	
 	
@@ -431,7 +250,7 @@ or the method can be granted to an object using grantString.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="flypaper.js.html">flypaper.js</a>, line 58
+        <a href="flypaper.js.html">flypaper.js</a>, line 68
     </li></ul></dd>
     
     
@@ -452,7 +271,7 @@ or the method can be granted to an object using grantString.
     
             
 <div class="param-desc">
-    A string version of the object or array
+    <p>A string version of the object or array</p>
 </div>
 
 
@@ -506,13 +325,13 @@ myObject.toString(2)
 </div>
 
 <nav>
-    <h2><a href="index.html">Index</a></h2><h3>Namespaces</h3><ul><li><a href="fly.html">fly</a></li></ul>
+    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="base.html">base</a></li><li><a href="fly.eventCtrlr.html">eventCtrlr</a></li></ul><h3>Namespaces</h3><ul><li><a href="fly.html">fly</a></li></ul><h3>Mixins</h3><ul><li><a href="Events.html">Grant Events</a></li><li><a href="Info.html">Grant Info</a></li><li><a href="String.html">Grant String</a></li></ul><h3>Global</h3><ul><li><a href="global.html#flypaper">flypaper</a></li></ul>
 </nav>
 
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Thu Feb 21 2013 22:38:44 GMT-0500 (EST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Tue Feb 26 2013 08:35:28 GMT-0500 (EST)
 </footer>
 
 <script> prettyPrint(); </script>
