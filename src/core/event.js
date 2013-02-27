@@ -53,8 +53,7 @@ fly.grantEvents = function (o) {
      * the event args passed by paper.js. If events already exist in the
      * objects registry, they will be replaced with the new handler.
      *
-     * @param   {Object} eventObj pairing event call strings and handler methods
-     * handlers are object methods to call upon event firing
+     * @param   {Object} eventObj {'event':'handler',...}.
      *
      * @returns {this} this is a chainable method
      *

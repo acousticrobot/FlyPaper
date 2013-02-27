@@ -26,9 +26,9 @@
     <section>
         <article>
             <pre class="prettyprint source"><code>/**
- * FlyPaper --v 0.5.0-35 alpha
+ * FlyPaper --v 0.5.0-38 alpha
  *
- * Date 2013-02-26 08:35:21
+ * Date 2013-02-26 21:29:56
  *
  * @name flypaper
  * @author Jonathan Gabel
@@ -246,10 +246,6 @@ fly.grantInfo = function(o) {
      *     myObject['sleeping'] // true or false
      *     myObject['speed'] // number or string
      *
-     * If you need to add anything more complicated into the info packet,
-     * you can override the info method. See {@link fly.eventCtrlr} for an example
-     * of a custom info method.
-     *
      * @example
      * // myObject.sleeping() should return a bool
      * // myObject.speed() should reterun a number or string
@@ -307,7 +303,14 @@ fly.grantInfo = function(o) {
      * @description This is the method called by the {@link Info Controller}. It should
      * return and object in the form:
      *
-     *     { name: 'myObjectsName', var1:{val: var1, type:'val'},var2:{..}..}
+     *
+     * If you need to add anything more complicated into the info packet,
+     * you can override the info method. See {@link fly.eventCtrlr} for an example
+     * of a custom info method.
+     *
+     * @example
+     * myObject.info(); // returns:
+     * { name: 'myObjectsName', var1:{val: 30, type:'val'},var2:{val: true, type:'bool'}..}
      *
      * @returns {Object} info object
      *
@@ -373,8 +376,7 @@ fly.grantEvents = function (o) {
      * the event args passed by paper.js. If events already exist in the
      * objects registry, they will be replaced with the new handler.
      *
-     * @param   {Object} eventObj pairing event call strings and handler methods
-     * handlers are object methods to call upon event firing
+     * @param   {Object} eventObj {'event':'handler',...}.
      *
      * @returns {this} this is a chainable method
      *
@@ -519,7 +521,7 @@ fly.base = function(n){
  * All mouse and key events are handled with paper tools and
  * implemented within flypaper.
  *
- * On-frame events **must** be initaited
+ * On-frame events *must* be initaited
  * in the main javascript on window load.
  *
  * @example
@@ -532,10 +534,9 @@ fly.base = function(n){
  *
  * @class
  * @classDesc
- * ## The Event Controller
  * eventCtrlr is the main pub/sub object, paper events all publish
  * through it, and objects can subscribe to events which are
- * handled through their eventCall method.
+ * handled through their [eventCall]{@link base.eventCall} method.
  *
  */
 
@@ -619,7 +620,8 @@ fly.eventCtrlr = (function () {
      *
      * @param   {String|Array} e an event or array of events
      * @param   {Object} o the 'this' keyword
-     * @returns {null}   TODO: return object? test
+     * @returns {null}
+     * @todo return object and test
      *
      * @memberOf fly.eventCtrlr
      */
@@ -648,8 +650,8 @@ fly.eventCtrlr = (function () {
      * @param   {String|Array} e an event or array of events
      * @param   {Object} o the 'this' keyword
      *
-     * @returns {null}   TODO: return object? test
-     *
+     * @returns {null}
+     * @todo return object and test
      * @memberOf fly.eventCtrlr
      */
     function unsubscribe(e,o) {
@@ -680,16 +682,46 @@ fly.eventCtrlr = (function () {
         }
     }
 
-    /**
-     * @method register
-     *
-     * @memberOf fly.eventCtrlr
-     */
     function register() {
         // infoCtrlr requests registration
         fly.infoCtrlr.register(this);
     }
 
+    /**
+     * eventContrlr.info is an example of overriding the
+     * default info method of a fly object.  It iterates over
+     * the events stored in an event object, and assigns them
+     * a type of "event", or "eventFiring" if they have recently
+     * fired. This is all stored in an info object in the format
+     * expected by the [info controller]{@link infoCtrlr}.
+     *
+     * @example
+     *
+     * function info() {
+     *      var _i = {
+     *          name: name,
+     *          v: { val: version, type: "version" },
+     *          errors: {val: errors.length, type: "val"}
+     *      };
+     *      var event, _t;
+     *      for (event in events) {
+     *          if (events.hasOwnProperty(event)) {
+     *              if (firing[event] > 0) {
+     *                  _t = "eventFiring";
+     *              } else {
+     *                  _t = "event";
+     *              }
+     *              var subs = events[event].length > 1 ? " subscribers" : " subscriber";
+     *              _i[event] = {val: events[event].length + subs, type: _t};
+     *          }
+     *      }
+     *      _i.last_key = {val: lastKey, type: "string"};
+     *      return _i;
+     *  }
+     *
+     * @returns {Object} an info packet expected by the info Controller
+     * @memberOf fly.eventCtrlr
+     */
     function info() {
         var _i = {
             name: name,
@@ -2707,7 +2739,7 @@ fly.Pullbar.prototype.drop = function (event) {
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Tue Feb 26 2013 08:35:28 GMT-0500 (EST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Tue Feb 26 2013 21:30:03 GMT-0500 (EST)
 </footer>
 
 <script> prettyPrint(); </script>

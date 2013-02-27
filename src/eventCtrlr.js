@@ -9,7 +9,7 @@
  * All mouse and key events are handled with paper tools and
  * implemented within flypaper.
  *
- * On-frame events **must** be initaited
+ * On-frame events *must* be initaited
  * in the main javascript on window load.
  *
  * @example
@@ -22,10 +22,9 @@
  *
  * @class
  * @classDesc
- * ## The Event Controller
  * eventCtrlr is the main pub/sub object, paper events all publish
  * through it, and objects can subscribe to events which are
- * handled through their eventCall method.
+ * handled through their [eventCall]{@link base.eventCall} method.
  *
  */
 
@@ -109,7 +108,8 @@ fly.eventCtrlr = (function () {
      *
      * @param   {String|Array} e an event or array of events
      * @param   {Object} o the 'this' keyword
-     * @returns {null}   TODO: return object? test
+     * @returns {null}
+     * @todo return object and test
      *
      * @memberOf fly.eventCtrlr
      */
@@ -138,8 +138,8 @@ fly.eventCtrlr = (function () {
      * @param   {String|Array} e an event or array of events
      * @param   {Object} o the 'this' keyword
      *
-     * @returns {null}   TODO: return object? test
-     *
+     * @returns {null}
+     * @todo return object and test
      * @memberOf fly.eventCtrlr
      */
     function unsubscribe(e,o) {
@@ -170,16 +170,46 @@ fly.eventCtrlr = (function () {
         }
     }
 
-    /**
-     * @method register
-     *
-     * @memberOf fly.eventCtrlr
-     */
     function register() {
         // infoCtrlr requests registration
         fly.infoCtrlr.register(this);
     }
 
+    /**
+     * eventContrlr.info is an example of overriding the
+     * default info method of a fly object.  It iterates over
+     * the events stored in an event object, and assigns them
+     * a type of "event", or "eventFiring" if they have recently
+     * fired. This is all stored in an info object in the format
+     * expected by the [info controller]{@link infoCtrlr}.
+     *
+     * @example
+     *
+     * function info() {
+     *      var _i = {
+     *          name: name,
+     *          v: { val: version, type: "version" },
+     *          errors: {val: errors.length, type: "val"}
+     *      };
+     *      var event, _t;
+     *      for (event in events) {
+     *          if (events.hasOwnProperty(event)) {
+     *              if (firing[event] > 0) {
+     *                  _t = "eventFiring";
+     *              } else {
+     *                  _t = "event";
+     *              }
+     *              var subs = events[event].length > 1 ? " subscribers" : " subscriber";
+     *              _i[event] = {val: events[event].length + subs, type: _t};
+     *          }
+     *      }
+     *      _i.last_key = {val: lastKey, type: "string"};
+     *      return _i;
+     *  }
+     *
+     * @returns {Object} an info packet expected by the info Controller
+     * @memberOf fly.eventCtrlr
+     */
     function info() {
         var _i = {
             name: name,

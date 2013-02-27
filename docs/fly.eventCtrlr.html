@@ -32,11 +32,9 @@
     eventCtrlr
     </h2>
     
-        <div class="class-description"><h2>The Event Controller</h2>
-
-<p>eventCtrlr is the main pub/sub object, paper events all publish
+        <div class="class-description"><p>eventCtrlr is the main pub/sub object, paper events all publish
 through it, and objects can subscribe to events which are
-handled through their eventCall method.</p></div>
+handled through their <a href="base.html#eventCall">eventCall</a> method.</p></div>
     
 </header>  
 
@@ -59,7 +57,7 @@ handled through their eventCall method.</p></div>
 All mouse and key events are handled with paper tools and
 implemented within flypaper.</p>
 
-<p>On-frame events <strong>must</strong> be initaited
+<p>On-frame events <em>must</em> be initaited
 in the main javascript on window load.</p>
     </div>
     
@@ -93,7 +91,7 @@ in the main javascript on window load.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="flypaper.js.html">flypaper.js</a>, line 515
+        <a href="flypaper.js.html">flypaper.js</a>, line 516
     </li></ul></dd>
     
     
@@ -143,6 +141,123 @@ in the main javascript on window load.</p>
         <h3 class="subsection-title">Methods</h3>
         
         <dl>
+            
+<dt>
+    <h4 class="name" id="info"><span class="type-signature">&lt;static> </span>info<span class="signature">()</span><span class="type-signature"> &rarr; {Object}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>eventContrlr.info is an example of overriding the
+default info method of a fly object.  It iterates over
+the events stored in an event object, and assigns them
+a type of &quot;event&quot;, or &quot;eventFiring&quot; if they have recently
+fired. This is all stored in an info object in the format
+expected by the info controller.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="flypaper.js.html">flypaper.js</a>, line 698
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>an info packet expected by the info Controller</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">Object</span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code>function info() {
+     var _i = {
+         name: name,
+         v: { val: version, type: "version" },
+         errors: {val: errors.length, type: "val"}
+     };
+     var event, _t;
+     for (event in events) {
+         if (events.hasOwnProperty(event)) {
+             if (firing[event] > 0) {
+                 _t = "eventFiring";
+             } else {
+                 _t = "event";
+             }
+             var subs = events[event].length > 1 ? " subscribers" : " subscriber";
+             _i[event] = {val: events[event].length + subs, type: _t};
+         }
+     }
+     _i.last_key = {val: lastKey, type: "string"};
+     return _i;
+ }</code></pre>
+
+    
+</dd>
+
+        
             
 <dt>
     <h4 class="name" id="publish"><span class="type-signature">&lt;static> </span>publish<span class="signature">(e, args)</span><span class="type-signature"></span></h4>
@@ -261,7 +376,7 @@ same args returned by the event.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="flypaper.js.html">flypaper.js</a>, line 555
+        <a href="flypaper.js.html">flypaper.js</a>, line 556
     </li></ul></dd>
     
     
@@ -284,67 +399,6 @@ same args returned by the event.</p>
         
     <pre class="prettyprint"><code>fly.eventCtrlr.publish("mouse down",event);</code></pre>
 
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="register"><span class="type-signature">&lt;static> </span>register<span class="signature">()</span><span class="type-signature"></span></h4>
-    
-    
-</dt>
-<dd>
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="flypaper.js.html">flypaper.js</a>, line 656
-    </li></ul></dd>
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-    
-    
-    
-    
-    
     
 </dd>
 
@@ -472,7 +526,7 @@ notified when an event occurs.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="flypaper.js.html">flypaper.js</a>, line 579
+        <a href="flypaper.js.html">flypaper.js</a>, line 580
     </li></ul></dd>
     
     
@@ -480,6 +534,13 @@ notified when an event occurs.</p>
     
     
     
+    
+    <dt class="tag-todo">To Do:</dt>
+    <dd class="tag-todo">
+        <ul>
+            <li>return object and test</li>
+        </ul>
+    </dd>
     
 </dl>
 
@@ -492,10 +553,6 @@ notified when an event occurs.</p>
     <h5>Returns:</h5>
     
             
-<div class="param-desc">
-    <p>TODO: return object? test</p>
-</div>
-
 
 
 <dl>
@@ -638,7 +695,7 @@ notified when an event occurs.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="flypaper.js.html">flypaper.js</a>, line 615
+        <a href="flypaper.js.html">flypaper.js</a>, line 617
     </li></ul></dd>
     
     
@@ -646,6 +703,13 @@ notified when an event occurs.</p>
     
     
     
+    
+    <dt class="tag-todo">To Do:</dt>
+    <dd class="tag-todo">
+        <ul>
+            <li>return object and test</li>
+        </ul>
+    </dd>
     
 </dl>
 
@@ -658,10 +722,6 @@ notified when an event occurs.</p>
     <h5>Returns:</h5>
     
             
-<div class="param-desc">
-    <p>TODO: return object? test</p>
-</div>
-
 
 
 <dl>
@@ -703,7 +763,7 @@ notified when an event occurs.</p>
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Tue Feb 26 2013 08:35:28 GMT-0500 (EST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Tue Feb 26 2013 21:30:03 GMT-0500 (EST)
 </footer>
 
 <script> prettyPrint(); </script>

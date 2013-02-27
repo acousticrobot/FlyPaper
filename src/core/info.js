@@ -81,10 +81,6 @@ fly.grantInfo = function(o) {
      *     myObject['sleeping'] // true or false
      *     myObject['speed'] // number or string
      *
-     * If you need to add anything more complicated into the info packet,
-     * you can override the info method. See {@link fly.eventCtrlr} for an example
-     * of a custom info method.
-     *
      * @example
      * // myObject.sleeping() should return a bool
      * // myObject.speed() should reterun a number or string
@@ -142,7 +138,14 @@ fly.grantInfo = function(o) {
      * @description This is the method called by the {@link Info Controller}. It should
      * return and object in the form:
      *
-     *     { name: 'myObjectsName', var1:{val: var1, type:'val'},var2:{..}..}
+     *
+     * If you need to add anything more complicated into the info packet,
+     * you can override the info method. See {@link fly.eventCtrlr} for an example
+     * of a custom info method.
+     *
+     * @example
+     * myObject.info(); // returns:
+     * { name: 'myObjectsName', var1:{val: 30, type:'val'},var2:{val: true, type:'bool'}..}
      *
      * @returns {Object} info object
      *
