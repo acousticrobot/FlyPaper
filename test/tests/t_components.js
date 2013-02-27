@@ -138,6 +138,7 @@ test("info", function(){
 	fly.grantInfo(dummy).addInfo({age:{val:"age",type:"string"}});
 	ok(dummy.info,"should have info packet");
 	dummy.age = "40";
+	// TODO: test the nature of the info packet
 });
 
 test("color", function(){

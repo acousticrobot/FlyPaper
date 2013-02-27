@@ -5,32 +5,42 @@
  * globals paper, fly
  */
 
-/*
- * ## Layers
- * Called on init, creates drawing layers in fly.layers
- * Creates layers in stage array.
- * Defaults to "background", "layer 1", and "info"
- * ### Arguments passed from init:
- * #### layers
- * Can be an *integer* or *array*, defaults to 1.
- * Integer creates that many layers
- * (plus the background and info layers),
- * layers will be named "layer 1", "layer 2" etc.
- * Array of names will create that many layers,
- * each can be referanced by that name.
- * #### background
- * Bool, defaults true.
- * If set to false, no background layer is created,
- * first layer by integer is named "layer 0"
- * ### reserved words
- * "background" and "info" are reserved layer names,
- * background is primarily used for a solid color.
- * See fly.colorUtil.background for setting background
- * color.
- */
+
 
 fly.initLayers = function(layers,background){
 
+    /**
+     * The Stage layers are created on {@link fly.init}.
+     * Defaults to "background", "layer 1", and "info"
+     *
+     * #### reserved words
+     * "background" and "info" are reserved layer names,
+     * background is primarily used for a solid color. See
+     * {@link fly.colorUtil.background} for setting background
+     * color.
+     *
+     * @param   {Integer|Array} layers     Defaults to 1.
+     * Integer values will create that many layers,
+     * plus the background and info layers,
+     * layers will be named "layer 1", "layer 2" etc.
+     * Array of names will create that many layers,
+     * each can be referanced by that name.
+     *
+     * @param   {Boolean} background Defaults true.
+     * If set to false, no background layer is created,
+     * first layer by integer is named "layer 0"
+     *
+     * @todo describe use cases
+     *
+     * @class
+     * @classDesc
+     * The object responsible for containing the drawing layers.
+     * By default, there will be a background layer for color or
+     * animations, the maing drawing layer, and a top layer for
+     * the info controller.
+     *
+     *
+     */
     fly.layers = {
         "name": "layers",
         "version": "0.5beta"

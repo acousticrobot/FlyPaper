@@ -145,7 +145,7 @@ fly.grantInfo = function(o) {
      *
      * @example
      * myObject.info(); // returns:
-     * { name: 'myObjectsName', var1:{val: 30, type:'val'},var2:{val: true, type:'bool'}..}
+     * { name:'myName', var1:{val:30, type:'val'}, var2:{val:true, type:'bool'}..}
      *
      * @returns {Object} info object
      *

@@ -5,7 +5,7 @@
  */
 
 /**
- * The event controller is constructed when you call fly.init().
+ * The event controller is constructed on fly.init().
  * All mouse and key events are handled with paper tools and
  * implemented within flypaper.
  *
