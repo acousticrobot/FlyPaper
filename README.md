@@ -158,7 +158,7 @@ Open the "My Fly" sub-panel (the name we gave it in the imbedded script) and you
 
   * version: set within the object at init, or defaults to the prototype's
   * build: a string mash up of what went into the building of the object on init.
-  * point: the upper left origin of the object
+  * point: the upper left origin of the object 
   * size: the object's size
   * group: The number of paper.paths that comprise the object.  If you specify a handle, this will be one of the paths.
   * draggable: boolean, set in the args

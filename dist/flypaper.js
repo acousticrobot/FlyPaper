@@ -1,7 +1,7 @@
 /**
- * FlyPaper --v 0.5.0-41 alpha
+ * FlyPaper --v 0.5.0-44 alpha
  *
- * Date 2013-02-26 21:50:54
+ * Date 2013-02-26 22:33:05
  *
  * @name flypaper
  * @author Jonathan Gabel
@@ -545,7 +545,7 @@ fly.eventCtrlr = (function () {
      * same args returned by the event.
      *
      * @example
-     * fly.eventCtrlr.publish("mouse down",event);
+     * fly.eventCtrlr.publish("my event",event);
      *
      * @param   {String} e    an event to fire
      * @param   {Args} args Args to pass on with the event
@@ -661,12 +661,13 @@ fly.eventCtrlr = (function () {
     }
 
     /**
-     * eventContrlr.info is an example of overriding the
+     * Although you probably will never need to call eventContrlr.info,
+     * it is included here as an example of overriding the
      * default info method of a fly object.  It iterates over
-     * the events stored in an event object, and assigns them
-     * a type of "event", or "eventFiring" if they have recently
-     * fired. This is all stored in an info object in the format
-     * expected by the [info controller]{@link infoCtrlr}.
+     * the events stored in its `event` object, and assigns them
+     * a either a type of "event", or "eventFiring" if they have
+     * recently fired. This is all returned in the standart info packet
+     * format expected by the [info controller]{@link infoCtrlr}.
      *
      * @example
      *
@@ -757,13 +758,13 @@ fly.initLayers = function(layers,background){
      * color.
      *
      * @param   {Integer|Array} layers     Defaults to 1.
-     * Integer creates that many layers
-     * (plus the background and info layers),
+     * Integer values will create that many layers,
+     * plus the background and info layers,
      * layers will be named "layer 1", "layer 2" etc.
      * Array of names will create that many layers,
      * each can be referanced by that name.
      *
-     * @param   {Bool} background Defaults true.
+     * @param   {Boolean} background Defaults true.
      * If set to false, no background layer is created,
      * first layer by integer is named "layer 0"
      *

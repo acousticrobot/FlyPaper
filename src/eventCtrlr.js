@@ -60,7 +60,7 @@ fly.eventCtrlr = (function () {
      * same args returned by the event.
      *
      * @example
-     * fly.eventCtrlr.publish("mouse down",event);
+     * fly.eventCtrlr.publish("my event",event);
      *
      * @param   {String} e    an event to fire
      * @param   {Args} args Args to pass on with the event
@@ -176,12 +176,13 @@ fly.eventCtrlr = (function () {
     }
 
     /**
-     * eventContrlr.info is an example of overriding the
+     * Although you probably will never need to call eventContrlr.info,
+     * it is included here as an example of overriding the
      * default info method of a fly object.  It iterates over
-     * the events stored in an event object, and assigns them
-     * a type of "event", or "eventFiring" if they have recently
-     * fired. This is all stored in an info object in the format
-     * expected by the [info controller]{@link infoCtrlr}.
+     * the events stored in its `event` object, and assigns them
+     * a either a type of "event", or "eventFiring" if they have
+     * recently fired. This is all returned in the standart info packet
+     * format expected by the [info controller]{@link infoCtrlr}.
      *
      * @example
      *

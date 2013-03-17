@@ -2,7 +2,7 @@
   "name": "FlyPaper",
   "libname": "flypaper",
   "description": "Paper.js piggyback framework adding pub/sub, debug info panel and basic motions",
-  "version": "0.5.0-42",
+  "version": "0.5.0-45",
   "dev_stage": "alpha",
   "homepage": "https://github.com/josankapo/FlyPaper",
   "author": {
