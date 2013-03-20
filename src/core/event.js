@@ -55,7 +55,7 @@ fly.grantEvents = function (o) {
      *
      * @param   {Object} eventObj {'event':'handler',...}.
      *
-     * @returns {this} this is a chainable method
+     * @returns {this} This is a chainable method
      *
      * @example
      * // expecting event calls to myObject.handlerOne(args) and myObject.handlerTwo()
@@ -132,7 +132,7 @@ fly.grantEvents = function (o) {
      *
      * @param   {String} event Match an event in the registry.
      * @param   {Varies} args  Args passed to the handler
-     * @returns {this} this is a chainable method
+     * @returns {this} This is a chainable method
      * @memberOf base
      */
 
@@ -149,7 +149,7 @@ fly.grantEvents = function (o) {
      *
      * @description A string description of all registered events and handlers.
      *
-     * @returns {String} representation of the object's event registry
+     * @returns {String} Representation of the object's event registry
      * @memberOf base
      */
 

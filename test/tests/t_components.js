@@ -141,24 +141,37 @@ test("info", function(){
 	// TODO: test the nature of the info packet
 });
 
-test("color", function(){
+test("color Utilities", function(){
 	ok(fly.color, "color exists");
-	ok(fly.colorPalette, "colorPalette exists");
 	ok(fly.colorUtil, "color Util exists");
+
 	equal(fly.colorUtil.limit(700),255,"color should be limited to 255 max");
 	equal(fly.colorUtil.limit(-70),0,"color should be limited to 0 min");
 	deepEqual(fly.colorUtil.split("#102030"),[16,32,48],"hex color should be split into RGB");
 	strictEqual(fly.colorUtil.splice([16,32,48]),"#102030","color array should translate to hex string");
 	strictEqual(fly.colorUtil.mix("#F000FF","#0df0ff"),"#7e78ff","should mix to hex string");
-	strictEqual(fly.colorUtil.totalValue("#102030"),96,"should mix componenst of hex color");
+	strictEqual(fly.colorUtil.totalValue("#102030"),96,"should mix components of hex color");
+
+	deepEqual(fly.colorUtil.spectrum("dark-grey","#000000","#222222",3),
+		["#000000","#111111","#222222"],"color in array should match");
+
 	deepEqual(fly.colorUtil.bispectrum("#000000","#FFFFFF",5),
 		["#000000","#3f3f3f","#7f7f7f","#bfbfbf","#FFFFFF"],"colors in array should match");
+
 	deepEqual(fly.colorUtil.trispectrum("#000000","#FF00FF","#FFFFFF"),
 		["#000000","#3f003f","#7f007f","#bf00bf","#FF00FF","#ff3fff","#ff7fff","#ffbfff","#FFFFFF"],
 		"colors in array should match");
+
+	deepEqual(fly.colorUtil.trispectrum("#000000","#FF00FF","#FFFFFF",5),
+		["#000000","#7f007f","#FF00FF","#ff7fff","#FFFFFF"],
+		"colors in array should match");
+});
+
+test("color Palette", function(){
+	ok(fly.colorPalette, "colorPalette exists");
 	strictEqual(fly.colorPalette(),"not yet defined","should return color.palette");
 	fly.colorPalette("neon");
-	strictEqual(fly.color.red[4],"#FF0023","should return color.palette");
+	strictEqual(fly.color.red[4],"#FF0023","should return predefined color");
 	strictEqual(fly.color.palette,"neon","palette name should be neon");
 	strictEqual(fly.colorPalette(),"neon","should return color.palette");
 	var drab = { name: "drab", set: [
@@ -169,6 +182,8 @@ test("color", function(){
 		]};
 	fly.colorPalette(drab);
 	strictEqual(fly.color.palette,"drab","palette name should be drab");
+
 });
 
 }; // end window on-load
+

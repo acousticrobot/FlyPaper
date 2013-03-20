@@ -4,23 +4,21 @@
  * Find the built file in dist/flypaper.js
  */
 
-/*
- * ## color Util Methods
- * Initialize color utility with methods for reading hex values
- * and stored color presets.  Preset color arrays are made
- * out of three values: darkest/saturated/lightest, two linear
- * progression are made from the ends to the middle value.
- * Color arrays default to 9 segments in length.
- * Presets can be altered and new sets made through the
- * public method spectrum.
- * example use:
- * rainbow = fly.colorUtil.spectrum('#FF0000','#00FF00','0000FF',13);
- * This creates an 13 segment color spectrum, rainbow[7] == '#00FF00'
- * *common variables:*
- * col is used for passed hex color values, ex. "#789ABC"
- * cola for color arrays, [r,g,b] ex [0,127,255]
-*
-*/
+/**
+ * The Color Utility is created on {@link fly.init}.
+ *
+ *
+ * @class
+ * @classDesc
+ * The Color Utility has methods for reading and manipulating
+ * hex values and creating color presets.  Preset color arrays
+ * are made out of three values, typically
+ * darkest, saturated, lightest.  Two linear progressions
+ * are made from the ends to the middle value.
+ * Color arrays default to 9 segments in length. Presets can
+ * be altered and new sets made through the {@link colorUtil.spectrum}.
+ *
+ */
 
 fly.colorUtil = {
 
@@ -31,6 +29,15 @@ fly.colorUtil = {
         return col;
     },
 
+    /**
+     * Splits a hex color into an [r,g,b] array
+     * @param  {Hex Color String} hexCol
+     * @return {Array}
+     *
+     * @example
+     * fly.colorUtil.split("#102030")
+     * // returns[16,32,48]
+     */
     split : function(hexCol){
         // split a hex color into array [r,g,b]
         //assumes hex color w/ leading #
@@ -42,6 +49,15 @@ fly.colorUtil = {
         return([r,g,b]);
     },
 
+    /**
+     * Splices an RGB array [r,g,b] into a hex color
+     * @param  {Array} cola
+     * @return {Hex Color String}
+     *
+     * @example
+     * fly.colorUtil.split([16,32,48])
+     * // returns "#102030"
+     */
     splice : function(cola){
         // takes a cola and returns the hex string value
         // cola is a color array [r,g,b], are all int
@@ -57,15 +73,20 @@ fly.colorUtil = {
         return s;
     },
 
-    mix : function(col1,col2,amt){
-        // mixes 2 hex colors together, amt (0 to 1) determines ratio
-        // amt defaults to .5, mixes 50/50
+    /**
+     * mixes 2 hex colors together
+     * @param  {Hex Color String} col1
+     * @param  {Hex Color String} col2
+     * @param  {Float between 0 and 1} [ratio=0.5] Determines ratio color 1 to color 2
+     * @return {Hex Color String}
+     */
+    mix : function(col1,col2,ratio){
 
-        amt = amt !== undefined ? amt : 0.5;
+        ratio = ratio !== undefined ? ratio : 0.5;
         var col1a = this.split(col1),
             col2a = this.split(col2);
         for (var i=0; i < col1a.length; i++) {
-            col1a[i] = (col1a[i]*(1-amt)) + (col2a[i]*(amt));
+            col1a[i] = (col1a[i]*(1-ratio)) + (col2a[i]*(ratio));
         }
         return this.splice(col1a);
     },
@@ -75,6 +96,16 @@ fly.colorUtil = {
         var cola = this.split(col);
         return cola[0] + cola[1] + cola[2];
     },
+
+    /*
+     * Creates a spectrum of hex colors
+     * @param  {Hex Color String} col1 First color in the spectrum
+     * @param  {Hex Color String} col2 Last color in the spectrum
+     * @param  {Integer} [seg=5] Number of colors in the spectrum
+     * @return {Array}
+     *
+     * @private
+     */
 
     bispectrum : function(col1,col2,seg){
         // takes two colors, returns array of seg sements
@@ -92,13 +123,25 @@ fly.colorUtil = {
         return spec;
     },
 
+    /*
+     * takes three hex colors and creates a (default 9)
+     * segment spectrum. Made for bringing saturated
+     * colors to light and dark.
+     * standard use: (lightest, saturated, darkest)
+     * sent colors are first, middle, and last of the array
+     * spectrum length defaults to 9, and will always be odd*
+     *
+     * @param  {Hex Color String} col1 First color in the spectrum
+     * @param  {Hex Color String} col2 Middle color in the spectrum
+     * @param  {Hex Color String} col2 Last color in the spectrum
+     * @param  {Integer} [seg=9] Number of colors in the spectrum
+     * @return {Array}
+     *
+     * @Private
+     */
+
     trispectrum : function(col1,col2,col3,seg) {
-        // takes three hex colors and creates a (default 9)
-        // segment spectrum. made for bringing saturated
-        // colors to light and dark.
-        // standard use: (lightest, saturated, darkest)
-        // sent colors are first, middle, and last of the array
-        // spectrum length defaults to 9, and will always be odd
+
         seg = seg !== undefined ? seg : 9;
         var midseg = Math.ceil(seg/2);
         var lights = this.bispectrum(col1,col2,midseg),
@@ -109,15 +152,41 @@ fly.colorUtil = {
             return spec;
     },
 
+    /**
+     * Takes three hex colors and creates a (default 9)
+     * segment spectrum. Defaults to 9 segments. Works well
+     * for a creating a color spectrum with a saturated color
+     * in the middle.
+     * standard use: (lightest, saturated, darkest)
+     * sent colors are first, middle, and last of the array
+     * spectrum length defaults to 9, and will always be odd*
+     *
+     * @param  {String} name
+     * @param  {Hex Color String} col1 First color in the spectrum
+     * @param  {Hex Color String} col2 Middle or Last color in the spectrum
+     * @param  {Hex Color String} [col3] Last color in the spectrum
+     * @param  {Integer} [seg] Number of colors in the spectrum
+     * @return {[type]}
+     *
+     * @example
+     * fly.colorUtil.spectrum("dark-grey","#000000","#222222",3)
+     * // returns ["#00000","#11111","#22222"]
+     *
+     * fly.colorUtil.spectrum("grey","#00000","#FFFFFF")
+     * // returns ["#000000","#3f3f3f","#7f7f7f","#bfbfbf","#FFFFFF"]
+     *
+     * fly.colorUtil.spectrum("hot-pink","#000000","#FF00FF","#FFFFFF")
+     * // returns ["#000000","#3f003f","#7f007f","#bf00bf","#FF00FF","#ff3fff","#ff7fff","#ffbfff","#FFFFFF"]
+     *
+     * fly.colorUtil.spectrum("pink","#000000","#FF00FF","#FFFFFF",5)
+     * // returns ["#000000","#7f007f","#FF00FF","#ff7fff","#FFFFFF"]
+     *
+     */
+
     spectrum : function(name,col1,col2,col3,seg) {
-        // name: string for name of color set
-        // send two hex colors for a bispectrum
-        // three colors for a trispectrum
-        // possible args sent:
-        //  (name,col1,col2)
-        //  (name,col1,col2,seg)
-        //  (name,col1,col2,col3)
-        //  (name,col1,col2,col3,seg)
+
+        /** @TODO Why is this pushed to colorSets w/o the array? */
+        // Should this be removed?
         fly.colorSets.push(name);
         var spec;
         if (col3 !== undefined) {
@@ -133,6 +202,12 @@ fly.colorUtil = {
         return spec;
     },
 
+    /**
+     * Sets the background color, or returns the current
+     * background color if no args sent
+     * @param  {Hex Color String} [col]
+     * @return {Hex Color String}
+     */
     background : function(col) {
         if(!col) {
             if (fly.layers.backRect) {

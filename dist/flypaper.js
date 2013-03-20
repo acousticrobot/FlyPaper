@@ -1,7 +1,7 @@
 /**
- * FlyPaper --v 0.5.0-44 alpha
+ * FlyPaper --v 0.5.0-69 alpha
  *
- * Date 2013-02-26 22:33:05
+ * Date 2013-03-19 16:11:27
  *
  * @name flypaper
  * @author Jonathan Gabel
@@ -151,7 +151,7 @@ fly.grantString = function(o) {
  * Objects inheriting from {@link base} already have info methods, and are
  * registered with the Info Controller. To grant info to other types of object,
  * use `fly.grantInfo(myObject)`. Your object must also register with the
- * [Info Controller]{@link fly.infoCtrlr}
+ * [Info Controller]{@link infoCtrlr}
  *
  * #### Adding Info
  * To add info to the info packet, use [addInfo()]{@link base.addInfo}
@@ -210,7 +210,7 @@ fly.grantInfo = function(o) {
     /**
      * @method addInfo
      *
-     * @description Add info that the {@link infoController} will track about your object.
+     * @description Add info that the {@link infoCtrlr} will track about your object.
      *
      * If the property type is `bool` or `val`, these must be callable
      * by your object to obtain the value as a string, number, or boolean.
@@ -221,7 +221,7 @@ fly.grantInfo = function(o) {
      *
      * @example
      * // myObject.sleeping() should return a bool
-     * // myObject.speed() should reterun a number or string
+     * // myObject.speed() should return a number or string
      * // myObject.sam() will not be querried
      * myObject.addInfo(
      *   sleeping:{val:'sleeping',type:'bool'},
@@ -351,7 +351,7 @@ fly.grantEvents = function (o) {
      *
      * @param   {Object} eventObj {'event':'handler',...}.
      *
-     * @returns {this} this is a chainable method
+     * @returns {this} This is a chainable method
      *
      * @example
      * // expecting event calls to myObject.handlerOne(args) and myObject.handlerTwo()
@@ -428,7 +428,7 @@ fly.grantEvents = function (o) {
      *
      * @param   {String} event Match an event in the registry.
      * @param   {Varies} args  Args passed to the handler
-     * @returns {this} this is a chainable method
+     * @returns {this} This is a chainable method
      * @memberOf base
      */
 
@@ -445,7 +445,7 @@ fly.grantEvents = function (o) {
      *
      * @description A string description of all registered events and handlers.
      *
-     * @returns {String} representation of the object's event registry
+     * @returns {String} Representation of the object's event registry
      * @memberOf base
      */
 
@@ -456,8 +456,7 @@ fly.grantEvents = function (o) {
     return o;
 };
 /**
- * @class base
- *
+ * @class
  * @classdesc The base for most fly objects. Through mixins it has
  * been granted the ability to create the info object that the
  * {@link Info Controller} requests, and can add and delete tracked items.
@@ -465,7 +464,7 @@ fly.grantEvents = function (o) {
  *
  * It is not necessary to use 'new' when creating a new base object
  *
- * @param   {String} n name of the object
+ * @param   {String} n Name of the object
  * @returns {Object}   New object with base fly functionality
  *
  * @example
@@ -494,8 +493,8 @@ fly.base = function(n){
  * All mouse and key events are handled with paper tools and
  * implemented within flypaper.
  *
- * On-frame events *must* be initaited
- * in the main javascript on window load.
+ * On-frame events *must* be initiated
+ * in the main JavaScript on window load.
  *
  * @example
  *     // The eventCtrlr is created on init
@@ -666,7 +665,7 @@ fly.eventCtrlr = (function () {
      * default info method of a fly object.  It iterates over
      * the events stored in its `event` object, and assigns them
      * a either a type of "event", or "eventFiring" if they have
-     * recently fired. This is all returned in the standart info packet
+     * recently fired. This is all returned in the standard info packet
      * format expected by the [info controller]{@link infoCtrlr}.
      *
      * @example
@@ -774,7 +773,7 @@ fly.initLayers = function(layers,background){
      * @classDesc
      * The object responsible for containing the drawing layers.
      * By default, there will be a background layer for color or
-     * animations, the maing drawing layer, and a top layer for
+     * animations, the main drawing layer, and a top layer for
      * the info controller.
      *
      *
@@ -877,44 +876,51 @@ fly.initLayers = function(layers,background){
 
 };
 
-/*
- * ## Color
- * color maintains an palette of colors
- * defined by the colorPalette. It is reinitialized
- * and repopulated every time the colorPalette is reset.
- * When a color is defined in a palette (ex. 'blue'),
- * its colors are accesible as an array via color.
- * ex:
- * fly.color.blue[5]
+/**
  *
- * Initial color object is only used to test for
- * a palette of "not yet defined", after init by
- * the colorPalette, color is granted info.
+ * The [Color Palette]{@link colorPalette} initializes fly.color
+ * during {@link fly.init}
+ * @example
+ * fly.color.blue[4]
+ * // returns # '#0000FF' with the default palette
+ *
+ * @class
+ * @classDesc
+ * Color maintains a palette of colors defined by the
+ * [Color Palette]{@link fly.colorPalette}.
+ * It is reinitialized and repopulated every time the
+ * [Color Palette]{@link fly.colorPalette} is reset.
+ * When a color is defined in a palette (ex. 'blue'),
+ * its colors are accessible as an array via fly.color.
+ *
 */
 
 fly.color = {
     name: "color",
+    /**
+     *
+     * After initialization by the [color Palette]{@link fly.colorPalette},
+     * color is [granted info]{@link Grant Info}.
+    */
     palette : "not yet defined"
 };
 
 
-/*
- * ## color Util Methods
- * Initialize color utility with methods for reading hex values
- * and stored color presets.  Preset color arrays are made
- * out of three values: darkest/saturated/lightest, two linear
- * progression are made from the ends to the middle value.
- * Color arrays default to 9 segments in length.
- * Presets can be altered and new sets made through the
- * public method spectrum.
- * example use:
- * rainbow = fly.colorUtil.spectrum('#FF0000','#00FF00','0000FF',13);
- * This creates an 13 segment color spectrum, rainbow[7] == '#00FF00'
- * *common variables:*
- * col is used for passed hex color values, ex. "#789ABC"
- * cola for color arrays, [r,g,b] ex [0,127,255]
-*
-*/
+/**
+ * The Color Utility is created on {@link fly.init}.
+ *
+ *
+ * @class
+ * @classDesc
+ * The Color Utility has methods for reading and manipulating
+ * hex values and creating color presets.  Preset color arrays
+ * are made out of three values, typically
+ * darkest, saturated, lightest.  Two linear progressions
+ * are made from the ends to the middle value.
+ * Color arrays default to 9 segments in length. Presets can
+ * be altered and new sets made through the {@link colorUtil.spectrum}.
+ *
+ */
 
 fly.colorUtil = {
 
@@ -925,6 +931,15 @@ fly.colorUtil = {
         return col;
     },
 
+    /**
+     * Splits a hex color into an [r,g,b] array
+     * @param  {Hex Color String} hexCol
+     * @return {Array}
+     *
+     * @example
+     * fly.colorUtil.split("#102030")
+     * // returns[16,32,48]
+     */
     split : function(hexCol){
         // split a hex color into array [r,g,b]
         //assumes hex color w/ leading #
@@ -936,6 +951,15 @@ fly.colorUtil = {
         return([r,g,b]);
     },
 
+    /**
+     * Splices an RGB array [r,g,b] into a hex color
+     * @param  {Array} cola
+     * @return {Hex Color String}
+     *
+     * @example
+     * fly.colorUtil.split([16,32,48])
+     * // returns "#102030"
+     */
     splice : function(cola){
         // takes a cola and returns the hex string value
         // cola is a color array [r,g,b], are all int
@@ -951,15 +975,20 @@ fly.colorUtil = {
         return s;
     },
 
-    mix : function(col1,col2,amt){
-        // mixes 2 hex colors together, amt (0 to 1) determines ratio
-        // amt defaults to .5, mixes 50/50
+    /**
+     * mixes 2 hex colors together
+     * @param  {Hex Color String} col1
+     * @param  {Hex Color String} col2
+     * @param  {Float between 0 and 1} [ratio=0.5] Determines ratio color 1 to color 2
+     * @return {Hex Color String}
+     */
+    mix : function(col1,col2,ratio){
 
-        amt = amt !== undefined ? amt : 0.5;
+        ratio = ratio !== undefined ? ratio : 0.5;
         var col1a = this.split(col1),
             col2a = this.split(col2);
         for (var i=0; i < col1a.length; i++) {
-            col1a[i] = (col1a[i]*(1-amt)) + (col2a[i]*(amt));
+            col1a[i] = (col1a[i]*(1-ratio)) + (col2a[i]*(ratio));
         }
         return this.splice(col1a);
     },
@@ -969,6 +998,16 @@ fly.colorUtil = {
         var cola = this.split(col);
         return cola[0] + cola[1] + cola[2];
     },
+
+    /*
+     * Creates a spectrum of hex colors
+     * @param  {Hex Color String} col1 First color in the spectrum
+     * @param  {Hex Color String} col2 Last color in the spectrum
+     * @param  {Integer} [seg=5] Number of colors in the spectrum
+     * @return {Array}
+     *
+     * @private
+     */
 
     bispectrum : function(col1,col2,seg){
         // takes two colors, returns array of seg sements
@@ -986,13 +1025,25 @@ fly.colorUtil = {
         return spec;
     },
 
+    /*
+     * takes three hex colors and creates a (default 9)
+     * segment spectrum. Made for bringing saturated
+     * colors to light and dark.
+     * standard use: (lightest, saturated, darkest)
+     * sent colors are first, middle, and last of the array
+     * spectrum length defaults to 9, and will always be odd*
+     *
+     * @param  {Hex Color String} col1 First color in the spectrum
+     * @param  {Hex Color String} col2 Middle color in the spectrum
+     * @param  {Hex Color String} col2 Last color in the spectrum
+     * @param  {Integer} [seg=9] Number of colors in the spectrum
+     * @return {Array}
+     *
+     * @Private
+     */
+
     trispectrum : function(col1,col2,col3,seg) {
-        // takes three hex colors and creates a (default 9)
-        // segment spectrum. made for bringing saturated
-        // colors to light and dark.
-        // standard use: (lightest, saturated, darkest)
-        // sent colors are first, middle, and last of the array
-        // spectrum length defaults to 9, and will always be odd
+
         seg = seg !== undefined ? seg : 9;
         var midseg = Math.ceil(seg/2);
         var lights = this.bispectrum(col1,col2,midseg),
@@ -1003,15 +1054,41 @@ fly.colorUtil = {
             return spec;
     },
 
+    /**
+     * Takes three hex colors and creates a (default 9)
+     * segment spectrum. Defaults to 9 segments. Works well
+     * for a creating a color spectrum with a saturated color
+     * in the middle.
+     * standard use: (lightest, saturated, darkest)
+     * sent colors are first, middle, and last of the array
+     * spectrum length defaults to 9, and will always be odd*
+     *
+     * @param  {String} name
+     * @param  {Hex Color String} col1 First color in the spectrum
+     * @param  {Hex Color String} col2 Middle or Last color in the spectrum
+     * @param  {Hex Color String} [col3] Last color in the spectrum
+     * @param  {Integer} [seg] Number of colors in the spectrum
+     * @return {[type]}
+     *
+     * @example
+     * fly.colorUtil.spectrum("dark-grey","#000000","#222222",3)
+     * // returns ["#00000","#11111","#22222"]
+     *
+     * fly.colorUtil.spectrum("grey","#00000","#FFFFFF")
+     * // returns ["#000000","#3f3f3f","#7f7f7f","#bfbfbf","#FFFFFF"]
+     *
+     * fly.colorUtil.spectrum("hot-pink","#000000","#FF00FF","#FFFFFF")
+     * // returns ["#000000","#3f003f","#7f007f","#bf00bf","#FF00FF","#ff3fff","#ff7fff","#ffbfff","#FFFFFF"]
+     *
+     * fly.colorUtil.spectrum("pink","#000000","#FF00FF","#FFFFFF",5)
+     * // returns ["#000000","#7f007f","#FF00FF","#ff7fff","#FFFFFF"]
+     *
+     */
+
     spectrum : function(name,col1,col2,col3,seg) {
-        // name: string for name of color set
-        // send two hex colors for a bispectrum
-        // three colors for a trispectrum
-        // possible args sent:
-        //  (name,col1,col2)
-        //  (name,col1,col2,seg)
-        //  (name,col1,col2,col3)
-        //  (name,col1,col2,col3,seg)
+
+        /** @TODO Why is this pushed to colorSets w/o the array? */
+        // Should this be removed?
         fly.colorSets.push(name);
         var spec;
         if (col3 !== undefined) {
@@ -1027,6 +1104,12 @@ fly.colorUtil = {
         return spec;
     },
 
+    /**
+     * Sets the background color, or returns the current
+     * background color if no args sent
+     * @param  {Hex Color String} [col]
+     * @return {Hex Color String}
+     */
     background : function(col) {
         if(!col) {
             if (fly.layers.backRect) {
@@ -1051,7 +1134,7 @@ fly.colorUtil = {
 /*
  * ## Color Sets
  * FlyPaper color sets are used to quickly establish
- * a color palette that can be changed dyamically.
+ * a color palette that can be changed dynamically.
  * Each color set has a name "name" and an array "set"
  * of colors.  Each "set" color is an array with the color
  * name followed by three hex values: darkest, saturated, and
@@ -1111,24 +1194,48 @@ fly.colorSets = [
         ]}
     ];
 
-/*
- * ## Color Palette
- * Populates  fly.color with a colorset.
- * checks args passed on init for color palette info.
- * args can be a string matched against predefined
- * sets of colors in colorSets. args can also be an
- * object containing a name and a color set (see
- * fly.colorSets for the pattern). If the set is
+/**
+ * Returns the name of the current color palette if no
+ * args are passed in. Arguments passed on {@link fly.init}
+ * will be passed to the colorPalette.
+ * Args can be a string matched against predefined
+ * sets of colors in colorSets. Args can also be an
+ * object containing a name and a color set. If the set is
  * legit, it will be added to the colorSets array,
  * if the name exists already, the new set will
  * replace the old.
  *
- * *ex. args:*
- * "neon"
- * {name:"new neon",set:[['red','#400000','#FF0000','#FFC0C0',],...]}
+ * @example
+ * fly.init({colorPalette:"neon"})
+ * // sets the predefined neon color set on init
  *
-*/
-
+ * fly.colorPalette("pastel")
+ * // changes to the predefined "pastel" color set
+ *
+ * fly.colorPalette({
+ *      name: "my color set", set: [
+ *          ['red','#F04510','#FF7070','#FFD3C0'],
+ *          ['orange','#F28614','#FFB444','#FFE8C0'],
+ *          ['yellow','#CDB211','#FFFF70','#FFFFC0'],
+ *          ['green','#42622D','#89C234','#C0FFC0'],
+ *          ['blue','#00597C','#00A9EB','#B0E5FF'],
+ *          ['purple','#6F006F','#9F3DBF','#FFC0FF'],
+ *          ['grey','#383633','#A7A097','#FFFFFF']
+ *      ]
+ * })
+ * // Adds "my color set" to the color sets, and
+ * // redefines fly.colors to the custom color palette.
+ *
+ * fly.colorPalette()
+ * // returns "my color set"
+ *
+ * @param  {String, Object} args
+ *
+ * @class
+ * @ClassDesc
+ * Populates fly.color with a colorset.
+ *
+ */
 
 fly.colorPalette = function(args){
 
@@ -1800,24 +1907,24 @@ fly.initPaperTool = function() {
 
 };
 
-//--------------------- BEGIN FLYPAPER INIT ----------------//
-/*
-*   initializes the canvas for all drawing
-*   inits eventCtrlr and infoCtrlr
-*   accepts the following in args:
-*       width: canvas width
-*       height: canvas height
-*       debug: turns on debug info and makes infoCtrlr visible
-*       colorPalette: "standard","neon","pastel","custom"
-*       colorSet: [ ['red','#400000','#FF0000','#FFC0C0',],[.,.,.,.],...]
-*           colorSet is used when colorPalette is "custom"
-*       backgroundColor: "#F00F00", "red[4]"
-*       background: bool, adds background layer
-*       stageLayers: number of layers in fly.layers.stage[]
-*
-*/
-//--------------------------------------------------------//
-
+/**
+ * initializes the canvas for all drawing
+ * inits eventCtrlr and infoCtrlr
+ * accepts the following in args:
+ *
+ *       width: canvas width
+ *       height: canvas height
+ *       debug: turns on debug info and makes infoCtrlr visible
+ *       colorPalette: "standard","neon","pastel","custom"
+ *       colorSet: [ ['red','#400000','#FF0000','#FFC0C0',],[.,.,.,.],...]
+ *           colorSet is used when colorPalette is "custom"
+ *       backgroundColor: "#F00F00", "red[4]"
+ *       background: bool, adds background layer
+ *       stageLayers: number of layers in fly.layers.stage[]
+ *
+ * @param  {Object} args
+ * @return {nil}
+ */
 fly.init = function (args) {
 
     if (args === undefined) {

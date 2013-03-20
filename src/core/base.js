@@ -5,8 +5,7 @@
  */
 
 /**
- * @class base
- *
+ * @class
  * @classdesc The base for most fly objects. Through mixins it has
  * been granted the ability to create the info object that the
  * {@link Info Controller} requests, and can add and delete tracked items.
@@ -14,7 +13,7 @@
  *
  * It is not necessary to use 'new' when creating a new base object
  *
- * @param   {String} n name of the object
+ * @param   {String} n Name of the object
  * @returns {Object}   New object with base fly functionality
  *
  * @example

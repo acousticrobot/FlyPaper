@@ -41,7 +41,7 @@ test("the build", 11, function(){
 	ok(fly.color, "fly.color exists");
 	ok(fly.colorPalette, "fly.colorPalette exists");
 	ok(fly.eventCtrlr, "fly event controller exists");
-	ok(fly.infoCtrlr, "fly event controller exists");
+	ok(fly.infoCtrlr, "fly info controller exists");
 });
 
 test("infoCtrlr", 1, function(){

@@ -4,24 +4,24 @@
  * Find the built file in dist/flypaper.js
  */
 
-//--------------------- BEGIN FLYPAPER INIT ----------------//
-/*
-*   initializes the canvas for all drawing
-*   inits eventCtrlr and infoCtrlr
-*   accepts the following in args:
-*       width: canvas width
-*       height: canvas height
-*       debug: turns on debug info and makes infoCtrlr visible
-*       colorPalette: "standard","neon","pastel","custom"
-*       colorSet: [ ['red','#400000','#FF0000','#FFC0C0',],[.,.,.,.],...]
-*           colorSet is used when colorPalette is "custom"
-*       backgroundColor: "#F00F00", "red[4]"
-*       background: bool, adds background layer
-*       stageLayers: number of layers in fly.layers.stage[]
-*
-*/
-//--------------------------------------------------------//
-
+/**
+ * initializes the canvas for all drawing
+ * inits eventCtrlr and infoCtrlr
+ * accepts the following in args:
+ *
+ *       width: canvas width
+ *       height: canvas height
+ *       debug: turns on debug info and makes infoCtrlr visible
+ *       colorPalette: "standard","neon","pastel","custom"
+ *       colorSet: [ ['red','#400000','#FF0000','#FFC0C0',],[.,.,.,.],...]
+ *           colorSet is used when colorPalette is "custom"
+ *       backgroundColor: "#F00F00", "red[4]"
+ *       background: bool, adds background layer
+ *       stageLayers: number of layers in fly.layers.stage[]
+ *
+ * @param  {Object} args
+ * @return {nil}
+ */
 fly.init = function (args) {
 
     if (args === undefined) {

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: layers</title>
+    <title>JSDoc: Class: colorPalette</title>
     
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">Class: layers</h1>
+    <h1 class="page-title">Class: colorPalette</h1>
     
     
 
@@ -29,13 +29,10 @@
     <h2>
         <span class="ancestors"><a href="fly.html">fly</a>.</span>
     
-    layers
+    colorPalette
     </h2>
     
-        <div class="class-description"><p>The object responsible for containing the drawing layers.
-By default, there will be a background layer for color or
-animations, the main drawing layer, and a top layer for
-the info controller.</p></div>
+        <div class="class-description"><p>Populates fly.color with a colorset.</p></div>
     
 </header>  
 
@@ -46,7 +43,7 @@ the info controller.</p></div>
     
         
 <dt>
-    <h4 class="name" id="layers"><span class="type-signature"></span>new layers<span class="signature">(layers, background)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="colorPalette"><span class="type-signature"></span>new colorPalette<span class="signature">(args)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -54,15 +51,15 @@ the info controller.</p></div>
     
     
     <div class="description">
-        <p>The Stage layers are created on <a href="fly.html#init">fly.init</a>.
-Defaults to &quot;background&quot;, &quot;layer 1&quot;, and &quot;info&quot;</p>
-
-<h4>reserved words</h4>
-
-<p>&quot;background&quot; and &quot;info&quot; are reserved layer names,
-background is primarily used for a solid color. See
-<a href="fly.colorUtil.html#background">fly.colorUtil.background</a> for setting background
-color.</p>
+        <p>Returns the name of the current color palette if no
+args are passed in. Arguments passed on <a href="fly.html#init">fly.init</a>
+will be passed to the colorPalette.
+Args can be a string matched against predefined
+sets of colors in colorSets. Args can also be an
+object containing a name and a color set. If the set is
+legit, it will be added to the colorSets array,
+if the name exists already, the new set will
+replace the old.</p>
     </div>
     
 
@@ -96,16 +93,13 @@ color.</p>
 	
         <tr>
             
-                <td class="name"><code>layers</code></td>
+                <td class="name"><code>args</code></td>
             
             
             <td class="type">
             
                 
-<span class="param-type">Integer</span>
-|
-
-<span class="param-type">Array</span>
+<span class="param-type">String, Object</span>
 
 
             
@@ -115,37 +109,7 @@ color.</p>
             
             
             
-            <td class="description last"><p>Defaults to 1.
-Integer values will create that many layers,
-plus the background and info layers,
-layers will be named &quot;layer 1&quot;, &quot;layer 2&quot; etc.
-Array of names will create that many layers,
-each can be referanced by that name.</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>background</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Boolean</span>
-
-
-            
-            </td>
-            
-            
-            
-            
-            
-            <td class="description last"><p>Defaults true.
-If set to false, no background layer is created,
-first layer by integer is named &quot;layer 0&quot;</p></td>
+            <td class="description last"></td>
         </tr>
 	
 	
@@ -176,7 +140,7 @@ first layer by integer is named &quot;layer 0&quot;</p></td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="flypaper.js.html">flypaper.js</a>, line 781
+        <a href="flypaper.js.html">flypaper.js</a>, line 1240
     </li></ul></dd>
     
     
@@ -184,13 +148,6 @@ first layer by integer is named &quot;layer 0&quot;</p></td>
     
     
     
-    
-    <dt class="tag-todo">To Do:</dt>
-    <dd class="tag-todo">
-        <ul>
-            <li>describe use cases</li>
-        </ul>
-    </dd>
     
 </dl>
 
@@ -201,6 +158,32 @@ first layer by integer is named &quot;layer 0&quot;</p></td>
     
     
     
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code>fly.init({colorPalette:"neon"})
+// sets the predefined neon color set on init
+
+fly.colorPalette("pastel")
+// changes to the predefined "pastel" color set
+
+fly.colorPalette({
+     name: "my color set", set: [
+         ['red','#F04510','#FF7070','#FFD3C0'],
+         ['orange','#F28614','#FFB444','#FFE8C0'],
+         ['yellow','#CDB211','#FFFF70','#FFFFC0'],
+         ['green','#42622D','#89C234','#C0FFC0'],
+         ['blue','#00597C','#00A9EB','#B0E5FF'],
+         ['purple','#6F006F','#9F3DBF','#FFC0FF'],
+         ['grey','#383633','#A7A097','#FFFFFF']
+     ]
+})
+// Adds "my color set" to the color sets, and
+// redefines fly.colors to the custom color palette.
+
+fly.colorPalette()
+// returns "my color set"</code></pre>
+
     
 </dd>
 

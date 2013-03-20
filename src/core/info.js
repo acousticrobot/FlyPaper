@@ -13,7 +13,7 @@
  * Objects inheriting from {@link base} already have info methods, and are
  * registered with the Info Controller. To grant info to other types of object,
  * use `fly.grantInfo(myObject)`. Your object must also register with the
- * [Info Controller]{@link fly.infoCtrlr}
+ * [Info Controller]{@link infoCtrlr}
  *
  * #### Adding Info
  * To add info to the info packet, use [addInfo()]{@link base.addInfo}
@@ -72,7 +72,7 @@ fly.grantInfo = function(o) {
     /**
      * @method addInfo
      *
-     * @description Add info that the {@link infoController} will track about your object.
+     * @description Add info that the {@link infoCtrlr} will track about your object.
      *
      * If the property type is `bool` or `val`, these must be callable
      * by your object to obtain the value as a string, number, or boolean.
@@ -83,7 +83,7 @@ fly.grantInfo = function(o) {
      *
      * @example
      * // myObject.sleeping() should return a bool
-     * // myObject.speed() should reterun a number or string
+     * // myObject.speed() should return a number or string
      * // myObject.sam() will not be querried
      * myObject.addInfo(
      *   sleeping:{val:'sleeping',type:'bool'},

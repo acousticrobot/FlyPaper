@@ -5,24 +5,47 @@
  */
 
 
-/*
- * ## Color Palette
- * Populates  fly.color with a colorset.
- * checks args passed on init for color palette info.
- * args can be a string matched against predefined
- * sets of colors in colorSets. args can also be an
- * object containing a name and a color set (see
- * fly.colorSets for the pattern). If the set is
- * legit, it will be added to the colorSets array,
- * if the name exists already, the new set will
- * replace the old.
+/**
+ * Returns the name of the current color palette if no
+ * args are passed in. Arguments passed on {@link fly.init}
+ * will be passed to the colorPalette.
+ * Args can be a string matched against predefined
+ * sets of colors in the [Color Sets]{@link colorSets}. Args can also be an
+ * object containing a name and a color set. The set will be added to
+ * the colorSets array, or if the name exists already,
+ * the new set will replace the old.
  *
- * *ex. args:*
- * "neon"
- * {name:"new neon",set:[['red','#400000','#FF0000','#FFC0C0',],...]}
+ * @example
+ * fly.init({colorPalette:"neon"})
+ * // sets the predefined neon color set on init
  *
-*/
-
+ * fly.colorPalette("pastel")
+ * // changes to the predefined "pastel" color set
+ *
+ * fly.colorPalette({
+ *      name: "my color set", set: [
+ *          ['red','#F04510','#FF7070','#FFD3C0'],
+ *          ['orange','#F28614','#FFB444','#FFE8C0'],
+ *          ['yellow','#CDB211','#FFFF70','#FFFFC0'],
+ *          ['green','#42622D','#89C234','#C0FFC0'],
+ *          ['blue','#00597C','#00A9EB','#B0E5FF'],
+ *          ['purple','#6F006F','#9F3DBF','#FFC0FF'],
+ *          ['grey','#383633','#A7A097','#FFFFFF']
+ *      ]
+ * })
+ * // Adds "my color set" to the color sets, and
+ * // redefines fly.colors to the custom color palette.
+ *
+ * fly.colorPalette()
+ * // returns "my color set"
+ *
+ * @param  {String, Object} args See examples
+ *
+ * @class
+ * @ClassDesc
+ * Populates fly.color with a colorset.
+ *
+ */
 
 fly.colorPalette = function(args){
 
@@ -106,8 +129,10 @@ fly.colorPalette = function(args){
     }
 
     function setPalette() {
-        // colorSet is an object with a name and a set array
-        // see colorSets for formatting
+        // After sanity checks, load the color set into fly.colors
+        // spec is a color spectrum array ['red',#000000,#FF0000,#FFFFFF]
+        // colorSet is an object with a name and a set of
+        // spectrum arrays, see colorPalette for examples
         var spec,
             colorSet;
         try {

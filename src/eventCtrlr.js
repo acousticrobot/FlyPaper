@@ -9,8 +9,8 @@
  * All mouse and key events are handled with paper tools and
  * implemented within flypaper.
  *
- * On-frame events *must* be initaited
- * in the main javascript on window load.
+ * On-frame events *must* be initiated
+ * in the main JavaScript on window load.
  *
  * @example
  *     // The eventCtrlr is created on init
@@ -181,7 +181,7 @@ fly.eventCtrlr = (function () {
      * default info method of a fly object.  It iterates over
      * the events stored in its `event` object, and assigns them
      * a either a type of "event", or "eventFiring" if they have
-     * recently fired. This is all returned in the standart info packet
+     * recently fired. This is all returned in the standard info packet
      * format expected by the [info controller]{@link infoCtrlr}.
      *
      * @example

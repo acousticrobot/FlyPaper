@@ -36,7 +36,7 @@ fly.initLayers = function(layers,background){
      * @classDesc
      * The object responsible for containing the drawing layers.
      * By default, there will be a background layer for color or
-     * animations, the maing drawing layer, and a top layer for
+     * animations, the main drawing layer, and a top layer for
      * the info controller.
      *
      *

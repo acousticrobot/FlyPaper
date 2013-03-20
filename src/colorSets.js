@@ -8,7 +8,7 @@
 /*
  * ## Color Sets
  * FlyPaper color sets are used to quickly establish
- * a color palette that can be changed dyamically.
+ * a color palette that can be changed dynamically.
  * Each color set has a name "name" and an array "set"
  * of colors.  Each "set" color is an array with the color
  * name followed by three hex values: darkest, saturated, and

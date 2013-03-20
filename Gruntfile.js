@@ -77,6 +77,7 @@ module.exports = function(grunt) {
           paper: true,
           fly: true,
           module: false,
+          ok: true,
           navigator: true,
           window: true,
           document: true
