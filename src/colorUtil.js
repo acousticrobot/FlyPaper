@@ -22,6 +22,15 @@
 
 fly.colorUtil = {
 
+    /**
+     *
+     * Computation to make sure
+     * color calculations don't pass color
+     * limits. Bounded between 0 and 255
+     *
+     * @param  {Integer} col
+     * @return {Integer}     integer limited between 0 and 255
+     */
     limit : function(col){
         // limit col between 0 and 255
         // color is any int
@@ -34,9 +43,13 @@ fly.colorUtil = {
      * @param  {Hex Color String} hexCol
      * @return {Array}
      *
+     * *Note: These rgb values are between 0 and 255,
+     * and do not translate into paper.js rgb values
+     * which range between 0 and 1*
+     *
      * @example
      * fly.colorUtil.split("#102030")
-     * // returns[16,32,48]
+     * // returns [16,32,48]
      */
     split : function(hexCol){
         // split a hex color into array [r,g,b]
@@ -53,6 +66,10 @@ fly.colorUtil = {
      * Splices an RGB array [r,g,b] into a hex color
      * @param  {Array} cola
      * @return {Hex Color String}
+     *
+     * *Note: These rgb values are between 0 and 255,
+     * and do not translate into paper.js rgb values
+     * which range between 0 and 1*
      *
      * @example
      * fly.colorUtil.split([16,32,48])
@@ -91,6 +108,14 @@ fly.colorUtil = {
         return this.splice(col1a);
     },
 
+    /**
+     * Returns the r g b values (0 -255)
+     * added together for a total value. Useful for
+     * comparing color values disregarding the hue
+     *
+     * @param  {[type]} col [description]
+     * @return {[type]}     [description]
+     */
     totalValue  : function(col) {
         // adds the R,G,B values together
         var cola = this.split(col);
@@ -153,11 +178,11 @@ fly.colorUtil = {
     },
 
     /**
-     * Takes three hex colors and creates a (default 9)
-     * segment spectrum. Defaults to 9 segments. Works well
-     * for a creating a color spectrum with a saturated color
-     * in the middle.
-     * standard use: (lightest, saturated, darkest)
+     * Takes two or three hex colors and creates a array of
+     * colors. Defaults to 9 segments for three colors and 5 for
+     * two colors. Using three colors works well for a creating
+     * a color spectrum with a saturated color in the middle.
+     * Standard use: (lightest, saturated, darkest)
      * sent colors are first, middle, and last of the array
      * spectrum length defaults to 9, and will always be odd*
      *
@@ -207,6 +232,7 @@ fly.colorUtil = {
      * background color if no args sent
      * @param  {Hex Color String} [col]
      * @return {Hex Color String}
+     * @TODO move into fly.color
      */
     background : function(col) {
         if(!col) {

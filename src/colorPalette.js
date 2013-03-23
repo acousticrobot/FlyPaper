@@ -8,7 +8,7 @@
 /**
  * Returns the name of the current color palette if no
  * args are passed in. Arguments passed on {@link fly.init}
- * will be passed to the colorPalette.
+ * will be passed to the color palette.
  * Args can be a string matched against predefined
  * sets of colors in the [Color Sets]{@link colorSets}. Args can also be an
  * object containing a name and a color set. The set will be added to
@@ -16,41 +16,45 @@
  * the new set will replace the old.
  *
  * @example
- * fly.init({colorPalette:"neon"})
- * // sets the predefined neon color set on init
+ * // Set the predefined 'neon' color set on init
+ * fly.init({palette:"neon"})
  *
- * fly.colorPalette("pastel")
- * // changes to the predefined "pastel" color set
+ * // Change to the predefined "pastel" color set
+ * fly.color.palette("pastel")
  *
- * fly.colorPalette({
+ * // Change to a custom color set, and redefine fly.colors
+ * // To use the custom colors
+ * fly.color.palette({
  *      name: "my color set", set: [
- *          ['red','#F04510','#FF7070','#FFD3C0'],
+ *          ['ruby','#F04510','#FF7070','#FFD3C0'],
  *          ['orange','#F28614','#FFB444','#FFE8C0'],
- *          ['yellow','#CDB211','#FFFF70','#FFFFC0'],
- *          ['green','#42622D','#89C234','#C0FFC0'],
- *          ['blue','#00597C','#00A9EB','#B0E5FF'],
- *          ['purple','#6F006F','#9F3DBF','#FFC0FF'],
- *          ['grey','#383633','#A7A097','#FFFFFF']
+ *          ['sunshine','#CDB211','#FFFF70','#FFFFC0'],
+ *          ['grass','#42622D','#89C234','#C0FFC0'],
+ *          ['berry','#00597C','#00A9EB','#B0E5FF'],
+ *          ['very berry','#6F006F','#9F3DBF','#FFC0FF'],
+ *          ['clouds','#383633','#A7A097','#FFFFFF']
  *      ]
  * })
- * // Adds "my color set" to the color sets, and
- * // redefines fly.colors to the custom color palette.
  *
- * fly.colorPalette()
+ * fly.color.palette()
  * // returns "my color set"
  *
  * @param  {String, Object} args See examples
  *
- * @class
- * @ClassDesc
- * Populates fly.color with a colorset.
+ * @extends color
  *
  */
 
-fly.colorPalette = function(args){
+fly.color.palette = function(args){
 
-    var i,
+    var
+        i,
         index = -1;
+
+    // If no-args passed, return existing palette
+    if (!args) {
+        return fly.color._paletteName;
+    }
 
     function checkSet(p) {
         // sanity type check args args:
@@ -67,6 +71,7 @@ fly.colorPalette = function(args){
             if (p.set[i] instanceof Array === false || p.set[i].length !== 4) {
                 return 'Palette set of unknown type';
             }
+            // @TODO add this as an array in color to check against
             var reserved = /palette|info|addInfo|deleteInfo/;
             if (p.set[i][0].match(reserved)) {
                 return p.set[i][0] + ' is a reserved word in color sets';
@@ -84,9 +89,12 @@ fly.colorPalette = function(args){
         return -1;
     }
 
+    // type check args, add set to colorSets if new
+
     function prepSet() {
-        // type check args, add set to colorSets if new
+
         var check;
+
         if (typeof args === "object" && args.name && args.set ) {
             check = checkSet(args);
             if (check !== true) {
@@ -112,14 +120,15 @@ fly.colorPalette = function(args){
         }
     }
 
+    // rebuild fly.Color with the new palette
+
     function resetColor(colorSet) {
-        // rebuild fly.Color with the new palette
-        fly.color = {
-            name: "color",
-            palette: colorSet.name
-        };
-        var newInfo = {palette : {val: "palette", type: "val"}},
-            spec, v;
+
+        fly.color._paletteName = colorSet.name;
+
+        var newInfo = {palette : {val: "_paletteName", type: "val"}},
+            spec,
+            v;
         for (var i=0; i < colorSet.set.length; i++) {
             spec = colorSet.set[i];
             v = spec[1] + '-' + spec[2] + '-' + spec[3];
@@ -128,19 +137,28 @@ fly.colorPalette = function(args){
         fly.grantInfo(fly.color).addInfo(newInfo);
     }
 
+    // After sanity checks, load the color set into fly.colors
+
     function setPalette() {
-        // After sanity checks, load the color set into fly.colors
-        // spec is a color spectrum array ['red',#000000,#FF0000,#FFFFFF]
-        // colorSet is an object with a name and a set of
-        // spectrum arrays, see colorPalette for examples
+
+        // spec: color spectrum array ['red',#000000,#FF0000,#FFFFFF]
+        // colorSet: name and a set of spectrum arrays (see fly.colorSet)
         var spec,
             colorSet;
+
         try {
             prepSet();
         }
+
         catch(e) {
-            if (fly.color.palette === "not yet defined") {
+
+            // string passed doesn't match a preset, so
+            // we set it to the default
+            if (fly.color._paletteName === "not yet defined") {
                 index = 0;
+
+            // args are of an unknown type, return an
+            // error without changing anything
             } else {
                 return(e);
             }
@@ -155,16 +173,13 @@ fly.colorPalette = function(args){
         }
     }
 
-    // If no-args passed, return existing palette
-    if (!args) {
-        return fly.color.palette;
-    }
-
     setPalette();
 
 };
 
-// TODO: add colors to current set: fly.colorPalette.add ...
+// TODO:
+// define reserved color words [palette,_palette,add,remove]
+// add colors to current set: fly.color.add(...)
 // add into current in colorSets
-// add into fly.color
+
 

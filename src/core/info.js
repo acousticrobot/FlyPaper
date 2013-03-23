@@ -13,13 +13,13 @@
  * Objects inheriting from {@link base} already have info methods, and are
  * registered with the Info Controller. To grant info to other types of object,
  * use `fly.grantInfo(myObject)`. Your object must also register with the
- * [Info Controller]{@link infoCtrlr}
+ * [Info Controller]{@link infoCtrlr}.
  *
  * #### Adding Info
- * To add info to the info packet, use [addInfo()]{@link base.addInfo}
+ * To add info to the info packet, use [addInfo()]{@link fly.base.addInfo}
  *
  * #### Deleting Info
- * To delete info, use [deleteInfo()]{@link base.deleteInfo}
+ * To delete info, use [deleteInfo()]{@link fly.base.deleteInfo}
  *
  * @param {Object} o The object to grant info functionality
  * @return {Object}   The object with method info
@@ -84,7 +84,7 @@ fly.grantInfo = function(o) {
      * @example
      * // myObject.sleeping() should return a bool
      * // myObject.speed() should return a number or string
-     * // myObject.sam() will not be querried
+     * // myObject.sam() will not be queried
      * myObject.addInfo(
      *   sleeping:{val:'sleeping',type:'bool'},
      *   speed:{val:'speed',type:'val'},
@@ -95,7 +95,7 @@ fly.grantInfo = function(o) {
      * @returns {this} This is a chainable method
      * @todo describe other types, custom types
      * @todo is 'name' reserved, 'version' reserved ?
-     * @memberOf base
+     * @memberof fly.base
      */
     o.addInfo = function(args){
         mergeInfo(this,_info,args);
@@ -109,12 +109,12 @@ fly.grantInfo = function(o) {
      *
      * @param {String|Array} args String value of one or more `val` in the info array
      * @returns {this} This is a chainable method
+     * @memberof fly.base
      *
      * @example
      * myObject.deleteInfo('sleeping');
      * myObject.deleteInfo(['speed','val1']);
      *
-     * @memberOf base
      */
     o.deleteInfo = function(args) {
         // delete existing property from the infoArray
@@ -149,7 +149,7 @@ fly.grantInfo = function(o) {
      *
      * @returns {Object} info object
      *
-     * @memberOf base
+     * @memberOf fly.base
      */
     o.info = function(){
         var _i = {};

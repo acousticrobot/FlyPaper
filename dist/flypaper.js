@@ -1,7 +1,7 @@
 /**
- * FlyPaper --v 0.5.0-69 alpha
+ * FlyPaper --v 0.5.0-91 alpha
  *
- * Date 2013-03-19 16:11:27
+ * Date 2013-03-23 19:37:46
  *
  * @name flypaper
  * @author Jonathan Gabel
@@ -42,7 +42,7 @@ if (typeof Object.create !== 'function') {
 
 
 /**
- * A recursive method for parsing an object or array to a string.
+ * A method for parsing an object or array to a string.
  * An object can be passed to `fly.toString(object)`,
  * or the method can be granted to an object using {@link fly.grantString}.
  *
@@ -52,17 +52,22 @@ if (typeof Object.create !== 'function') {
  *
  * @example
  * myObject = {a:0,b:[0,[1,2,3],[4,5,{"six":6,"seven":"seven"}]]};
- * // call using an object as a parameter
+ *
+ * // Examine any object by passing as a parameter
  * fly.toString(myObject);
  * // returns: '{"a":0,"b":object}'
- * fly.toString(myObject,3);
+ *
+ * // Examine nested objects more deeply
+ * fly.toString(myObject,2);
+ * // returns: '{"a":0,"b":[0,[1,2,3],[4,5,object]]}'
+ *
+ * // Grant the method to an object
+ * fly.grantString(myObject);
+ *
+ * // Then call the method directly on the object
+ * myObject.toString(2)
  * // returns: '{"a":0,"b":[0,[1,2,3],[4,5,{"six":6,"seven":"seven"}]]}'
  *
- * // grant the method to an object
- * fly.grantString(myObject);
- * // then call the method on the object
- * myObject.toString(2)
- * // returns: '{"a":0,"b":[0,[1,2,3],[4,5,object]]}'
  */
 
 fly.toString = function(o,toDepth,_currDepth) {
@@ -122,7 +127,7 @@ fly.toString = function(o,toDepth,_currDepth) {
  */
 
 /**
- * Mixin to grant the [flypaper toString]{@link fly.toString} method to an object
+ * Mixin to grant the flypaper [toString]{@link fly.toString} method to an object
  * @param {Object} o The object to grant string functionality
  * @returns {Object} with new method toString()
  *
@@ -151,13 +156,13 @@ fly.grantString = function(o) {
  * Objects inheriting from {@link base} already have info methods, and are
  * registered with the Info Controller. To grant info to other types of object,
  * use `fly.grantInfo(myObject)`. Your object must also register with the
- * [Info Controller]{@link infoCtrlr}
+ * [Info Controller]{@link infoCtrlr}.
  *
  * #### Adding Info
- * To add info to the info packet, use [addInfo()]{@link base.addInfo}
+ * To add info to the info packet, use [addInfo()]{@link fly.base.addInfo}
  *
  * #### Deleting Info
- * To delete info, use [deleteInfo()]{@link base.deleteInfo}
+ * To delete info, use [deleteInfo()]{@link fly.base.deleteInfo}
  *
  * @param {Object} o The object to grant info functionality
  * @return {Object}   The object with method info
@@ -222,7 +227,7 @@ fly.grantInfo = function(o) {
      * @example
      * // myObject.sleeping() should return a bool
      * // myObject.speed() should return a number or string
-     * // myObject.sam() will not be querried
+     * // myObject.sam() will not be queried
      * myObject.addInfo(
      *   sleeping:{val:'sleeping',type:'bool'},
      *   speed:{val:'speed',type:'val'},
@@ -233,7 +238,7 @@ fly.grantInfo = function(o) {
      * @returns {this} This is a chainable method
      * @todo describe other types, custom types
      * @todo is 'name' reserved, 'version' reserved ?
-     * @memberOf base
+     * @memberof fly.base
      */
     o.addInfo = function(args){
         mergeInfo(this,_info,args);
@@ -247,12 +252,12 @@ fly.grantInfo = function(o) {
      *
      * @param {String|Array} args String value of one or more `val` in the info array
      * @returns {this} This is a chainable method
+     * @memberof fly.base
      *
      * @example
      * myObject.deleteInfo('sleeping');
      * myObject.deleteInfo(['speed','val1']);
      *
-     * @memberOf base
      */
     o.deleteInfo = function(args) {
         // delete existing property from the infoArray
@@ -287,7 +292,7 @@ fly.grantInfo = function(o) {
      *
      * @returns {Object} info object
      *
-     * @memberOf base
+     * @memberOf fly.base
      */
     o.info = function(){
         var _i = {};
@@ -305,21 +310,21 @@ fly.grantInfo = function(o) {
  * Objects can subscribe to events through the {@link Event Controller}.
  *
  * #### Granting Events
- * Objects inheriting from {@link base} already have been granted event methods. For other
+ * Objects inheriting from {@link fly.base} already have been granted event methods. For other
  * objects, call `fly.grantEvents(myObject);`
  *
  * #### Register Event
- * To register for events, use [registerEvent()]{@link base.registerEvent}
+ * To register for events, use [registerEvent()]{@link fly.base.registerEvent}
  *
  * #### Deregister Event
- * To deregister from events, use [deregisterEvent()]{@link base.deregisterEvent}
+ * To deregister from events, use [deregisterEvent()]{@link fly.base.deregisterEvent}
  *
  * #### Event Call
- * eventCall(event,args) is the method called by {@link Event Controller} for registered events.
- * See [eventCall]{@link base.eventCall}
+ * `eventCall(event,args)` is the method called by [Event Controller]{@link fly.EventCtrlr} for registered events.
+ * See [eventCall()]{@link fly.base.eventCall}
  *
  * #### Log Events
- * To log registered events to string, use [logEvents](@link base.logEvents)
+ * To log registered events to string, use [logEvents()](@link fly.base.logEvents)
  *
  * @param   {Object} o The object to be granted events
  * @returns {Object}   The object is returned with event methods
@@ -357,7 +362,7 @@ fly.grantEvents = function (o) {
      * // expecting event calls to myObject.handlerOne(args) and myObject.handlerTwo()
      * myObject.registerEvent({'event 1':'handlerOne','event 2':'handlerTwo'})
      *
-     * @memberOf base
+     * @memberOf fly.base
      */
 
     o.registerEvent = function (eventObj) {
@@ -389,7 +394,7 @@ fly.grantEvents = function (o) {
      * // deregister all events
      * myObject.deregisterEvent('all');
      *
-     * @memberOf base
+     * @memberOf fly.base
      */
 
     o.deregisterEvent = function (event) {
@@ -429,7 +434,7 @@ fly.grantEvents = function (o) {
      * @param   {String} event Match an event in the registry.
      * @param   {Varies} args  Args passed to the handler
      * @returns {this} This is a chainable method
-     * @memberOf base
+     * @memberOf fly.base
      */
 
     o.eventCall = function (event,args) {
@@ -446,7 +451,7 @@ fly.grantEvents = function (o) {
      * @description A string description of all registered events and handlers.
      *
      * @returns {String} Representation of the object's event registry
-     * @memberOf base
+     * @memberOf fly.base
      */
 
     o.logEvents = function(){
@@ -659,9 +664,9 @@ fly.eventCtrlr = (function () {
         fly.infoCtrlr.register(this);
     }
 
-    /**
+    /*
      * Although you probably will never need to call eventContrlr.info,
-     * it is included here as an example of overriding the
+     * it is an example of overriding the
      * default info method of a fly object.  It iterates over
      * the events stored in its `event` object, and assigns them
      * a either a type of "event", or "eventFiring" if they have
@@ -880,6 +885,9 @@ fly.initLayers = function(layers,background){
  *
  * The [Color Palette]{@link colorPalette} initializes fly.color
  * during {@link fly.init}
+ * After initialization by the [color Palette]{@link fly.colorPalette},
+ * color is [granted info]{@link Grant Info}.
+ *
  * @example
  * fly.color.blue[4]
  * // returns # '#0000FF' with the default palette
@@ -896,13 +904,10 @@ fly.initLayers = function(layers,background){
 */
 
 fly.color = {
+
     name: "color",
-    /**
-     *
-     * After initialization by the [color Palette]{@link fly.colorPalette},
-     * color is [granted info]{@link Grant Info}.
-    */
-    palette : "not yet defined"
+    _paletteName: "not yet defined"
+
 };
 
 
@@ -924,6 +929,15 @@ fly.color = {
 
 fly.colorUtil = {
 
+    /**
+     *
+     * Computation to make sure
+     * color calculations don't pass color
+     * limits. Bounded between 0 and 255
+     *
+     * @param  {Integer} col
+     * @return {Integer}     integer limited between 0 and 255
+     */
     limit : function(col){
         // limit col between 0 and 255
         // color is any int
@@ -936,9 +950,13 @@ fly.colorUtil = {
      * @param  {Hex Color String} hexCol
      * @return {Array}
      *
+     * *Note: These rgb values are between 0 and 255,
+     * and do not translate into paper.js rgb values
+     * which range between 0 and 1*
+     *
      * @example
      * fly.colorUtil.split("#102030")
-     * // returns[16,32,48]
+     * // returns [16,32,48]
      */
     split : function(hexCol){
         // split a hex color into array [r,g,b]
@@ -955,6 +973,10 @@ fly.colorUtil = {
      * Splices an RGB array [r,g,b] into a hex color
      * @param  {Array} cola
      * @return {Hex Color String}
+     *
+     * *Note: These rgb values are between 0 and 255,
+     * and do not translate into paper.js rgb values
+     * which range between 0 and 1*
      *
      * @example
      * fly.colorUtil.split([16,32,48])
@@ -993,6 +1015,14 @@ fly.colorUtil = {
         return this.splice(col1a);
     },
 
+    /**
+     * Returns the r g b values (0 -255)
+     * added together for a total value. Useful for
+     * comparing color values disregarding the hue
+     *
+     * @param  {[type]} col [description]
+     * @return {[type]}     [description]
+     */
     totalValue  : function(col) {
         // adds the R,G,B values together
         var cola = this.split(col);
@@ -1055,11 +1085,11 @@ fly.colorUtil = {
     },
 
     /**
-     * Takes three hex colors and creates a (default 9)
-     * segment spectrum. Defaults to 9 segments. Works well
-     * for a creating a color spectrum with a saturated color
-     * in the middle.
-     * standard use: (lightest, saturated, darkest)
+     * Takes two or three hex colors and creates a array of
+     * colors. Defaults to 9 segments for three colors and 5 for
+     * two colors. Using three colors works well for a creating
+     * a color spectrum with a saturated color in the middle.
+     * Standard use: (lightest, saturated, darkest)
      * sent colors are first, middle, and last of the array
      * spectrum length defaults to 9, and will always be odd*
      *
@@ -1131,21 +1161,52 @@ fly.colorUtil = {
 
 };
 
-/*
- * ## Color Sets
+/**
  * FlyPaper color sets are used to quickly establish
  * a color palette that can be changed dynamically.
+ * Color sets are managed through the [Color Palette]{@link fly.color.palette}.
+ * Sets can be added or swapped out.
+ *
+ * ### Predefined Custom Color Palettes
+ *
+ *  * default
+ *  * pastel
+ *  * sunny day
+ *  * monotone
+ *  * neon
+ *
  * Each color set has a name "name" and an array "set"
- * of colors.  Each "set" color is an array with the color
+ * of colors.  Each "set" is an array with the color
  * name followed by three hex values: darkest, saturated, and
  * lightest.  A spectrum of nine colors is calculated out
  * of these three for the color.  The color is then accessed
- * through fly.color, for example: fly.color.blue[5]. Color
- * sets are managed through fly.colorPalette, sets can be
- * added or changed.  Note that the "default" set is geared
- * towards the 'pure' RGB color spectrum.
-*/
-
+ * through fly.color, for example: `fly.color.blue[5]`.
+ * Note that the "default" set is based around  the 'pure'
+ * RGB color spectrum, with saturated valued
+ *
+ * See [color]{@link fly.color} and [Color Utility]{@link fly.colorUtil} for more
+ * info on using colors.
+ *
+ * @example
+ *
+ * // Swap for a new predefined set:
+ * fly.color.palette("neon");
+ *
+ * // Define a custom color set:
+ * fly.color.palette({
+ *      name: "my color set", set: [
+ *          ['red','#F04510','#FF7070','#FFD3C0'],
+ *          ['orange','#F28614','#FFB444','#FFE8C0'],
+ *          ['yellow','#CDB211','#FFFF70','#FFFFC0'],
+ *          ['green','#42622D','#89C234','#C0FFC0'],
+ *          ['blue','#00597C','#00A9EB','#B0E5FF'],
+ *          ['purple','#6F006F','#9F3DBF','#FFC0FF'],
+ *          ['grey','#383633','#A7A097','#FFFFFF']
+ *      ]
+ * })
+ *
+ * @namespace colorSets
+ */
 fly.colorSets = [
         { name: "default", set: [
             ['red','#400000','#FF0000','#FFC0C0'],
@@ -1197,50 +1258,53 @@ fly.colorSets = [
 /**
  * Returns the name of the current color palette if no
  * args are passed in. Arguments passed on {@link fly.init}
- * will be passed to the colorPalette.
+ * will be passed to the color palette.
  * Args can be a string matched against predefined
- * sets of colors in colorSets. Args can also be an
- * object containing a name and a color set. If the set is
- * legit, it will be added to the colorSets array,
- * if the name exists already, the new set will
- * replace the old.
+ * sets of colors in the [Color Sets]{@link colorSets}. Args can also be an
+ * object containing a name and a color set. The set will be added to
+ * the colorSets array, or if the name exists already,
+ * the new set will replace the old.
  *
  * @example
- * fly.init({colorPalette:"neon"})
- * // sets the predefined neon color set on init
+ * // Set the predefined 'neon' color set on init
+ * fly.init({palette:"neon"})
  *
- * fly.colorPalette("pastel")
- * // changes to the predefined "pastel" color set
+ * // Change to the predefined "pastel" color set
+ * fly.color.palette("pastel")
  *
- * fly.colorPalette({
+ * // Change to a custom color set, and redefine fly.colors
+ * // To use the custom colors
+ * fly.color.palette({
  *      name: "my color set", set: [
- *          ['red','#F04510','#FF7070','#FFD3C0'],
+ *          ['ruby','#F04510','#FF7070','#FFD3C0'],
  *          ['orange','#F28614','#FFB444','#FFE8C0'],
- *          ['yellow','#CDB211','#FFFF70','#FFFFC0'],
- *          ['green','#42622D','#89C234','#C0FFC0'],
- *          ['blue','#00597C','#00A9EB','#B0E5FF'],
- *          ['purple','#6F006F','#9F3DBF','#FFC0FF'],
- *          ['grey','#383633','#A7A097','#FFFFFF']
+ *          ['sunshine','#CDB211','#FFFF70','#FFFFC0'],
+ *          ['grass','#42622D','#89C234','#C0FFC0'],
+ *          ['berry','#00597C','#00A9EB','#B0E5FF'],
+ *          ['very berry','#6F006F','#9F3DBF','#FFC0FF'],
+ *          ['clouds','#383633','#A7A097','#FFFFFF']
  *      ]
  * })
- * // Adds "my color set" to the color sets, and
- * // redefines fly.colors to the custom color palette.
  *
- * fly.colorPalette()
+ * fly.color.palette()
  * // returns "my color set"
  *
- * @param  {String, Object} args
+ * @param  {String, Object} args See examples
  *
- * @class
- * @ClassDesc
- * Populates fly.color with a colorset.
+ * @extends color
  *
  */
 
-fly.colorPalette = function(args){
+fly.color.palette = function(args){
 
-    var i,
+    var
+        i,
         index = -1;
+
+    // If no-args passed, return existing palette
+    if (!args) {
+        return fly.color._paletteName;
+    }
 
     function checkSet(p) {
         // sanity type check args args:
@@ -1257,6 +1321,7 @@ fly.colorPalette = function(args){
             if (p.set[i] instanceof Array === false || p.set[i].length !== 4) {
                 return 'Palette set of unknown type';
             }
+            // @TODO add this as an array in color to check against
             var reserved = /palette|info|addInfo|deleteInfo/;
             if (p.set[i][0].match(reserved)) {
                 return p.set[i][0] + ' is a reserved word in color sets';
@@ -1274,9 +1339,12 @@ fly.colorPalette = function(args){
         return -1;
     }
 
+    // type check args, add set to colorSets if new
+
     function prepSet() {
-        // type check args, add set to colorSets if new
+
         var check;
+
         if (typeof args === "object" && args.name && args.set ) {
             check = checkSet(args);
             if (check !== true) {
@@ -1302,14 +1370,15 @@ fly.colorPalette = function(args){
         }
     }
 
+    // rebuild fly.Color with the new palette
+
     function resetColor(colorSet) {
-        // rebuild fly.Color with the new palette
-        fly.color = {
-            name: "color",
-            palette: colorSet.name
-        };
-        var newInfo = {palette : {val: "palette", type: "val"}},
-            spec, v;
+
+        fly.color._paletteName = colorSet.name;
+
+        var newInfo = {palette : {val: "_paletteName", type: "val"}},
+            spec,
+            v;
         for (var i=0; i < colorSet.set.length; i++) {
             spec = colorSet.set[i];
             v = spec[1] + '-' + spec[2] + '-' + spec[3];
@@ -1318,17 +1387,28 @@ fly.colorPalette = function(args){
         fly.grantInfo(fly.color).addInfo(newInfo);
     }
 
+    // After sanity checks, load the color set into fly.colors
+
     function setPalette() {
-        // colorSet is an object with a name and a set array
-        // see colorSets for formatting
+
+        // spec: color spectrum array ['red',#000000,#FF0000,#FFFFFF]
+        // colorSet: name and a set of spectrum arrays (see fly.colorSet)
         var spec,
             colorSet;
+
         try {
             prepSet();
         }
+
         catch(e) {
-            if (fly.color.palette === "not yet defined") {
+
+            // string passed doesn't match a preset, so
+            // we set it to the default
+            if (fly.color._paletteName === "not yet defined") {
                 index = 0;
+
+            // args are of an unknown type, return an
+            // error without changing anything
             } else {
                 return(e);
             }
@@ -1343,49 +1423,50 @@ fly.colorPalette = function(args){
         }
     }
 
-    // If no-args passed, return existing palette
-    if (!args) {
-        return fly.color.palette;
-    }
-
     setPalette();
 
 };
 
-// TODO: add colors to current set: fly.colorPalette.add ...
+// TODO:
+// define reserved color words [palette,_palette,add,remove]
+// add colors to current set: fly.color.add(...)
 // add into current in colorSets
-// add into fly.color
 
 
-/*
-## InfoCtrlr (IC)
-The info controller allows information to be displayed
-in a window within the canvas.  Objects register to
-be tracked by the IC. They must have a method info
-which returns an info packet to the IC.
-
-### register
-New objects can register as a member with infoCtrlr
-by sending the request: fly.infocontroller.register(this);
-optional second boolean parameter display: (this,false)
-will initialize this objects panel as open or closed.
-
-### info
-On frame events, infoCtrlr sends a request to members
-via object.info() for an info packet.
-Info packets are of the form:
-    { name: "name", var1:{val: var1, type:"val"},var2:{..}..},
-See info in grantinfo for details on the info packet.
-*/
 
 fly.infoCtrlrInit = function(infoPrefs) {
 
     var events, key;
 
+    /**
+     * The Info Controller is created on {@link fly.init}.
+     *
+     * @class
+     * @classDesc
+     *
+     * The info controller allows information to be displayed
+     * in a window within the canvas.  Objects register to
+     * be tracked by the IC. They must have a method info
+     * which returns an info packet to the IC.
+     *
+     *
+     * ### info
+     * On frame events, infoCtrlr sends a request to members
+     * via object.info() for an info packet.
+     * Info packets are of the form:
+     *
+     *     { name: "name", var1:{val: var1, type:"val"},var2:{..}..}
+     *
+     * See info in Mixin [Grant Info]{@link fly.grantInfo} for details on the info packet.
+     *
+     *
+     *
+     */
+
     fly.infoCtrlr = (function(infoPrefs) {
 
         var name = 'Info Controller';
-        var version = '0.5beta';
+        var version = '0.5alpha';
         // register members who already exist
         var members = [ {
             obj : fly,
@@ -1491,6 +1572,23 @@ fly.infoCtrlrInit = function(infoPrefs) {
 
         // ------------------- registration --------------------//
 
+        /**
+         * New objects can register as a member with infoCtrlr to be
+         * displayed in the info panel. Optional second boolean parameter
+         * will initialize this object's panel as open or closed.
+         *
+         * @param  {object} o this
+         * @param  {Boolean} d Display open or closed
+         * @return {this}   this is a chainable method
+         *
+         * @example
+         * fly.infocontroller.register(this);
+         * // -- or --
+         * fly.infocontroller.register(this,true);
+         *
+         * @memberOf fly.infoCtrlr
+         *
+         */
         function register(o, d) {
             // override register function from grantInfo
             // the IC gets requests via register,
@@ -1509,8 +1607,19 @@ fly.infoCtrlrInit = function(infoPrefs) {
             });
             updateInfo(true);
             resetBars();
+            return o;
         }
 
+        /**
+         * You can deregister at any time if you no longer want an
+         * object to be viewable in the info panel.
+         *
+         * @param  {Object} o this
+         * @return {this}   this is a chainable method
+         *
+         * @memberOf fly.infoCtrlr
+         *
+         */
         function deregister(o) {
             for ( var i = 0; i < members.length; i++) {
                 if (members[i].obj === o) {
@@ -1519,6 +1628,7 @@ fly.infoCtrlrInit = function(infoPrefs) {
                 }
             }
             reset();
+            return o;
         }
 
         // ------------------- drawing -------------------------//
@@ -1734,7 +1844,7 @@ fly.infoCtrlrInit = function(infoPrefs) {
             // v 0.3.6
             // gather most recent info
             // from members with display === true
-            // use force === true on resistration or to update all
+            // use force === true on registration or to update all
             // this is used to adjust width of box to length of info
             for ( var i = 0; i < members.length; i++) {
                 if (members[i].display || force) {
@@ -1915,7 +2025,7 @@ fly.initPaperTool = function() {
  *       width: canvas width
  *       height: canvas height
  *       debug: turns on debug info and makes infoCtrlr visible
- *       colorPalette: "standard","neon","pastel","custom"
+ *       palette: "standard","neon","pastel","custom"
  *       colorSet: [ ['red','#400000','#FF0000','#FFC0C0',],[.,.,.,.],...]
  *           colorSet is used when colorPalette is "custom"
  *       backgroundColor: "#F00F00", "red[4]"
@@ -1933,7 +2043,7 @@ fly.init = function (args) {
     fly.debug = args.debug || false;
     var layers = args.layers || 1,
         background = args.background || true,
-        colorPalette = args.colorPalette || "default",
+        palette = args.palette || "default",
         infoPrefs = args.infoPrefs || {};
 
     if (args.width && args.height) {
@@ -1954,7 +2064,7 @@ fly.init = function (args) {
 
     fly.initLayers(layers,background);
 
-    fly.colorPalette(colorPalette);
+    fly.color.palette(palette);
 
     fly.infoCtrlrInit(infoPrefs);
 

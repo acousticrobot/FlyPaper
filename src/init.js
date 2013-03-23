@@ -12,7 +12,7 @@
  *       width: canvas width
  *       height: canvas height
  *       debug: turns on debug info and makes infoCtrlr visible
- *       colorPalette: "standard","neon","pastel","custom"
+ *       palette: "standard","neon","pastel","custom"
  *       colorSet: [ ['red','#400000','#FF0000','#FFC0C0',],[.,.,.,.],...]
  *           colorSet is used when colorPalette is "custom"
  *       backgroundColor: "#F00F00", "red[4]"
@@ -30,7 +30,7 @@ fly.init = function (args) {
     fly.debug = args.debug || false;
     var layers = args.layers || 1,
         background = args.background || true,
-        colorPalette = args.colorPalette || "default",
+        palette = args.palette || "default",
         infoPrefs = args.infoPrefs || {};
 
     if (args.width && args.height) {
@@ -51,7 +51,7 @@ fly.init = function (args) {
 
     fly.initLayers(layers,background);
 
-    fly.colorPalette(colorPalette);
+    fly.color.palette(palette);
 
     fly.infoCtrlrInit(infoPrefs);
 

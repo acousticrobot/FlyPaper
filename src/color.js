@@ -8,6 +8,9 @@
  *
  * The [Color Palette]{@link colorPalette} initializes fly.color
  * during {@link fly.init}
+ * After initialization by the [color Palette]{@link fly.colorPalette},
+ * color is [granted info]{@link Grant Info}.
+ *
  * @example
  * fly.color.blue[4]
  * // returns # '#0000FF' with the default palette
@@ -24,12 +27,9 @@
 */
 
 fly.color = {
+
     name: "color",
-    /**
-     *
-     * After initialization by the [color Palette]{@link fly.colorPalette},
-     * color is [granted info]{@link Grant Info}.
-    */
-    palette : "not yet defined"
+    _paletteName: "not yet defined"
+
 };
 

@@ -9,21 +9,21 @@
  * Objects can subscribe to events through the {@link Event Controller}.
  *
  * #### Granting Events
- * Objects inheriting from {@link base} already have been granted event methods. For other
+ * Objects inheriting from {@link fly.base} already have been granted event methods. For other
  * objects, call `fly.grantEvents(myObject);`
  *
  * #### Register Event
- * To register for events, use [registerEvent()]{@link base.registerEvent}
+ * To register for events, use [registerEvent()]{@link fly.base.registerEvent}
  *
  * #### Deregister Event
- * To deregister from events, use [deregisterEvent()]{@link base.deregisterEvent}
+ * To deregister from events, use [deregisterEvent()]{@link fly.base.deregisterEvent}
  *
  * #### Event Call
- * eventCall(event,args) is the method called by {@link Event Controller} for registered events.
- * See [eventCall]{@link base.eventCall}
+ * `eventCall(event,args)` is the method called by [Event Controller]{@link fly.EventCtrlr} for registered events.
+ * See [eventCall()]{@link fly.base.eventCall}
  *
  * #### Log Events
- * To log registered events to string, use [logEvents](@link base.logEvents)
+ * To log registered events to string, use [logEvents()](@link fly.base.logEvents)
  *
  * @param   {Object} o The object to be granted events
  * @returns {Object}   The object is returned with event methods
@@ -61,7 +61,7 @@ fly.grantEvents = function (o) {
      * // expecting event calls to myObject.handlerOne(args) and myObject.handlerTwo()
      * myObject.registerEvent({'event 1':'handlerOne','event 2':'handlerTwo'})
      *
-     * @memberOf base
+     * @memberOf fly.base
      */
 
     o.registerEvent = function (eventObj) {
@@ -93,7 +93,7 @@ fly.grantEvents = function (o) {
      * // deregister all events
      * myObject.deregisterEvent('all');
      *
-     * @memberOf base
+     * @memberOf fly.base
      */
 
     o.deregisterEvent = function (event) {
@@ -133,7 +133,7 @@ fly.grantEvents = function (o) {
      * @param   {String} event Match an event in the registry.
      * @param   {Varies} args  Args passed to the handler
      * @returns {this} This is a chainable method
-     * @memberOf base
+     * @memberOf fly.base
      */
 
     o.eventCall = function (event,args) {
@@ -150,7 +150,7 @@ fly.grantEvents = function (o) {
      * @description A string description of all registered events and handlers.
      *
      * @returns {String} Representation of the object's event registry
-     * @memberOf base
+     * @memberOf fly.base
      */
 
     o.logEvents = function(){

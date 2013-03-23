@@ -175,9 +175,9 @@ fly.eventCtrlr = (function () {
         fly.infoCtrlr.register(this);
     }
 
-    /**
+    /*
      * Although you probably will never need to call eventContrlr.info,
-     * it is included here as an example of overriding the
+     * it is an example of overriding the
      * default info method of a fly object.  It iterates over
      * the events stored in its `event` object, and assigns them
      * a either a type of "event", or "eventFiring" if they have

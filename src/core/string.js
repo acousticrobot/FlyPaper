@@ -5,7 +5,7 @@
  */
 
 /**
- * A recursive method for parsing an object or array to a string.
+ * A method for parsing an object or array to a string.
  * An object can be passed to `fly.toString(object)`,
  * or the method can be granted to an object using {@link fly.grantString}.
  *
@@ -15,17 +15,22 @@
  *
  * @example
  * myObject = {a:0,b:[0,[1,2,3],[4,5,{"six":6,"seven":"seven"}]]};
- * // call using an object as a parameter
+ *
+ * // Examine any object by passing as a parameter
  * fly.toString(myObject);
  * // returns: '{"a":0,"b":object}'
- * fly.toString(myObject,3);
+ *
+ * // Examine nested objects more deeply
+ * fly.toString(myObject,2);
+ * // returns: '{"a":0,"b":[0,[1,2,3],[4,5,object]]}'
+ *
+ * // Grant the method to an object
+ * fly.grantString(myObject);
+ *
+ * // Then call the method directly on the object
+ * myObject.toString(2)
  * // returns: '{"a":0,"b":[0,[1,2,3],[4,5,{"six":6,"seven":"seven"}]]}'
  *
- * // grant the method to an object
- * fly.grantString(myObject);
- * // then call the method on the object
- * myObject.toString(2)
- * // returns: '{"a":0,"b":[0,[1,2,3],[4,5,object]]}'
  */
 
 fly.toString = function(o,toDepth,_currDepth) {
@@ -85,7 +90,7 @@ fly.toString = function(o,toDepth,_currDepth) {
  */
 
 /**
- * Mixin to grant the [flypaper toString]{@link fly.toString} method to an object
+ * Mixin to grant the flypaper [toString]{@link fly.toString} method to an object
  * @param {Object} o The object to grant string functionality
  * @returns {Object} with new method toString()
  *

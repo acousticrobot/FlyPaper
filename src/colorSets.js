@@ -4,22 +4,52 @@
  * Find the built file in dist/flypaper.js
  */
 
-
-/*
- * ## Color Sets
+/**
  * FlyPaper color sets are used to quickly establish
  * a color palette that can be changed dynamically.
+ * Color sets are managed through the [Color Palette]{@link fly.color.palette}.
+ * Sets can be added or swapped out.
+ *
+ * ### Predefined Custom Color Palettes
+ *
+ *  * default
+ *  * pastel
+ *  * sunny day
+ *  * monotone
+ *  * neon
+ *
  * Each color set has a name "name" and an array "set"
- * of colors.  Each "set" color is an array with the color
+ * of colors.  Each "set" is an array with the color
  * name followed by three hex values: darkest, saturated, and
  * lightest.  A spectrum of nine colors is calculated out
  * of these three for the color.  The color is then accessed
- * through fly.color, for example: fly.color.blue[5]. Color
- * sets are managed through fly.colorPalette, sets can be
- * added or changed.  Note that the "default" set is geared
- * towards the 'pure' RGB color spectrum.
-*/
-
+ * through fly.color, for example: `fly.color.blue[5]`.
+ * Note that the "default" set is based around  the 'pure'
+ * RGB color spectrum, with saturated valued
+ *
+ * See [color]{@link fly.color} and [Color Utility]{@link fly.colorUtil} for more
+ * info on using colors.
+ *
+ * @example
+ *
+ * // Swap for a new predefined set:
+ * fly.color.palette("neon");
+ *
+ * // Define a custom color set:
+ * fly.color.palette({
+ *      name: "my color set", set: [
+ *          ['red','#F04510','#FF7070','#FFD3C0'],
+ *          ['orange','#F28614','#FFB444','#FFE8C0'],
+ *          ['yellow','#CDB211','#FFFF70','#FFFFC0'],
+ *          ['green','#42622D','#89C234','#C0FFC0'],
+ *          ['blue','#00597C','#00A9EB','#B0E5FF'],
+ *          ['purple','#6F006F','#9F3DBF','#FFC0FF'],
+ *          ['grey','#383633','#A7A097','#FFFFFF']
+ *      ]
+ * })
+ *
+ * @namespace colorSets
+ */
 fly.colorSets = [
         { name: "default", set: [
             ['red','#400000','#FF0000','#FFC0C0'],

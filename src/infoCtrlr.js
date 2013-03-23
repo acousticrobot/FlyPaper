@@ -4,35 +4,39 @@
  * Find the built file in dist/flypaper.js
  */
 
-/*
-## InfoCtrlr (IC)
-The info controller allows information to be displayed
-in a window within the canvas.  Objects register to
-be tracked by the IC. They must have a method info
-which returns an info packet to the IC.
-
-### register
-New objects can register as a member with infoCtrlr
-by sending the request: fly.infocontroller.register(this);
-optional second boolean parameter display: (this,false)
-will initialize this objects panel as open or closed.
-
-### info
-On frame events, infoCtrlr sends a request to members
-via object.info() for an info packet.
-Info packets are of the form:
-    { name: "name", var1:{val: var1, type:"val"},var2:{..}..},
-See info in grantinfo for details on the info packet.
-*/
-
 fly.infoCtrlrInit = function(infoPrefs) {
 
     var events, key;
 
+    /**
+     * The Info Controller is created on {@link fly.init}.
+     *
+     * @class
+     * @classDesc
+     *
+     * The info controller allows information to be displayed
+     * in a window within the canvas.  Objects register to
+     * be tracked by the IC. They must have a method info
+     * which returns an info packet to the IC.
+     *
+     *
+     * ### info
+     * On frame events, infoCtrlr sends a request to members
+     * via object.info() for an info packet.
+     * Info packets are of the form:
+     *
+     *     { name: "name", var1:{val: var1, type:"val"},var2:{..}..}
+     *
+     * See info in Mixin [Grant Info]{@link fly.grantInfo} for details on the info packet.
+     *
+     *
+     *
+     */
+
     fly.infoCtrlr = (function(infoPrefs) {
 
         var name = 'Info Controller';
-        var version = '0.5beta';
+        var version = '0.5alpha';
         // register members who already exist
         var members = [ {
             obj : fly,
@@ -138,6 +142,23 @@ fly.infoCtrlrInit = function(infoPrefs) {
 
         // ------------------- registration --------------------//
 
+        /**
+         * New objects can register as a member with infoCtrlr to be
+         * displayed in the info panel. Optional second boolean parameter
+         * will initialize this object's panel as open or closed.
+         *
+         * @param  {object} o this
+         * @param  {Boolean} d Display open or closed
+         * @return {this}   this is a chainable method
+         *
+         * @example
+         * fly.infocontroller.register(this);
+         * // -- or --
+         * fly.infocontroller.register(this,true);
+         *
+         * @memberOf fly.infoCtrlr
+         *
+         */
         function register(o, d) {
             // override register function from grantInfo
             // the IC gets requests via register,
@@ -156,8 +177,19 @@ fly.infoCtrlrInit = function(infoPrefs) {
             });
             updateInfo(true);
             resetBars();
+            return o;
         }
 
+        /**
+         * You can deregister at any time if you no longer want an
+         * object to be viewable in the info panel.
+         *
+         * @param  {Object} o this
+         * @return {this}   this is a chainable method
+         *
+         * @memberOf fly.infoCtrlr
+         *
+         */
         function deregister(o) {
             for ( var i = 0; i < members.length; i++) {
                 if (members[i].obj === o) {
@@ -166,6 +198,7 @@ fly.infoCtrlrInit = function(infoPrefs) {
                 }
             }
             reset();
+            return o;
         }
 
         // ------------------- drawing -------------------------//
@@ -381,7 +414,7 @@ fly.infoCtrlrInit = function(infoPrefs) {
             // v 0.3.6
             // gather most recent info
             // from members with display === true
-            // use force === true on resistration or to update all
+            // use force === true on registration or to update all
             // this is used to adjust width of box to length of info
             for ( var i = 0; i < members.length; i++) {
                 if (members[i].display || force) {

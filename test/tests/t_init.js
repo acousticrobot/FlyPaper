@@ -39,7 +39,7 @@ test("the build", 11, function(){
 	ok(fly.layers.stage, "The stage array exists.");
 	ok(fly.layer("info"), "The info layer exists.");
 	ok(fly.color, "fly.color exists");
-	ok(fly.colorPalette, "fly.colorPalette exists");
+	ok(fly.color.palette, "fly.colorPalette exists");
 	ok(fly.eventCtrlr, "fly event controller exists");
 	ok(fly.infoCtrlr, "fly info controller exists");
 });
