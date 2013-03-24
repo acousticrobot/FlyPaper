@@ -29,7 +29,48 @@
 fly.color = {
 
     name: "color",
-    _paletteName: "not yet defined"
+    _paletteName: "not yet defined",
+
+
+    /**
+     *
+     * Sets the background color, or returns the current
+     * background color if no args sent
+     * @param  {Hex Color String} [col]
+     * @return {Hex Color String}
+     *
+     * @memberOf fly.color
+     */
+    background : function(col) {
+        if(!col) {
+            if (!fly.layers || fly.layers.names.indexOf("background") === -1 ) {
+
+                return "no background layer";
+
+            } else if (fly.layers.backRect) {
+
+                return fly.layers.backRect.fillColor.toCssString();
+
+            } else {
+
+                return "no background color set";
+            }
+        }
+        if (fly.layers && fly.layer("background")) {
+
+            if (fly.layers.backRect === undefined) {
+
+                var l = paper.project.activeLayer;
+                fly.layers.activate("background");
+                fly.layers.backRect = new paper.Path.Rectangle(paper.view.bounds);
+                l.activate();
+            }
+
+            col = col !== undefined ? col : "#FFFFFF";
+            fly.layers.backRect.fillColor = col;
+            return fly.layers.backRect.fillColor.toCssString();
+        }
+    }
 
 };
 

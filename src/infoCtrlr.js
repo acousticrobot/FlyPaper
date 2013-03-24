@@ -27,7 +27,7 @@ fly.infoCtrlrInit = function(infoPrefs) {
      *
      *     { name: "name", var1:{val: var1, type:"val"},var2:{..}..}
      *
-     * See info in Mixin [Grant Info]{@link fly.grantInfo} for details on the info packet.
+     * See info in the [Grant Info]{@link fly.grantInfo} Mixin for details on the info packet.
      *
      *
      *
@@ -186,6 +186,9 @@ fly.infoCtrlrInit = function(infoPrefs) {
          *
          * @param  {Object} o this
          * @return {this}   this is a chainable method
+         *
+         * @example
+         * fly.infocontroller.deregister(this);
          *
          * @memberOf fly.infoCtrlr
          *

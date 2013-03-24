@@ -1,7 +1,7 @@
 /**
- * FlyPaper --v 0.5.0-92 alpha
+ * FlyPaper --v 0.5.0-96 alpha
  *
- * Date 2013-03-23 21:39:14
+ * Date 2013-03-24 16:19:52
  *
  * @name flypaper
  * @author Jonathan Gabel
@@ -906,7 +906,48 @@ fly.initLayers = function(layers,background){
 fly.color = {
 
     name: "color",
-    _paletteName: "not yet defined"
+    _paletteName: "not yet defined",
+
+
+    /**
+     *
+     * Sets the background color, or returns the current
+     * background color if no args sent
+     * @param  {Hex Color String} [col]
+     * @return {Hex Color String}
+     *
+     * @memberOf fly.color
+     */
+    background : function(col) {
+        if(!col) {
+            if (!fly.layers || fly.layers.names.indexOf("background") === -1 ) {
+
+                return "no background layer";
+
+            } else if (fly.layers.backRect) {
+
+                return fly.layers.backRect.fillColor.toCssString();
+
+            } else {
+
+                return "no background color set";
+            }
+        }
+        if (fly.layers && fly.layer("background")) {
+
+            if (fly.layers.backRect === undefined) {
+
+                var l = paper.project.activeLayer;
+                fly.layers.activate("background");
+                fly.layers.backRect = new paper.Path.Rectangle(paper.view.bounds);
+                l.activate();
+            }
+
+            col = col !== undefined ? col : "#FFFFFF";
+            fly.layers.backRect.fillColor = col;
+            return fly.layers.backRect.fillColor.toCssString();
+        }
+    }
 
 };
 
@@ -924,6 +965,10 @@ fly.color = {
  * are made from the ends to the middle value.
  * Color arrays default to 9 segments in length. Presets can
  * be altered and new sets made through the {@link colorUtil.spectrum}.
+ *
+ * @todo change cola to rgba and include alpha in calculations. Deal with rgba
+ * internally and return hex only when specified 'hex' in params. For example:
+ * `fly.color.background(new paper.RgbColor([0,.75,0.5,0.5]))`
  *
  */
 
@@ -1132,32 +1177,6 @@ fly.colorUtil = {
             }
         }
         return spec;
-    },
-
-    /**
-     * Sets the background color, or returns the current
-     * background color if no args sent
-     * @param  {Hex Color String} [col]
-     * @return {Hex Color String}
-     * @TODO move into fly.color
-     */
-    background : function(col) {
-        if(!col) {
-            if (fly.layers.backRect) {
-                return fly.layers.backRect.fillColor;
-            }
-            return "none set";
-        }
-        if (fly.layers && fly.layer("background")) {
-            if (fly.layers.backRect === undefined) {
-                var l = paper.project.activeLayer;
-                fly.layers.activate("background");
-                fly.layers.backRect = new paper.Path.Rectangle(paper.view.bounds);
-                l.activate();
-            }
-            col = col !== undefined ? col : "#FFFFFF";
-            fly.layers.backRect.fillColor = col;
-        }
     }
 
 };
@@ -1458,7 +1477,7 @@ fly.infoCtrlrInit = function(infoPrefs) {
      *
      *     { name: "name", var1:{val: var1, type:"val"},var2:{..}..}
      *
-     * See info in Mixin [Grant Info]{@link fly.grantInfo} for details on the info packet.
+     * See info in the [Grant Info]{@link fly.grantInfo} Mixin for details on the info packet.
      *
      *
      *
@@ -1617,6 +1636,9 @@ fly.infoCtrlrInit = function(infoPrefs) {
          *
          * @param  {Object} o this
          * @return {this}   this is a chainable method
+         *
+         * @example
+         * fly.infocontroller.deregister(this);
          *
          * @memberOf fly.infoCtrlr
          *
@@ -2056,7 +2078,6 @@ fly.init = function (args) {
         fly.height = paper.view.viewSize.height;
     }
 
-    fly.foo = "foo";
     fly.grantInfo(fly).addInfo({
         debug : { val: "debug", type: "val" },
         width : { val: "width", type: "val" },

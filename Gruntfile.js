@@ -136,7 +136,7 @@ module.exports = function(grunt) {
   grunt.registerTask('test', ['jshint', 'qunit']);
   grunt.registerTask('jsdocs', ['jsdoc']);
   grunt.registerTask('build-only', ['concat']);
-
+  grunt.registerTask('test', ['jshint','qunit']);
   grunt.registerTask('default', ['clean', 'jshint', 'qunit', 'bump:build', 'concat', 'jsdoc']);
   grunt.registerTask('build', ['clean', 'jshint', 'qunit', 'bump:build', 'concat', 'uglify', 'jsdoc', 'exec:commit', 'exec:tag' ]);
 

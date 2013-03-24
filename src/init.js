@@ -42,7 +42,6 @@ fly.init = function (args) {
         fly.height = paper.view.viewSize.height;
     }
 
-    fly.foo = "foo";
     fly.grantInfo(fly).addInfo({
         debug : { val: "debug", type: "val" },
         width : { val: "width", type: "val" },

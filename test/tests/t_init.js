@@ -44,6 +44,12 @@ test("the build", 11, function(){
 	ok(fly.infoCtrlr, "fly info controller exists");
 });
 
+test("color", 3, function(){
+	equal(fly.color.background(), "no background color set", "color confirms no background color");
+	equal(fly.color.background("00FF00"), "rgba(0, 255, 0, 1)", "confirms new background color");
+	equal(fly.color.background(), "rgba(0, 255, 0, 1)", "new background color should have been set");
+});
+
 test("infoCtrlr", 1, function(){
 	var ICinfo = fly.infoCtrlr.info();
 	var members = ICinfo.members;

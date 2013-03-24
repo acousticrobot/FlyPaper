@@ -12,7 +12,7 @@ window.onload = function() {
 	paper.setup(canvas);
 
 
-test("building layers", function(){
+test("Building Layers", function(){
 	function resetStage() {
 		paper.project.remove();
 		delete fly.layers;
@@ -57,7 +57,7 @@ test("building layers", function(){
 	buildLayers(["Keaton","Arbuckle"],false);
 });
 
-test("toString", 10, function(){
+test("ToString", 10, function(){
 	equal(fly.toString([0,[1,2,3],[4,5,[6,7]]]),
 		"[0,object,object]", "toString Method should match");
 	equal(fly.toString([0,[1,2,3],[4,5,[6,7]]],1),
@@ -84,7 +84,7 @@ test("toString", 10, function(){
 		"toString Method should match");
 });
 
-test("base", 7, function(){
+test("Base", 7, function(){
 	// 1. Check base info object
 	var base = fly.base();
 	var _i_string = fly.toString(base.info(),2);
@@ -116,7 +116,7 @@ test("base", 7, function(){
 	equal(_i_string, '{"name":"fly base","version":{"val":"0.5beta","type":"version"}}',"string should match");
 });
 
-test("events", 4, function(){
+test("Events", 4, function(){
 	// test subscribing / unsubscribing with eventController
 	ok(fly.eventCtrlr, "fly event controller exists");
 	var dummy = {};
@@ -141,7 +141,7 @@ test("info", function(){
 	// TODO: test the nature of the info packet
 });
 
-test("color Utilities", 13, function(){
+test("Color Utilities", 13, function(){
 
 	ok(fly.color, "color exists");
 	ok(fly.colorUtil, "color Util exists");
@@ -173,13 +173,12 @@ test("color Utilities", 13, function(){
 
 });
 
-test("color Palette", function(){
+test("Color Palette", function(){
 	ok(fly.color.palette, "colorPalette exists");
 	strictEqual(fly.color.palette(),"not yet defined","should return colorPalette name as undefined");
 	fly.color.palette("neon");
 	strictEqual(fly.color.palette(),"neon","should return color palette name");
 	strictEqual(fly.color.red[4],"#FF0023","should return predefined color");
-	//strictEqual(fly.colorPalette.name,"neon","palette name should be neon")
 
 	var drab = { name: "drab", set: [
 		['red','#000000','#FF8080','#FFDDDD'],
@@ -191,7 +190,8 @@ test("color Palette", function(){
 	strictEqual(fly.color.palette(),"drab","palette name should be drab");
 	strictEqual(fly.color.red[4],"#FF8080","should return redefined color");
 	strictEqual(fly.color.grubby[8], "#FFFFFF", "Should return custom named colors");
-	notStrictEqual(fly.color.toString(), "foo", "What's it look like?");
+	strictEqual(fly.layers, undefined, "(test to confirm there is no background layer)");
+	strictEqual(fly.color.background(), "no background layer", "Should confirm absence of background layer");
 });
 
 }; // end window on-load

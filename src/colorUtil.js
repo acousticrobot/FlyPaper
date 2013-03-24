@@ -18,6 +18,10 @@
  * Color arrays default to 9 segments in length. Presets can
  * be altered and new sets made through the {@link colorUtil.spectrum}.
  *
+ * @todo change cola to rgba and include alpha in calculations. Deal with rgba
+ * internally and return hex only when specified 'hex' in params. For example:
+ * `fly.color.background(new paper.RgbColor([0,.75,0.5,0.5]))`
+ *
  */
 
 fly.colorUtil = {
@@ -225,32 +229,6 @@ fly.colorUtil = {
             }
         }
         return spec;
-    },
-
-    /**
-     * Sets the background color, or returns the current
-     * background color if no args sent
-     * @param  {Hex Color String} [col]
-     * @return {Hex Color String}
-     * @TODO move into fly.color
-     */
-    background : function(col) {
-        if(!col) {
-            if (fly.layers.backRect) {
-                return fly.layers.backRect.fillColor;
-            }
-            return "none set";
-        }
-        if (fly.layers && fly.layer("background")) {
-            if (fly.layers.backRect === undefined) {
-                var l = paper.project.activeLayer;
-                fly.layers.activate("background");
-                fly.layers.backRect = new paper.Path.Rectangle(paper.view.bounds);
-                l.activate();
-            }
-            col = col !== undefined ? col : "#FFFFFF";
-            fly.layers.backRect.fillColor = col;
-        }
     }
 
 };
