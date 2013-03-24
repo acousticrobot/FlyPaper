@@ -1,7 +1,7 @@
 /**
- * FlyPaper --v 0.5.0-91 alpha
+ * FlyPaper --v 0.5.0-92 alpha
  *
- * Date 2013-03-23 19:37:46
+ * Date 2013-03-23 21:39:14
  *
  * @name flypaper
  * @author Jonathan Gabel
@@ -1139,6 +1139,7 @@ fly.colorUtil = {
      * background color if no args sent
      * @param  {Hex Color String} [col]
      * @return {Hex Color String}
+     * @TODO move into fly.color
      */
     background : function(col) {
         if(!col) {
