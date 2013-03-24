@@ -71,10 +71,8 @@ fly.color.palette = function(args){
             if (p.set[i] instanceof Array === false || p.set[i].length !== 4) {
                 return 'Palette set of unknown type';
             }
-            // @TODO add this as an array in color to check against
-            var reserved = /palette|info|addInfo|deleteInfo/;
-            if (p.set[i][0].match(reserved)) {
-                return p.set[i][0] + ' is a reserved word in color sets';
+            if (fly.color.reserved.indexOf(p.set[i][0]) > -1) {
+                p.set[i][0] = p.set[i][0] + '_color'
             }
         }
         return true;
@@ -97,6 +95,7 @@ fly.color.palette = function(args){
 
         if (typeof args === "object" && args.name && args.set ) {
             check = checkSet(args);
+            console.log(check);
             if (check !== true) {
                 throw new TypeError (check);
             }

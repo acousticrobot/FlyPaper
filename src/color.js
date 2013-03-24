@@ -30,6 +30,9 @@ fly.color = {
 
     name: "color",
     _paletteName: "not yet defined",
+    reserved: [ 'name', 'background', '_paletteName',
+                'palette', 'add', 'delete'
+              ],
 
 
     /**

@@ -173,7 +173,7 @@ test("Color Utilities", 13, function(){
 
 });
 
-test("Color Palette", function(){
+test("Color Palette", 10, function(){
 	ok(fly.color.palette, "colorPalette exists");
 	strictEqual(fly.color.palette(),"not yet defined","should return colorPalette name as undefined");
 	fly.color.palette("neon");
@@ -183,12 +183,13 @@ test("Color Palette", function(){
 	var drab = { name: "drab", set: [
 		['red','#000000','#FF8080','#FFDDDD'],
 		['green','#000000','#80FF80','#DDFFDD'],
-		['pal','#000000','#8080FF','#DDDDFF'],
+		['palette','#000000','#8080FF','#DDDDFF'],
 		['grubby','#000000','#808080','#FFFFFF']
 		]};
 	fly.color.palette(drab);
 	strictEqual(fly.color.palette(),"drab","palette name should be drab");
 	strictEqual(fly.color.red[4],"#FF8080","should return redefined color");
+	strictEqual(fly.color.palette_color[4], "#8080FF", "should append reserved words with '_color'");
 	strictEqual(fly.color.grubby[8], "#FFFFFF", "Should return custom named colors");
 	strictEqual(fly.layers, undefined, "(test to confirm there is no background layer)");
 	strictEqual(fly.color.background(), "no background layer", "Should confirm absence of background layer");
