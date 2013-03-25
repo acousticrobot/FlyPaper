@@ -23,7 +23,7 @@
  * See [eventCall()]{@link fly.base.eventCall}
  *
  * #### Log Events
- * To log registered events to string, use [logEvents()](@link fly.base.logEvents)
+ * To log registered events to string, use [logEvents()]{@link fly.base.logEvents}
  *
  * @param   {Object} o The object to be granted events
  * @returns {Object}   The object is returned with event methods

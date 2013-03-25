@@ -4,23 +4,39 @@
  * Find the built file in dist/flypaper.js
  */
 
-//--------------------- BEGIN EVENT HANDLERS ------------//
-/*
-*   published to event controller
-*   NOTE: frame is handled by view, this must be
-*   initialized on the window load
-*
-*   version 0.4
-*/
-//--------------------------------------------------------//
-
 fly.initPaperTool = function() {
 
+    /**
+     * Fly Tool initializes a new paper Tool on {@link fly.init}, which takes care
+     * of publishing the following events through the event
+     * controller:
+     *
+     *  * onKeyDown
+     *  * onMouseDown
+     *  * onMouseDrag
+     *  * onMouseUp
+     *  * onMouseMove
+     *
+     * The paper events are passed along with the published events.
+     *
+     * Frame events are handled by the view, and must be initialized
+     * on window load.
+     *
+     * @example
+     *
+     * fly.init();
+     * // when you initialize fly, include this call:
+     *
+     * paper.view.onFrame = function(event) {
+     *     fly.eventCtrlr.publish("frame",event);
+     * };
+     *
+     */
     fly.tool = new paper.Tool();
 
     fly.tool.onKeyDown = function (event) {
         var pub_e = "";
-        if (event.key.length ===1) {
+        if (event.key.length === 1) {
             if (event.modifiers.shift ===true) {
                     pub_e += "shift-";
             }

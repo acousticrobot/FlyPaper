@@ -29,7 +29,29 @@ fly.infoCtrlrInit = function(infoPrefs) {
      *
      * See info in the [Grant Info]{@link fly.grantInfo} Mixin for details on the info packet.
      *
-     *
+     * @example
+     * // Here are all the info panel parameters adjustable on fly.init,
+     * // with the default values filled in
+     * fly.init({
+     *     infoPrefs: {
+     *         keyTrigger: 'i-key', // if you need "i" for something else, change it here
+     *         screen : fly.color.grey[1], // the backround screen
+     *         screenBars : fly.color.grey[0], // the grip and title bars
+     *         opacity : .95, // the opacity of the screen
+     *         size : 11, // font size
+     *         // colors matching value types:
+     *         titles: fly.color.blue[9], // titles on the collapsing bars
+     *         version : fly.color.grey[5],
+     *         info : fly.color.purple[4],
+     *         val : fly.color.green[2],
+     *         string : fly.color.grey[4],
+     *         btrue : fly.color.orange[5], // boolean set to true
+     *         bfalse : fly.color.orange[3],
+     *         event : fly.color.red[4],
+     *         eventFiring : fly.color.red[7],
+     *         plain : fly.color.grey[4] // default color for unknown value types
+     *     }
+     * });
      *
      */
 
@@ -522,6 +544,7 @@ fly.infoCtrlrInit = function(infoPrefs) {
     fly.infoCtrlr.register(fly.infoCtrlr);
     events = {
         'frame': "update",
+        'mouse move': "update",
         'mouse down': 'grab',
         'mouse drag': 'drag',
         'mouse up' : 'drop'

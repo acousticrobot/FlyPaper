@@ -72,7 +72,7 @@ fly.color.palette = function(args){
                 return 'Palette set of unknown type';
             }
             if (fly.color.reserved.indexOf(p.set[i][0]) > -1) {
-                p.set[i][0] = p.set[i][0] + '_color'
+                p.set[i][0] = p.set[i][0] + '_color';
             }
         }
         return true;
@@ -95,7 +95,6 @@ fly.color.palette = function(args){
 
         if (typeof args === "object" && args.name && args.set ) {
             check = checkSet(args);
-            console.log(check);
             if (check !== true) {
                 throw new TypeError (check);
             }

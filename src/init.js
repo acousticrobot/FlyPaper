@@ -9,18 +9,33 @@
  * inits eventCtrlr and infoCtrlr
  * accepts the following in args:
  *
- *       width: canvas width
- *       height: canvas height
- *       debug: turns on debug info and makes infoCtrlr visible
- *       palette: "standard","neon","pastel","custom"
- *       colorSet: [ ['red','#400000','#FF0000','#FFC0C0',],[.,.,.,.],...]
- *           colorSet is used when colorPalette is "custom"
- *       backgroundColor: "#F00F00", "red[4]"
- *       background: bool, adds background layer
- *       stageLayers: number of layers in fly.layers.stage[]
+ *  * width: canvas width
+ *  * height: canvas height
+ *  * debug: turns on debug info and makes the [Info Controller]{@link fly.infoCtrlr} visible
+ *  * palette: defines the [palette]{@link fly.color.palette}
+ *  * backgroundColor: "#F00F00", "red[4]"
+ *  * background: bool, adds background layer
+ *  * stageLayers: number of layers in fly.layers.stage[]
+ *
+ * @example
+ * fly.init({
+ *     width:800,
+ *     height:500,
+ *     debug: true,
+ *     palette: [ "custom palette",
+ *         ['ruby','#F04510','#FF7070','#FFD3C0'],
+ *         ['orange','#F28614','#FFB444','#FFE8C0'],
+ *         ['sunshine','#CDB211','#FFFF70','#FFFFC0'],
+ *         ['grass','#42622D','#89C234','#C0FFC0'],
+ *         ['berry','#00597C','#00A9EB','#B0E5FF'],
+ *         ['very berry','#6F006F','#9F3DBF','#FFC0FF'],
+ *         ['clouds','#383633','#A7A097','#FFFFFF']
+ *     ]
+ * });
  *
  * @param  {Object} args
  * @return {nil}
+ * @todo test that palette works as advertised
  */
 fly.init = function (args) {
 
