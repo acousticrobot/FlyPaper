@@ -4,12 +4,12 @@ window.onload = function() {
 
     var canvas = document.getElementById('ctx');
     paper.setup(canvas);
-    fly.init({  width : 800, height : 500,
-                palette : "sunny day"
+    fly.init({  width : 800, height : 500//,
+               // palette : "sunny day"
             });
     fly.debug = true;
 
-    fly.color.background(fly.color.blue[4]);
+   // fly.color.background(fly.color.blue[4]);
 
     paper.view.onFrame = function(event) {
         fly.eventCtrlr.publish("frame",event);

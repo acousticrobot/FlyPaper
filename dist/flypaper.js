@@ -1,7 +1,7 @@
 /**
- * FlyPaper --v 0.5.0-102 alpha
+ * FlyPaper --v 0.5.0-104 alpha
  *
- * Date 2013-03-24 18:51:31
+ * Date 2013-03-29 15:17:35
  *
  * @name flypaper
  * @author Jonathan Gabel
@@ -158,13 +158,21 @@ fly.grantString = function(o) {
  * use `fly.grantInfo(myObject)`. Your object must also register with the
  * [Info Controller]{@link infoCtrlr}.
  *
+ * ##### Types of info
+ *
+ *  * 'val' : a public property of your object of type string or number
+ *  * 'bool' : a public property of your object of type boolean
+ *  * 'func' : a callable method of your object which returns a string or number
+ *  * 'string' : a string value that is not updated once it is set
+ *
  * #### Adding Info
  * To add info to the info packet, use [addInfo()]{@link fly.base.addInfo}
+ *
  *
  * #### Deleting Info
  * To delete info, use [deleteInfo()]{@link fly.base.deleteInfo}
  *
- * @param {Object} o The object to grant info functionality
+ * @param {Object} o The object to be granted info functionality
  * @return {Object}   The object with method info
  * @mixin Grant Info
  *
@@ -217,21 +225,24 @@ fly.grantInfo = function(o) {
      *
      * @description Add info that the {@link infoCtrlr} will track about your object.
      *
-     * If the property type is `bool` or `val`, these must be callable
+     * If the property type is `bool`, func`, `val`, these must be callable
      * by your object to obtain the value as a string, number, or boolean.
      * So for the example you need to be able to call:
      *
-     *     myObject['sleeping'] // true or false
-     *     myObject['speed'] // number or string
+     *     'bool': myObject['sleeping'] // returns true or false
+     *     'val': myObject['speed'] // public property
+     *     myObject['position']() // function which returns a number or string
      *
      * @example
-     * // myObject.sleeping() should return a bool
-     * // myObject.speed() should return a number or string
-     * // myObject.sam() will not be queried
+     * // myObject.sleeping should be true or false
+     * // myObject.speed should be a number or string
+     * // myObject.pos() should return an integer or string
+     * // 'birthday' will always be 'Feb 12th'
      * myObject.addInfo(
      *   sleeping:{val:'sleeping',type:'bool'},
      *   speed:{val:'speed',type:'val'},
-     *   val1:{val:'sam',type:'i am'}
+     *   position:{val:'pos',type:'func'}
+     *   birthday:{val:'Feb 12th',type:'string'}
      * )
      *
      * @param {Object} args {infoToTrack:{val:'foo',type:'bar'},..}
@@ -954,7 +965,6 @@ fly.color = {
 
 };
 
-
 /**
  * The Color Utility is created on {@link fly.init}.
  *
@@ -1453,7 +1463,7 @@ fly.color.palette = function(args){
 // add colors to current set: fly.color.add(...)
 // add into current in colorSets
 
-
+//fly.grantInfo(fly.color)
 
 fly.infoCtrlrInit = function(infoPrefs) {
 
@@ -1825,6 +1835,10 @@ fly.infoCtrlrInit = function(infoPrefs) {
             }
         }
 
+        /**
+         * @todo Use grab drag and drop from basic fly object
+         */
+
         function grab(args) {
             var point = args.point;
             // ignore if not visible, else animate arrows and dragging
@@ -1892,6 +1906,7 @@ fly.infoCtrlrInit = function(infoPrefs) {
             // from members with display === true
             // use force === true on registration or to update all
             // this is used to adjust width of box to length of info
+
             for ( var i = 0; i < members.length; i++) {
                 if (members[i].display || force) {
                     members[i].info = members[i].obj.info();
@@ -1944,10 +1959,22 @@ fly.infoCtrlrInit = function(infoPrefs) {
             numMembers: function(){
                 return members.length;
             },
-            // time information:
+            /**
+             * The number of frames elapsed
+             * @return {Integer} number of frames
+             */
             frame : function() {
                 return _time.frame;
             },
+            /**
+             * Object containing info on the time
+             * passed, fps, etc.
+             * @return {Object} time object
+             *
+             * @example
+             * time = fly.info.time()
+             *
+             */
             time : function() {
                 return _time;
             },

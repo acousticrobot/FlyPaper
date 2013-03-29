@@ -11,6 +11,126 @@ window.onload = function() {
 	var canvas = document.getElementById('ctx');
 	paper.setup(canvas);
 
+test("ToString", 10, function(){
+	equal(fly.toString([0,[1,2,3],[4,5,[6,7]]]),
+		"[0,object,object]", "toString Method should match");
+	equal(fly.toString([0,[1,2,3],[4,5,[6,7]]],1),
+		"[0,[1,2,3],[4,5,object]]", "toString Method should match");
+	equal(fly.toString([0,[1,2,3],[4,5,[6,[7]]]],2),
+		"[0,[1,2,3],[4,5,[6,object]]]", "toString Method should match");
+	equal(fly.toString([0,[1,2,3],[4,5,[6,[7]]]],3,0),
+		"[0,[1,2,3],[4,5,[6,[7]]]]", "toString Method should match");
+	equal(fly.toString({a:0,b:[0,[1,2,3],[4,5,{"six":6,"seven":"seven"}]]}),
+		'{"a":0,"b":object}', "toString Method should match");
+	equal(fly.toString({a:0,b:[0,[1,2,3],[4,5,{"six":6,"seven":"seven"}]]},1),
+		'{"a":0,"b":[0,object,object]}', "toString Method should match");
+	equal(fly.toString({a:0,b:[0,[1,2,3],[4,5,{"six":6,"seven":"seven"}]]},2),
+		'{"a":0,"b":[0,[1,2,3],[4,5,object]]}', "toString Method should match");
+	equal(fly.toString({a:0,b:[0,[1,2,3],[4,5,{"six":6,"seven":"seven"}]]},3),
+		'{"a":0,"b":[0,[1,2,3],[4,5,{"six":6,"seven":"seven"}]]}',
+		"toString Method should match");
+	var tester = fly.base();
+	equal(fly.toString(tester,2),
+		'{"name":"fly base","version":"0.5beta",register(),toString(),addInfo(),deleteInfo(),info(),registerEvent(),deregisterEvent(),eventCall(),logEvents()}',
+		"toString Method should match");
+	equal(tester.toString(1),
+		'{"name":"fly base","version":"0.5beta",register(),toString(),addInfo(),deleteInfo(),info(),registerEvent(),deregisterEvent(),eventCall(),logEvents()}',
+		"toString Method should match");
+});
+
+test("Granting Info", 10, function(){
+	var dummy = {name:"dummy",age:"20",IQ:"400"};
+	fly.grantInfo(dummy).addInfo({age:{val:"age",type:"val"},IQ:{val:dummy.IQ,type:"string"}});
+	ok(dummy.info,"should have info packet after granting info");
+	strictEqual(fly.toString(dummy.info(),2),
+		'{"name":"dummy","version":{"val":"0.5beta","type":"version"},"age":{"val":"20","type":"val"},"IQ":{"val":"400","type":"string"}}',
+		"Should be able to add 'val' and 'string' types to info packet");
+
+	dummy.age = "40";
+	dummy.IQ = "500";
+	strictEqual(fly.toString(dummy.info(),2),
+		'{"name":"dummy","version":{"val":"0.5beta","type":"version"},"age":{"val":"40","type":"val"},"IQ":{"val":"400","type":"string"}}',
+		"Should be able to update 'val' types in info packet and not string types");
+	dummy.IQ = "400";
+
+	dummy.deleteInfo("age");
+	strictEqual(fly.toString(dummy.info(),2),
+		'{"name":"dummy","version":{"val":"0.5beta","type":"version"},"IQ":{"val":"400","type":"string"}}',
+		"Should be able to update 'val' types in info packet");
+	strictEqual(dummy.age, "40", "deleteInfo should not affect object properties");
+
+	dummy.smart = false;
+	dummy.dumb = true;
+	dummy.addInfo({smart:{val:"smart", type: "bool"},dumb:{val:"dumb", type: "bool"}});
+	strictEqual(fly.toString(dummy.info(),2),
+		'{"name":"dummy","version":{"val":"0.5beta","type":"version"},"IQ":{"val":"400","type":"string"},"smart":{"val":false,"type":"bool"},"dumb":{"val":true,"type":"bool"}}',
+		"Should be able to add 'bool' types to info packet");
+
+	dummy.smart = true;
+	dummy.dumb = false;
+	strictEqual(fly.toString(dummy.info(),2),
+		'{"name":"dummy","version":{"val":"0.5beta","type":"version"},"IQ":{"val":"400","type":"string"},"smart":{"val":true,"type":"bool"},"dumb":{"val":false,"type":"bool"}}',
+		"Should be able to update 'bool' types in the info packet");
+
+	dummy.deleteInfo(["smart","dumb"]);
+	strictEqual(fly.toString(dummy.info(),2),
+		'{"name":"dummy","version":{"val":"0.5beta","type":"version"},"IQ":{"val":"400","type":"string"}}',
+		"Should be able to delete multiple values from the info packet");
+
+	dummy.doubleIQ = function() { return this.IQ * 2; };
+	dummy.addInfo({doubleIQ:{val:'doubleIQ',type:'func'}});
+	strictEqual(fly.toString(dummy.info(),2),
+		'{"name":"dummy","version":{"val":"0.5beta","type":"version"},"IQ":{"val":"400","type":"string"},"doubleIQ":{"val":800,"type":"val"}}',
+		"Should be able to add 'func' types to info packet and call a function");
+
+	dummy.addInfo({age:{val:"age",type:"val"}}).deleteInfo("IQ").deleteInfo("doubleIQ");
+	strictEqual(fly.toString(dummy.info(),2),
+		'{"name":"dummy","version":{"val":"0.5beta","type":"version"},"age":{"val":"40","type":"val"}}',
+		"Should be able to add 'func' types to info packet and call a function");
+
+});
+
+test("Granting Events", 4, function(){
+	// test subscribing / unsubscribing with eventController
+	ok(fly.eventCtrlr, "fly event controller exists");
+	var dummy = {};
+	fly.grantEvents(dummy);
+	fly.grantString(dummy);
+	dummy.registerEvent({frame:'update','i-key':'showInfo'});
+	equal(fly.eventCtrlr.logEvents(),
+		'{"frame":object,"i-key":object}','should be able to register for events');
+	dummy.deregisterEvent('i-key');
+	equal(fly.eventCtrlr.logEvents(),
+		'{"frame":object}','should be able to deregister from events');
+	dummy.registerEvent({'i-key':'showInfo'}).deregisterEvent('all');
+	equal(fly.eventCtrlr.logEvents(),
+		'{}','events in EC should match');
+});
+
+test("Fly Base", 4, function(){
+
+	var base = fly.base();
+
+	strictEqual( base.toString(),
+		'{"name":"fly base","version":"0.5beta",register(),toString(),addInfo(),deleteInfo(),info(),registerEvent(),deregisterEvent(),eventCall(),logEvents()}',
+		"Base should have a toString method");
+
+	strictEqual( fly.toString(base.info(),2),
+		'{"name":"fly base","version":{"val":"0.5beta","type":"version"}}',
+		"Base should have info packet with name and version");
+
+	base.addInfo({"foo":{"val":"bar","type":"string"}});
+	strictEqual( fly.toString(base.info(),2),
+		'{"name":"fly base","version":{"val":"0.5beta","type":"version"},"foo":{"val":"bar","type":"string"}}',
+		"Base should respond to addInfo method for string type");
+
+	base.deleteInfo("foo");
+	strictEqual( fly.toString(base.info(),2),
+		'{"name":"fly base","version":{"val":"0.5beta","type":"version"}}',
+		"Base should respond to deleteInfo method");
+
+
+});
 
 test("Building Layers", function(){
 	function resetStage() {
@@ -57,90 +177,6 @@ test("Building Layers", function(){
 	buildLayers(["Keaton","Arbuckle"],false);
 });
 
-test("ToString", 10, function(){
-	equal(fly.toString([0,[1,2,3],[4,5,[6,7]]]),
-		"[0,object,object]", "toString Method should match");
-	equal(fly.toString([0,[1,2,3],[4,5,[6,7]]],1),
-		"[0,[1,2,3],[4,5,object]]", "toString Method should match");
-	equal(fly.toString([0,[1,2,3],[4,5,[6,[7]]]],2),
-		"[0,[1,2,3],[4,5,[6,object]]]", "toString Method should match");
-	equal(fly.toString([0,[1,2,3],[4,5,[6,[7]]]],3,0),
-		"[0,[1,2,3],[4,5,[6,[7]]]]", "toString Method should match");
-	equal(fly.toString({a:0,b:[0,[1,2,3],[4,5,{"six":6,"seven":"seven"}]]}),
-		'{"a":0,"b":object}', "toString Method should match");
-	equal(fly.toString({a:0,b:[0,[1,2,3],[4,5,{"six":6,"seven":"seven"}]]},1),
-		'{"a":0,"b":[0,object,object]}', "toString Method should match");
-	equal(fly.toString({a:0,b:[0,[1,2,3],[4,5,{"six":6,"seven":"seven"}]]},2),
-		'{"a":0,"b":[0,[1,2,3],[4,5,object]]}', "toString Method should match");
-	equal(fly.toString({a:0,b:[0,[1,2,3],[4,5,{"six":6,"seven":"seven"}]]},3),
-		'{"a":0,"b":[0,[1,2,3],[4,5,{"six":6,"seven":"seven"}]]}',
-		"toString Method should match");
-	var tester = fly.base();
-	equal(fly.toString(tester,2),
-		'{"name":"fly base","version":"0.5beta",register(),toString(),addInfo(),deleteInfo(),info(),registerEvent(),deregisterEvent(),eventCall(),logEvents()}',
-		"toString Method should match");
-	equal(tester.toString(1),
-		'{"name":"fly base","version":"0.5beta",register(),toString(),addInfo(),deleteInfo(),info(),registerEvent(),deregisterEvent(),eventCall(),logEvents()}',
-		"toString Method should match");
-});
-
-test("Base", 7, function(){
-	// 1. Check base info object
-	var base = fly.base();
-	var _i_string = fly.toString(base.info(),2);
-	equal(_i_string, '{"name":"fly base","version":{"val":"0.5beta","type":"version"}}',"string should match");
-	// 2. Test adding single info
-	base.addInfo({"foo":{"val":"bar","type":"string"}});
-	_i_string = fly.toString(base.info(),2);
-	equal(_i_string, '{"name":"fly base","version":{"val":"0.5beta","type":"version"},"foo":{"val":"bar","type":"string"}}',"string should match");
-	// 3. Test deleting single info
-	base.deleteInfo("foo");
-	_i_string = fly.toString(base.info(),2);
-	equal(_i_string, '{"name":"fly base","version":{"val":"0.5beta","type":"version"}}',"string should match");
-	// 4. Test adding multiple info
-	base.fooval = 5;
-	base.addInfo({"foo":{"val":"bar","type":"string"},"ifoo":{"val":"fooval","type":"val"}});
-	_i_string = fly.toString(base.info(),2);
-	equal(_i_string, '{"name":"fly base","version":{"val":"0.5beta","type":"version"},"foo":{"val":"bar","type":"string"},"ifoo":{"val":5,"type":"val"}}',"string should match");
-	// 5. Test info changes with variables
-	base.fooval = 6;
-	_i_string = fly.toString(base.info(),2);
-	equal(_i_string, '{"name":"fly base","version":{"val":"0.5beta","type":"version"},"foo":{"val":"bar","type":"string"},"ifoo":{"val":6,"type":"val"}}',"string should match");
-	// 6.Test deleteInfo
-	base.deleteInfo(["foo","ifoo"]);
-	_i_string = fly.toString(base.info(),2);
-	equal(_i_string, '{"name":"fly base","version":{"val":"0.5beta","type":"version"}}',"string should match");
-	// 7.Test chaining methods addInfo and deleteInfo
-	base.addInfo({"foo":{"val":"bar","type":"string"},"ifoo":{"val":5,"type":"val"}}).deleteInfo(["foo","ifoo"]);
-	_i_string = fly.toString(base.info(),2);
-	equal(_i_string, '{"name":"fly base","version":{"val":"0.5beta","type":"version"}}',"string should match");
-});
-
-test("Events", 4, function(){
-	// test subscribing / unsubscribing with eventController
-	ok(fly.eventCtrlr, "fly event controller exists");
-	var dummy = {};
-	fly.grantEvents(dummy);
-	fly.grantString(dummy);
-	dummy.registerEvent({frame:'update','i-key':'showInfo'});
-	equal(fly.eventCtrlr.logEvents(),
-		'{"frame":object,"i-key":object}','events in EC should match');
-	dummy.deregisterEvent('i-key');
-	equal(fly.eventCtrlr.logEvents(),
-		'{"frame":object}','events in EC should match');
-	dummy.registerEvent({'i-key':'showInfo'}).deregisterEvent('all');
-	equal(fly.eventCtrlr.logEvents(),
-		'{}','events in EC should match');
-});
-
-test("info", function(){
-	var dummy = {name:"dummy",age:"20"};
-	fly.grantInfo(dummy).addInfo({age:{val:"age",type:"string"}});
-	ok(dummy.info,"should have info packet");
-	dummy.age = "40";
-	// TODO: test the nature of the info packet
-});
-
 test("Color Utilities", 13, function(){
 
 	ok(fly.color, "color exists");
@@ -174,7 +210,7 @@ test("Color Utilities", 13, function(){
 });
 
 test("Color Palette", 10, function(){
-	ok(fly.color.palette, "colorPalette exists");
+	ok(fly.color.palette, "colorPalette should exist");
 	strictEqual(fly.color.palette(),"not yet defined","should return colorPalette name as undefined");
 	fly.color.palette("neon");
 	strictEqual(fly.color.palette(),"neon","should return color palette name");
@@ -190,10 +226,20 @@ test("Color Palette", 10, function(){
 	strictEqual(fly.color.palette(),"drab","palette name should be drab");
 	strictEqual(fly.color.red[4],"#FF8080","should return redefined color");
 	strictEqual(fly.color.palette_color[4], "#8080FF", "should append reserved words with '_color'");
-	strictEqual(fly.color.grubby[8], "#FFFFFF", "Should return custom named colors");
+	strictEqual(fly.color.grubby[8], "#FFFFFF", "should return custom named colors");
 	strictEqual(fly.layers, undefined, "(test to confirm there is no background layer)");
 	strictEqual(fly.color.background(), "no background layer", "Should confirm absence of background layer");
 });
+
+test("Info Controller", function() {
+	fly.grantInfo(fly);
+	fly.initLayers();
+	fly.infoCtrlrInit();
+	ok(fly.infoCtrlr, "InfoCtrlr should exist");
+
+});
+
+
 
 }; // end window on-load
 

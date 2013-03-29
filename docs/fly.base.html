@@ -133,7 +133,7 @@ It also can register for events with the Controller.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="flypaper.js.html">flypaper.js</a>, line 480
+        <a href="flypaper.js.html">flypaper.js</a>, line 491
     </li></ul></dd>
     
     
@@ -212,12 +212,13 @@ It also can register for events with the Controller.</p>
     <div class="description">
         <p>Add info that the infoCtrlr will track about your object.</p>
 
-<p>If the property type is <code>bool</code> or <code>val</code>, these must be callable
+<p>If the property type is <code>bool</code>, func<code>, </code>val`, these must be callable
 by your object to obtain the value as a string, number, or boolean.
 So for the example you need to be able to call:</p>
 
-<pre><code>myObject[&#39;sleeping&#39;] // true or false
-myObject[&#39;speed&#39;] // number or string</code></pre>
+<pre><code>&#39;bool&#39;: myObject[&#39;sleeping&#39;] // returns true or false
+&#39;val&#39;: myObject[&#39;speed&#39;] // public property
+myObject[&#39;position&#39;]() // function which returns a number or string</code></pre>
     </div>
     
 
@@ -298,7 +299,7 @@ myObject[&#39;speed&#39;] // number or string</code></pre>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="flypaper.js.html">flypaper.js</a>, line 215
+        <a href="flypaper.js.html">flypaper.js</a>, line 223
     </li></ul></dd>
     
     
@@ -350,13 +351,15 @@ myObject[&#39;speed&#39;] // number or string</code></pre>
     
         <h5>Example</h5>
         
-    <pre class="prettyprint"><code>// myObject.sleeping() should return a bool
-// myObject.speed() should return a number or string
-// myObject.sam() will not be queried
+    <pre class="prettyprint"><code>// myObject.sleeping should be true or false
+// myObject.speed should be a number or string
+// myObject.pos() should return an integer or string
+// 'birthday' will always be 'Feb 12th'
 myObject.addInfo(
   sleeping:{val:'sleeping',type:'bool'},
   speed:{val:'speed',type:'val'},
-  val1:{val:'sam',type:'i am'}
+  position:{val:'pos',type:'func'}
+  birthday:{val:'Feb 12th',type:'string'}
 )</code></pre>
 
     
@@ -457,7 +460,7 @@ myObject.addInfo(
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="flypaper.js.html">flypaper.js</a>, line 248
+        <a href="flypaper.js.html">flypaper.js</a>, line 259
     </li></ul></dd>
     
     
@@ -602,7 +605,7 @@ the string &#39;all&#39; to deregister from all event notifications.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="flypaper.js.html">flypaper.js</a>, line 380
+        <a href="flypaper.js.html">flypaper.js</a>, line 391
     </li></ul></dd>
     
     
@@ -770,7 +773,7 @@ myObject.deregisterEvent('all');</code></pre>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="flypaper.js.html">flypaper.js</a>, line 429
+        <a href="flypaper.js.html">flypaper.js</a>, line 440
     </li></ul></dd>
     
     
@@ -862,7 +865,7 @@ of a custom info method.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="flypaper.js.html">flypaper.js</a>, line 278
+        <a href="flypaper.js.html">flypaper.js</a>, line 289
     </li></ul></dd>
     
     
@@ -955,7 +958,7 @@ of a custom info method.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="flypaper.js.html">flypaper.js</a>, line 448
+        <a href="flypaper.js.html">flypaper.js</a>, line 459
     </li></ul></dd>
     
     
@@ -1097,7 +1100,7 @@ objects registry, they will be replaced with the new handler.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="flypaper.js.html">flypaper.js</a>, line 345
+        <a href="flypaper.js.html">flypaper.js</a>, line 356
     </li></ul></dd>
     
     
@@ -1162,13 +1165,13 @@ myObject.registerEvent({'event 1':'handlerOne','event 2':'handlerTwo'})</code></
 </div>
 
 <nav>
-    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="fly.base.html">base</a></li><li><a href="fly.color.html">color</a></li><li><a href="fly.colorUtil.html">colorUtil</a></li><li><a href="fly.eventCtrlr.html">eventCtrlr</a></li><li><a href="fly.infoCtrlr.html">infoCtrlr</a></li><li><a href="fly.layers.html">layers</a></li></ul><h3>Namespaces</h3><ul><li><a href="colorSets.html">colorSets</a></li><li><a href="fly.html">fly</a></li></ul><h3>Mixins</h3><ul><li><a href="46a31c4082.html">Grant Events</a></li><li><a href="93cf1efcef.html">Grant Info</a></li><li><a href="498b960794.html">Grant String</a></li></ul><h3>Global</h3><ul><li><a href="global.html#flypaper">flypaper</a></li></ul>
+    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="fly.base.html">base</a></li><li><a href="fly.color.html">color</a></li><li><a href="fly.colorUtil.html">colorUtil</a></li><li><a href="fly.eventCtrlr.html">eventCtrlr</a></li><li><a href="fly.infoCtrlr.html">infoCtrlr</a></li><li><a href="fly.layers.html">layers</a></li></ul><h3>Namespaces</h3><ul><li><a href="colorSets.html">colorSets</a></li><li><a href="fly.html">fly</a></li></ul><h3>Mixins</h3><ul><li><a href="46a31c4082.html">Grant Events</a></li><li><a href="93cf1efcef.html">Grant Info</a></li><li><a href="498b960794.html">Grant String</a></li></ul><h3>Global</h3><ul><li><a href="global.html#flypaper">flypaper</a></li><li><a href="global.html#frame">frame</a></li><li><a href="global.html#time">time</a></li></ul>
 </nav>
 
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.1.1</a> on Sun Mar 24 2013 18:51:37 GMT-0400 (EDT)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.1.1</a> on Fri Mar 29 2013 15:17:44 GMT-0400 (EDT)
 </footer>
 
 <script> prettyPrint(); </script>

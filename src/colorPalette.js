@@ -180,4 +180,4 @@ fly.color.palette = function(args){
 // add colors to current set: fly.color.add(...)
 // add into current in colorSets
 
-
+//fly.grantInfo(fly.color)

@@ -374,6 +374,10 @@ fly.infoCtrlrInit = function(infoPrefs) {
             }
         }
 
+        /**
+         * @todo Use grab drag and drop from basic fly object
+         */
+
         function grab(args) {
             var point = args.point;
             // ignore if not visible, else animate arrows and dragging
@@ -441,6 +445,7 @@ fly.infoCtrlrInit = function(infoPrefs) {
             // from members with display === true
             // use force === true on registration or to update all
             // this is used to adjust width of box to length of info
+
             for ( var i = 0; i < members.length; i++) {
                 if (members[i].display || force) {
                     members[i].info = members[i].obj.info();
@@ -493,10 +498,22 @@ fly.infoCtrlrInit = function(infoPrefs) {
             numMembers: function(){
                 return members.length;
             },
-            // time information:
+            /**
+             * The number of frames elapsed
+             * @return {Integer} number of frames
+             */
             frame : function() {
                 return _time.frame;
             },
+            /**
+             * Object containing info on the time
+             * passed, fps, etc.
+             * @return {Object} time object
+             *
+             * @example
+             * time = fly.info.time()
+             *
+             */
             time : function() {
                 return _time;
             },

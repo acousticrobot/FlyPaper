@@ -15,13 +15,21 @@
  * use `fly.grantInfo(myObject)`. Your object must also register with the
  * [Info Controller]{@link infoCtrlr}.
  *
+ * ##### Types of info
+ *
+ *  * 'val' : a public property of your object of type string or number
+ *  * 'bool' : a public property of your object of type boolean
+ *  * 'func' : a callable method of your object which returns a string or number
+ *  * 'string' : a string value that is not updated once it is set
+ *
  * #### Adding Info
  * To add info to the info packet, use [addInfo()]{@link fly.base.addInfo}
+ *
  *
  * #### Deleting Info
  * To delete info, use [deleteInfo()]{@link fly.base.deleteInfo}
  *
- * @param {Object} o The object to grant info functionality
+ * @param {Object} o The object to be granted info functionality
  * @return {Object}   The object with method info
  * @mixin Grant Info
  *
@@ -74,21 +82,24 @@ fly.grantInfo = function(o) {
      *
      * @description Add info that the {@link infoCtrlr} will track about your object.
      *
-     * If the property type is `bool` or `val`, these must be callable
+     * If the property type is `bool`, func`, `val`, these must be callable
      * by your object to obtain the value as a string, number, or boolean.
      * So for the example you need to be able to call:
      *
-     *     myObject['sleeping'] // true or false
-     *     myObject['speed'] // number or string
+     *     'bool': myObject['sleeping'] // returns true or false
+     *     'val': myObject['speed'] // public property
+     *     myObject['position']() // function which returns a number or string
      *
      * @example
-     * // myObject.sleeping() should return a bool
-     * // myObject.speed() should return a number or string
-     * // myObject.sam() will not be queried
+     * // myObject.sleeping should be true or false
+     * // myObject.speed should be a number or string
+     * // myObject.pos() should return an integer or string
+     * // 'birthday' will always be 'Feb 12th'
      * myObject.addInfo(
      *   sleeping:{val:'sleeping',type:'bool'},
      *   speed:{val:'speed',type:'val'},
-     *   val1:{val:'sam',type:'i am'}
+     *   position:{val:'pos',type:'func'}
+     *   birthday:{val:'Feb 12th',type:'string'}
      * )
      *
      * @param {Object} args {infoToTrack:{val:'foo',type:'bar'},..}

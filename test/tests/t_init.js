@@ -38,15 +38,15 @@ test("the build", 11, function(){
 	ok(fly.layer("background"), "The background layer exists.");
 	ok(fly.layers.stage, "The stage array exists.");
 	ok(fly.layer("info"), "The info layer exists.");
-	ok(fly.color, "fly.color exists");
-	ok(fly.color.palette, "fly.colorPalette exists");
+	ok(fly.color, "fly color exists");
+	ok(fly.color.palette, "fly color palette exists");
 	ok(fly.eventCtrlr, "fly event controller exists");
 	ok(fly.infoCtrlr, "fly info controller exists");
 });
 
 test("color", 3, function(){
 	equal(fly.color.background(), "no background color set", "color confirms no background color");
-	equal(fly.color.background("00FF00"), "rgba(0, 255, 0, 1)", "confirms new background color");
+	equal(fly.color.background("00FF00"), "rgba(0, 255, 0, 1)", "color background return confirms new background color");
 	equal(fly.color.background(), "rgba(0, 255, 0, 1)", "new background color should have been set");
 });
 
