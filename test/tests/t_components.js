@@ -99,7 +99,7 @@ test("Granting Events", 5, function(){
 	var re1 = new RegExp('"someEvent":object'),
 		re2 = new RegExp('"xxx-key":object'),
 		log = fly.eventCtrlr.logEvents();
-	equal(  re1.test(log) == re2.test(log) && re1.test(log) == true,
+	equal(  re1.test(log) === re2.test(log) && re1.test(log) === true,
 			true,'should be able to register for events');
 
 	dummy.deregisterEvent('someEvent');
@@ -187,7 +187,7 @@ test("Color", 3, function() {
 	ok(fly.color, "color exists");
 	strictEqual(fly.color.reserved('palette'), true, 'palette should be reserved');
 	strictEqual(fly.color.reserved('crimson'), false, 'crimson should not be reserved');
-})
+});
 
 test("Color Utilities", 12, function(){
 
@@ -243,7 +243,7 @@ test("Color Palette", 10, function(){
 });
 
 test("Info Controller", function() {
-//	fly.grantInfo(fly);
+	fly.grantInfo(fly);
 	fly.initLayers();
 	fly.infoCtrlrInit();
 	ok(fly.infoCtrlr, "InfoCtrlr should exist");

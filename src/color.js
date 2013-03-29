@@ -45,7 +45,9 @@ fly.color = {
     reserved: function(word) {
         var reservedWords = [ '_paletteName', 'add', 'background', 'delete',
                               'info', 'name', 'palette', 'reserved' ];
-        if (reservedWords.indexOf(word) == -1) {return false};
+        if (reservedWords.indexOf(word) === -1) {
+            return false;
+        }
         return true;
     },
 

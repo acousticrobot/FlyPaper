@@ -1,7 +1,7 @@
 /**
- * FlyPaper --v 0.5.0-104 alpha
+ * FlyPaper --v 0.5.0-105 alpha
  *
- * Date 2013-03-29 15:17:35
+ * Date 2013-03-29 17:02:58
  *
  * @name flypaper
  * @author Jonathan Gabel
@@ -158,7 +158,7 @@ fly.grantString = function(o) {
  * use `fly.grantInfo(myObject)`. Your object must also register with the
  * [Info Controller]{@link infoCtrlr}.
  *
- * ##### Types of info
+ * #### Types of Info
  *
  *  * 'val' : a public property of your object of type string or number
  *  * 'bool' : a public property of your object of type boolean
@@ -918,10 +918,26 @@ fly.color = {
 
     name: "color",
     _paletteName: "not yet defined",
-    reserved: [ 'name', 'background', '_paletteName',
-                'palette', 'add', 'delete'
-              ],
 
+    /**
+     * In the event that you name a color in your color palette as something that
+     * is already being used, the name will be appended with "_color",
+     * for example info will become `info_color`. To check if a word is reserved, call
+     * `fly.color.reserved('color name');`
+     *
+     * @param  {String} word word to check
+     * @return {Boolean}      true if word is reserved
+     *
+     * @memberOf fly.color
+     */
+    reserved: function(word) {
+        var reservedWords = [ '_paletteName', 'add', 'background', 'delete',
+                              'info', 'name', 'palette', 'reserved' ];
+        if (reservedWords.indexOf(word) === -1) {
+            return false;
+        }
+        return true;
+    },
 
     /**
      *
@@ -964,6 +980,8 @@ fly.color = {
     }
 
 };
+
+fly.grantInfo(fly.color);
 
 /**
  * The Color Utility is created on {@link fly.init}.
@@ -1354,7 +1372,7 @@ fly.color.palette = function(args){
             if (p.set[i] instanceof Array === false || p.set[i].length !== 4) {
                 return 'Palette set of unknown type';
             }
-            if (fly.color.reserved.indexOf(p.set[i][0]) > -1) {
+            if (fly.color.reserved(p.set[i][0])) {
                 p.set[i][0] = p.set[i][0] + '_color';
             }
         }
@@ -1459,11 +1477,11 @@ fly.color.palette = function(args){
 };
 
 // TODO:
-// define reserved color words [palette,_palette,add,remove]
 // add colors to current set: fly.color.add(...)
 // add into current in colorSets
+//
 
-//fly.grantInfo(fly.color)
+
 
 fly.infoCtrlrInit = function(infoPrefs) {
 
@@ -1521,19 +1539,13 @@ fly.infoCtrlrInit = function(infoPrefs) {
         var name = 'Info Controller';
         var version = '0.5alpha';
         // register members who already exist
-        var members = [ {
-            obj : fly,
-            display : false
-        }, {
-            obj : fly.eventCtrlr,
-            display : false
-        }, {
-            obj : fly.layers,
-            display : false
-        }, {
-            obj : fly.color,
-            display : false
-        } ];
+        var members = [
+            { obj : fly, display : false },
+            { obj : fly.eventCtrlr, display : false },
+            { obj : fly.layers, display : false },
+            { obj : fly.color, display : false }
+        ];
+
         infoPrefs = infoPrefs || {};
         if (fly.color.palette === 'not yet defined') {
             fly.colorPalette('default');
@@ -1906,7 +1918,6 @@ fly.infoCtrlrInit = function(infoPrefs) {
             // from members with display === true
             // use force === true on registration or to update all
             // this is used to adjust width of box to length of info
-
             for ( var i = 0; i < members.length; i++) {
                 if (members[i].display || force) {
                     members[i].info = members[i].obj.info();
@@ -1962,6 +1973,7 @@ fly.infoCtrlrInit = function(infoPrefs) {
             /**
              * The number of frames elapsed
              * @return {Integer} number of frames
+             * @memberOf fly.infoCtrlr
              */
             frame : function() {
                 return _time.frame;
@@ -1973,6 +1985,7 @@ fly.infoCtrlrInit = function(infoPrefs) {
              *
              * @example
              * time = fly.info.time()
+             * @memberOf fly.infoCtrlr
              *
              */
             time : function() {

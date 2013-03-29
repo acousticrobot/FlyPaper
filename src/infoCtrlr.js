@@ -61,7 +61,7 @@ fly.infoCtrlrInit = function(infoPrefs) {
         var version = '0.5alpha';
         // register members who already exist
         var members = [
- //           { obj : fly, display : false },
+            { obj : fly, display : false },
             { obj : fly.eventCtrlr, display : false },
             { obj : fly.layers, display : false },
             { obj : fly.color, display : false }
@@ -440,7 +440,6 @@ fly.infoCtrlrInit = function(infoPrefs) {
             // use force === true on registration or to update all
             // this is used to adjust width of box to length of info
             for ( var i = 0; i < members.length; i++) {
-                console.log(members[i]);
                 if (members[i].display || force) {
                     members[i].info = members[i].obj.info();
                     if (force) { // recheck max width of infobox
