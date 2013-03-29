@@ -89,21 +89,30 @@ test("Granting Info", 10, function(){
 		"Should be able to add 'func' types to info packet and call a function");
 });
 
-test("Granting Events", 4, function(){
+test("Granting Events", 5, function(){
 	// test subscribing / unsubscribing with eventController
 	ok(fly.eventCtrlr, "fly event controller exists");
+
 	var dummy = {};
 	fly.grantEvents(dummy);
-	fly.grantString(dummy);
-	dummy.registerEvent({frame:'update','i-key':'showInfo'});
-	equal(fly.eventCtrlr.logEvents(),
-		'{"frame":object,"i-key":object}','should be able to register for events');
-	dummy.deregisterEvent('i-key');
-	equal(fly.eventCtrlr.logEvents(),
-		'{"frame":object}','should be able to deregister from events');
-	dummy.registerEvent({'i-key':'showInfo'}).deregisterEvent('all');
-	equal(fly.eventCtrlr.logEvents(),
-		'{}','events in EC should match');
+	dummy.registerEvent({someEvent:'myMethod','xxx-key':'xEvent'});
+	var re1 = new RegExp('"someEvent":object'),
+		re2 = new RegExp('"xxx-key":object'),
+		log = fly.eventCtrlr.logEvents();
+	equal(  re1.test(log) == re2.test(log) && re1.test(log) == true,
+			true,'should be able to register for events');
+
+	dummy.deregisterEvent('someEvent');
+	log = fly.eventCtrlr.logEvents();
+	equal(	re1.test(log),
+			false,'should be able to deregister from events');
+
+	dummy.registerEvent({someEvent:'myMethod'}).deregisterEvent('all');
+	log = fly.eventCtrlr.logEvents();
+	equal(	re1.test(log),
+			false,'events registration and deregistration should be chainable');
+	equal( re2.test(log),
+			false, 'should be able to deregister from all events');
 });
 
 test("Fly Base", 4, function(){
@@ -129,7 +138,7 @@ test("Fly Base", 4, function(){
 		"Base should respond to deleteInfo method");
 });
 
-test("Building Layers", function(){
+test("Building Layers", 52, function(){
 	function resetStage() {
 		paper.project.remove();
 		delete fly.layers;
@@ -174,7 +183,7 @@ test("Building Layers", function(){
 	buildLayers(["Keaton","Arbuckle"],false);
 });
 
-test("Color", function() {
+test("Color", 3, function() {
 	ok(fly.color, "color exists");
 	strictEqual(fly.color.reserved('palette'), true, 'palette should be reserved');
 	strictEqual(fly.color.reserved('crimson'), false, 'crimson should not be reserved');
@@ -234,7 +243,7 @@ test("Color Palette", 10, function(){
 });
 
 test("Info Controller", function() {
-	fly.grantInfo(fly);
+//	fly.grantInfo(fly);
 	fly.initLayers();
 	fly.infoCtrlrInit();
 	ok(fly.infoCtrlr, "InfoCtrlr should exist");

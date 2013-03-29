@@ -178,5 +178,6 @@ fly.color.palette = function(args){
 // TODO:
 // add colors to current set: fly.color.add(...)
 // add into current in colorSets
+//
 
 
