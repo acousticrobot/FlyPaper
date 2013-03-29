@@ -60,19 +60,12 @@ fly.infoCtrlrInit = function(infoPrefs) {
         var name = 'Info Controller';
         var version = '0.5alpha';
         // register members who already exist
-        var members = [ {
-            obj : fly,
-            display : false
-        }, {
-            obj : fly.eventCtrlr,
-            display : false
-        }, {
-            obj : fly.layers,
-            display : false
-        }, {
-            obj : fly.color,
-            display : false
-        } ];
+        var members = [  { obj : fly, display : false },
+                         { obj : fly.eventCtrlr, display : false },
+                         { obj : fly.layers, display : false },
+                         { bj : fly.color, display : false }
+        ];
+
         infoPrefs = infoPrefs || {};
         if (fly.color.palette === 'not yet defined') {
             fly.colorPalette('default');
@@ -445,7 +438,6 @@ fly.infoCtrlrInit = function(infoPrefs) {
             // from members with display === true
             // use force === true on registration or to update all
             // this is used to adjust width of box to length of info
-
             for ( var i = 0; i < members.length; i++) {
                 if (members[i].display || force) {
                     members[i].info = members[i].obj.info();
@@ -501,6 +493,7 @@ fly.infoCtrlrInit = function(infoPrefs) {
             /**
              * The number of frames elapsed
              * @return {Integer} number of frames
+             * @memberOf fly.infoCtrlr
              */
             frame : function() {
                 return _time.frame;
@@ -512,6 +505,7 @@ fly.infoCtrlrInit = function(infoPrefs) {
              *
              * @example
              * time = fly.info.time()
+             * @memberOf fly.infoCtrlr
              *
              */
             time : function() {

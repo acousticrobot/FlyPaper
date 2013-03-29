@@ -30,10 +30,24 @@ fly.color = {
 
     name: "color",
     _paletteName: "not yet defined",
-    reserved: [ 'name', 'background', '_paletteName',
-                'palette', 'add', 'delete'
-              ],
 
+    /**
+     * In the event that you name a color in your color palette as something that
+     * is already being used, the name will be appended with "_color",
+     * for example info will become `info_color`. To check if a word is reserved, call
+     * `fly.color.reserved('color name');`
+     *
+     * @param  {String} word word to check
+     * @return {Boolean}      true if word is reserved
+     *
+     * @memberOf fly.color
+     */
+    reserved: function(word) {
+        var reservedWords = [ '_paletteName', 'add', 'background', 'delete',
+                              'info', 'name', 'palette', 'reserved' ];
+        if (reservedWords.indexOf(word) == -1) {return false};
+        return true;
+    },
 
     /**
      *
@@ -76,3 +90,5 @@ fly.color = {
     }
 
 };
+
+fly.grantInfo(fly.color);

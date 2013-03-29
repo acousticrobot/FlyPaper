@@ -87,7 +87,6 @@ test("Granting Info", 10, function(){
 	strictEqual(fly.toString(dummy.info(),2),
 		'{"name":"dummy","version":{"val":"0.5beta","type":"version"},"age":{"val":"40","type":"val"}}',
 		"Should be able to add 'func' types to info packet and call a function");
-
 });
 
 test("Granting Events", 4, function(){
@@ -128,8 +127,6 @@ test("Fly Base", 4, function(){
 	strictEqual( fly.toString(base.info(),2),
 		'{"name":"fly base","version":{"val":"0.5beta","type":"version"}}',
 		"Base should respond to deleteInfo method");
-
-
 });
 
 test("Building Layers", function(){
@@ -177,9 +174,14 @@ test("Building Layers", function(){
 	buildLayers(["Keaton","Arbuckle"],false);
 });
 
-test("Color Utilities", 13, function(){
-
+test("Color", function() {
 	ok(fly.color, "color exists");
+	strictEqual(fly.color.reserved('palette'), true, 'palette should be reserved');
+	strictEqual(fly.color.reserved('crimson'), false, 'crimson should not be reserved');
+})
+
+test("Color Utilities", 12, function(){
+
 	ok(fly.colorUtil, "color Util exists");
 
 	equal(fly.colorUtil.limit(700),255,"color should be limited to 255 max");
@@ -236,7 +238,6 @@ test("Info Controller", function() {
 	fly.initLayers();
 	fly.infoCtrlrInit();
 	ok(fly.infoCtrlr, "InfoCtrlr should exist");
-
 });
 
 

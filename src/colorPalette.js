@@ -71,7 +71,7 @@ fly.color.palette = function(args){
             if (p.set[i] instanceof Array === false || p.set[i].length !== 4) {
                 return 'Palette set of unknown type';
             }
-            if (fly.color.reserved.indexOf(p.set[i][0]) > -1) {
+            if (fly.color.reserved(p.set[i][0])) {
                 p.set[i][0] = p.set[i][0] + '_color';
             }
         }
@@ -176,8 +176,7 @@ fly.color.palette = function(args){
 };
 
 // TODO:
-// define reserved color words [palette,_palette,add,remove]
 // add colors to current set: fly.color.add(...)
 // add into current in colorSets
 
-//fly.grantInfo(fly.color)
+

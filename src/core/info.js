@@ -15,7 +15,7 @@
  * use `fly.grantInfo(myObject)`. Your object must also register with the
  * [Info Controller]{@link infoCtrlr}.
  *
- * ##### Types of info
+ * #### Types of Info
  *
  *  * 'val' : a public property of your object of type string or number
  *  * 'bool' : a public property of your object of type boolean
