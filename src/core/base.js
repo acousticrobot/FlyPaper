@@ -31,6 +31,11 @@ fly.base = function(n){
         return this;
     };
 
+    o.deregister = function () {
+        fly.infoCtrlr.deregister(this);
+        return this;
+    };
+
     fly.grantString(o);
     fly.grantInfo(o);
     fly.grantEvents(o);

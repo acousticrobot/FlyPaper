@@ -60,7 +60,7 @@ fly.Ananda.prototype.init = function (args){
 
     function initFromNum (n) {
         if (args < 0) { // illegal value
-                        // or contructed w/ no parameters
+                        // or constructed w/ no parameters
             iA.n = "born";
             iA.Sz = new paper.Size(100,100);
             buildHandle();

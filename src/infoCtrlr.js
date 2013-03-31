@@ -193,7 +193,7 @@ fly.infoCtrlrInit = function(infoPrefs) {
             });
             updateInfo(true);
             resetBars();
-            return o;
+            return this;
         }
 
         /**
@@ -217,7 +217,7 @@ fly.infoCtrlrInit = function(infoPrefs) {
                 }
             }
             reset();
-            return o;
+            return this;
         }
 
         // ------------------- drawing -------------------------//
@@ -370,6 +370,7 @@ fly.infoCtrlrInit = function(infoPrefs) {
 
         /**
          * @todo Use grab drag and drop from basic fly object
+         * This grab includes  hit test for each infoGroup
          */
 
         function grab(args) {
@@ -506,8 +507,9 @@ fly.infoCtrlrInit = function(infoPrefs) {
              *
              * @example
              * time = fly.info.time()
+             * // returns {"refresh":0,"frame":0,"time":0,"fps":{"curr":0,"avg":0}}
              * @memberOf fly.infoCtrlr
-             *
+             * @todo explain what refresh is
              */
             time : function() {
                 return _time;

@@ -37,6 +37,7 @@ fly.scatter = function (o,rect) {
     }
 };
 
+//@TODO change to randPoint?
 fly.randomizePt = function (point,delta,constrain) {
     // adds variance delta to point
     // constrain === "x" or "y" or default none

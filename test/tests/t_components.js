@@ -31,10 +31,10 @@ test("ToString", 10, function(){
 		"toString Method should match");
 	var tester = fly.base();
 	equal(fly.toString(tester,2),
-		'{"name":"fly base","version":"0.5beta",register(),toString(),addInfo(),deleteInfo(),info(),registerEvent(),deregisterEvent(),eventCall(),logEvents()}',
+		'{"name":"fly base","version":"0.5beta",register(),deregister(),toString(),addInfo(),deleteInfo(),info(),registerEvent(),deregisterEvent(),eventCall(),logEvents()}',
 		"toString Method should match");
 	equal(tester.toString(1),
-		'{"name":"fly base","version":"0.5beta",register(),toString(),addInfo(),deleteInfo(),info(),registerEvent(),deregisterEvent(),eventCall(),logEvents()}',
+		'{"name":"fly base","version":"0.5beta",register(),deregister(),toString(),addInfo(),deleteInfo(),info(),registerEvent(),deregisterEvent(),eventCall(),logEvents()}',
 		"toString Method should match");
 });
 
@@ -120,7 +120,7 @@ test("Fly Base", 4, function(){
 	var base = fly.base();
 
 	strictEqual( base.toString(),
-		'{"name":"fly base","version":"0.5beta",register(),toString(),addInfo(),deleteInfo(),info(),registerEvent(),deregisterEvent(),eventCall(),logEvents()}',
+		'{"name":"fly base","version":"0.5beta",register(),deregister(),toString(),addInfo(),deleteInfo(),info(),registerEvent(),deregisterEvent(),eventCall(),logEvents()}',
 		"Base should have a toString method");
 
 	strictEqual( fly.toString(base.info(),2),
@@ -136,6 +136,8 @@ test("Fly Base", 4, function(){
 	strictEqual( fly.toString(base.info(),2),
 		'{"name":"fly base","version":{"val":"0.5beta","type":"version"}}',
 		"Base should respond to deleteInfo method");
+
+	// base register / deregister methods tested in infoController
 });
 
 test("Building Layers", 52, function(){
@@ -242,14 +244,85 @@ test("Color Palette", 10, function(){
 	strictEqual(fly.color.background(), "no background layer", "Should confirm absence of background layer");
 });
 
-test("Info Controller", function() {
+test("Info Controller", 20, function() {
 	fly.grantInfo(fly);
 	fly.initLayers();
 	fly.infoCtrlrInit();
 	ok(fly.infoCtrlr, "InfoCtrlr should exist");
+	strictEqual(fly.infoCtrlr.name, "Info Controller","should have a name");
+	strictEqual(fly.infoCtrlr.version, "0.5alpha","should have a version");
+	strictEqual(fly.infoCtrlr["key trigger"], "i-key","should have a key trigger");
+	strictEqual(fly.infoCtrlr.frame(), 0, "should return frames as integer");
+	strictEqual(
+		fly.toString(fly.infoCtrlr.time(),2),
+		'{"refresh":0,"frame":0,"time":0,"fps":{"curr":0,"avg":0}}',
+		"should return time");
+	strictEqual(fly.infoCtrlr["time passed"](), "0.0","should return time passed");
+	strictEqual(fly.infoCtrlr.fps(), "0.0","should return frames per second");
+	strictEqual(fly.infoCtrlr.moving(), false, "should return boolean moving status");
+	strictEqual((fly.infoCtrlr.isMobile()), false, "should return boolean indicating if device is a mobile device");
+	strictEqual(fly.infoCtrlr.isIpad(), false, "should return boolean indicating if device is an ipad");
+	ok(fly.infoCtrlr.members, "should have members on init");
+
+	strictEqual(fly.infoCtrlr.numMembers(), 5, "should have 5 members on init");
+	var dummy = {name:"dummy"};
+	fly.grantInfo(dummy);
+	strictEqual(fly.infoCtrlr.numMembers(), 5, "granting info to an object shouldn't add it to the members");
+
+	fly.infoCtrlr.register(dummy);
+	strictEqual(fly.infoCtrlr.numMembers(), 6, "registering and object should add it to the members");
+
+	fly.infoCtrlr.deregister(dummy);
+	strictEqual(fly.infoCtrlr.numMembers(), 5, "deregistering and object should remove it from the members");
+
+	fly.infoCtrlr.register(dummy).deregister(dummy);
+	strictEqual(fly.infoCtrlr.numMembers(), 5, "register and deregister methods should be chainable");
+
+	var base = fly.base();
+	base.register();
+	strictEqual(fly.infoCtrlr.numMembers(), 6, "base should be able to register with the infoCtrlr");
+
+	base.deregister();
+	strictEqual(fly.infoCtrlr.numMembers(), 5, "base should be able to deregister with the infoCtrlr");
+
+	base.register().deregister();
+	strictEqual(fly.infoCtrlr.numMembers(), 5, "base register and deregister methods should be chainable");
+
+		// register -> creates what
+	// deregister -> what
+	// fly.infoCtrlr.register(this, display);
 });
 
+test("Paper Tool", function(){
+	expect(0);
+});
 
+test("Fly Math", function(){
+	expect(0);
+	// test midpoint
+	// test scatter
+	// test randomizePt
+	// test eachCell
+	// test gridPoint
+	// test initArray
+});
+
+test("Motions", function(){
+	// test bob
+	// test motion
+	// test scroll
+	// test swing
+	expect(0);
+});
+
+test("Ananda", function(){
+	expect(0);
+	// should be registered with the infoCtrlr
+});
+
+test("Pullbar", function(){
+	expect(0);
+});
 
 }; // end window on-load
 

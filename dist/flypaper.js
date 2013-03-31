@@ -1,7 +1,7 @@
 /**
- * FlyPaper --v 0.5.0-105 alpha
+ * FlyPaper --v 0.5.0-106 alpha
  *
- * Date 2013-03-29 17:02:58
+ * Date 2013-03-31 16:07:46
  *
  * @name flypaper
  * @author Jonathan Gabel
@@ -155,8 +155,12 @@ fly.grantString = function(o) {
  * #### Granting Info
  * Objects inheriting from {@link base} already have info methods, and are
  * registered with the Info Controller. To grant info to other types of object,
- * use `fly.grantInfo(myObject)`. Your object must also register with the
- * [Info Controller]{@link infoCtrlr}.
+ * use `fly.grantInfo(myObject)`.
+ *
+ * #### Registering with the Info Controller
+ *
+ * To begin tracking your object, your must register with the
+ * [Info Controller]{@link fly.infoCtrlr}.
  *
  * #### Types of Info
  *
@@ -167,7 +171,6 @@ fly.grantString = function(o) {
  *
  * #### Adding Info
  * To add info to the info packet, use [addInfo()]{@link fly.base.addInfo}
- *
  *
  * #### Deleting Info
  * To delete info, use [deleteInfo()]{@link fly.base.deleteInfo}
@@ -188,7 +191,7 @@ fly.grantInfo = function(o) {
         };
 
     function mergeInfo (o,_i,args) {
-        // private utility to add objects in args to info _i
+        // private utility to add objects in args to info _info
         // used by info() to return to IC, as well as addInfo
         // to add into private _info object
         // reading is tripped when exporting to IC, reading dynamic
@@ -495,6 +498,11 @@ fly.base = function(n){
 
     o.register = function () {
         fly.infoCtrlr.register(this);
+        return this;
+    };
+
+    o.deregister = function () {
+        fly.infoCtrlr.deregister(this);
         return this;
     };
 
@@ -1672,7 +1680,7 @@ fly.infoCtrlrInit = function(infoPrefs) {
             });
             updateInfo(true);
             resetBars();
-            return o;
+            return this;
         }
 
         /**
@@ -1696,7 +1704,7 @@ fly.infoCtrlrInit = function(infoPrefs) {
                 }
             }
             reset();
-            return o;
+            return this;
         }
 
         // ------------------- drawing -------------------------//
@@ -1849,6 +1857,7 @@ fly.infoCtrlrInit = function(infoPrefs) {
 
         /**
          * @todo Use grab drag and drop from basic fly object
+         * This grab includes  hit test for each infoGroup
          */
 
         function grab(args) {
@@ -1985,8 +1994,9 @@ fly.infoCtrlrInit = function(infoPrefs) {
              *
              * @example
              * time = fly.info.time()
+             * // returns {"refresh":0,"frame":0,"time":0,"fps":{"curr":0,"avg":0}}
              * @memberOf fly.infoCtrlr
-             *
+             * @todo explain what refresh is
              */
             time : function() {
                 return _time;
@@ -2228,6 +2238,7 @@ fly.scatter = function (o,rect) {
     }
 };
 
+//@TODO change to randPoint?
 fly.randomizePt = function (point,delta,constrain) {
     // adds variance delta to point
     // constrain === "x" or "y" or default none
@@ -2598,7 +2609,7 @@ fly.Ananda.prototype.init = function (args){
 
     function initFromNum (n) {
         if (args < 0) { // illegal value
-                        // or contructed w/ no parameters
+                        // or constructed w/ no parameters
             iA.n = "born";
             iA.Sz = new paper.Size(100,100);
             buildHandle();

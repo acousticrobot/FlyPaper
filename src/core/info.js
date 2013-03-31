@@ -12,8 +12,12 @@
  * #### Granting Info
  * Objects inheriting from {@link base} already have info methods, and are
  * registered with the Info Controller. To grant info to other types of object,
- * use `fly.grantInfo(myObject)`. Your object must also register with the
- * [Info Controller]{@link infoCtrlr}.
+ * use `fly.grantInfo(myObject)`.
+ *
+ * #### Registering with the Info Controller
+ *
+ * To begin tracking your object, your must register with the
+ * [Info Controller]{@link fly.infoCtrlr}.
  *
  * #### Types of Info
  *
@@ -24,7 +28,6 @@
  *
  * #### Adding Info
  * To add info to the info packet, use [addInfo()]{@link fly.base.addInfo}
- *
  *
  * #### Deleting Info
  * To delete info, use [deleteInfo()]{@link fly.base.deleteInfo}
@@ -45,7 +48,7 @@ fly.grantInfo = function(o) {
         };
 
     function mergeInfo (o,_i,args) {
-        // private utility to add objects in args to info _i
+        // private utility to add objects in args to info _info
         // used by info() to return to IC, as well as addInfo
         // to add into private _info object
         // reading is tripped when exporting to IC, reading dynamic
