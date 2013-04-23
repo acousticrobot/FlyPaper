@@ -28,7 +28,7 @@
  * fly.grantString(myObject);
  *
  * // Then call the method directly on the object
- * myObject.toString(2)
+ * myObject.toString(3)
  * // returns: '{"a":0,"b":[0,[1,2,3],[4,5,{"six":6,"seven":"seven"}]]}'
  *
  */

@@ -287,14 +287,12 @@ test("Info Controller", 20, function() {
 
 	base.register().deregister();
 	strictEqual(fly.infoCtrlr.numMembers(), 5, "base register and deregister methods should be chainable");
-
-		// register -> creates what
-	// deregister -> what
-	// fly.infoCtrlr.register(this, display);
 });
 
 test("Paper Tool", function(){
 	expect(0);
+	// https://github.com/j-ulrich/jquery-simulate-ext
+	// http://forum.jquery.com/topic/simulating-keypress-events
 });
 
 test("Fly Math", function(){
@@ -304,6 +302,7 @@ test("Fly Math", function(){
 	// test randomizePt
 	// test eachCell
 	// test gridPoint
+	var points = fly.gridPlot(4,4,paper.Rectangle(),"down-left")
 	// test initArray
 });
 

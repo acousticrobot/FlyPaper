@@ -66,42 +66,49 @@ fly.eachCell = function (o,f) {
     }
 };
 
-fly.gridPlot = function (c,r,rectangle,dir) {
-    // v.0.4
-    // returns an array of arrays of points
-    // c + 1 columns by r + 1 rows inside paper.rectangle r
-    // last column and row run along right and bottom edges
-    // dir is an optional string, which controls the direction
-    // (top down, left to right etc.) that the grid travels.
-    // Use this to quickly change the orientation of an object
-    // aligned to a grid.
-    // CHANGE: rectangle is a paper.rectangle, not a path, use
+/**
+ * Returns an array of array of points.
+ * It is important to note that the rows and columns of points will
+ * be one greater than the columns and rows passed in. The additional column
+ * and row define the bottom and side edges. This allows the rows and columns
+ * of the rectangles defined by the points to equal the number passed in.
+ * @param  {Integer} columns   number of columns
+ * @param  {Integer} rows      number of rows
+ * @param  {paper.rectangle} rectangle paper rectangle used to set the bounds
+ * @param  {String} direction       optional direction for the grid, defaults to "down-left", can also be
+ *                            "down-right","up-right" and "up-left"
+ * @return {Array of Arrays of paper.Point}
+ */
+
+fly.gridPlot = function (columns,rows,rectangle,direction) {
+
+    // NOTE: rectangle is a paper.rectangle, not a path, use
     // this.handle.bounds to send bounds
     // note-to-self: this breaks junkaigo v 0.3.1 !!!
     // TODO: accept both a rectangle and a path.Rectangle?
 
-    dir = dir || "down-left";
+    var direction = direction || "down-left";
     var rect = new paper.Path.Rectangle(rectangle);
     var points = [];
-    for (var i=0; i <= c; i++) {
+    for (var i=0; i <= columns; i++) {
         points[i] = [];
     }
-    var w = rect.bounds.width / c;
-    var h = rect.bounds.height / r;
-    for (var x=0; x <= c; x++) {
-        for (var y=0; y <= r; y++) {
+    var w = rect.bounds.width / columns;
+    var h = rect.bounds.height / rows;
+    for (var x=0; x <= columns; x++) {
+        for (var y=0; y <= rows; y++) {
             var pt = new paper.Point( rect.bounds.x + x * w,
                                 rect.bounds.y + y * h);
-            switch (dir) {
+            switch (direction) {
                 case "down-right" :
                 case "right" :
-                    points[c-x][y] = pt;
+                    points[columns-x][y] = pt;
                     break;
                 case "up-left" :
-                    points[x][r-y] = pt;
+                    points[x][rows-y] = pt;
                     break;
                 case "up-right" :
-                    points[c-x][r-y] = pt;
+                    points[columns-x][rows-y] = pt;
                     break;
                 default : // "down-left"
                     points[x][y] = pt;
@@ -111,12 +118,12 @@ fly.gridPlot = function (c,r,rectangle,dir) {
     return points;
 };
 
-fly.initArray = function (c,r) {
+fly.initArray = function (columns,rows) {
     // init 3-d array
     var a = [];
-    for (var x=0; x < c; x++) {
+    for (var x=0; x < columns; x++) {
         a[x] = [];
-        for (var y=0; y < r; y++) {
+        for (var y=0; y < rows; y++) {
             a[x][y] = [];
         }
     }

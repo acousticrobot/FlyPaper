@@ -6,7 +6,7 @@
 
 /**
  * Gives any object all the necessary functions to register and receive events.
- * Objects can subscribe to events through the {@link Event Controller}.
+ * Objects can subscribe to events through the [Event Controller]{@link fly.eventCtrlr}.
  *
  * #### Granting Events
  * Objects inheriting from {@link fly.base} already have been granted event methods. For other
