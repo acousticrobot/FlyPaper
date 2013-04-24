@@ -17,7 +17,7 @@ window.onload = function() {
     // Now we can add a FlyPaper object.
     // fly.Template is a basic example of a FlyPaper object.
     var myGrid = new fly.Grid(
-        {name:"My Grid", handle:[100,100,400,400],
+        {name:"My Grid", handle:[0,0,400,400],
         selectable:true, // default: false
         dragable: true, // default: true
         rotatable: true // default: false
@@ -78,7 +78,6 @@ fly.Grid.prototype.build = function() {
     var points = fly.gridPlot(this.cols,this.rows,this.handle.bounds,"down-left"),
         cellSize = new paper.Size(  this.handle.bounds.width / this.cols,
                                     this.handle.bounds.height / this.rows);
-    console.log(points);
     for (var x=0; x < this.cols; x++) {
         for (var y=0; y < this.rows; y++) {
             var rect = new paper.Path.Rectangle(points[x][y], cellSize);

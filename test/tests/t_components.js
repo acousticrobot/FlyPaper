@@ -295,14 +295,42 @@ test("Paper Tool", function(){
 	// http://forum.jquery.com/topic/simulating-keypress-events
 });
 
-test("Fly Math", function(){
-	expect(0);
+test("Fly Math", 4, function(){
+
+	function initTestArray (points) {
+		return [points[0][0], points[1][1], points[2][2], points[3][3], points[4][4]];
+	}
+
 	// test midpoint
 	// test scatter
 	// test randomizePt
 	// test eachCell
+
 	// test gridPoint
-	var points = fly.gridPlot(4,4,paper.Rectangle(),"down-left")
+	var points = fly.gridPlot(4,4,new paper.Rectangle(0,0,100,100));
+	var testArray = initTestArray(points);
+	strictEqual(fly.toString(testArray,2),
+				'[{"x":0,"y":0},{"x":25,"y":25},{"x":50,"y":50},{"x":75,"y":75},{"x":100,"y":100}]',
+				"gridPlot should default to down-left");
+
+	points = fly.gridPlot(4,4,new paper.Rectangle(100,100,200,200),'down-right');
+	testArray = initTestArray(points);
+	strictEqual(fly.toString(testArray,2),
+				'[{"x":300,"y":100},{"x":250,"y":150},{"x":200,"y":200},{"x":150,"y":250},{"x":100,"y":300}]',
+				"gridPlot should handle down-right");
+
+	points = fly.gridPlot(4,4,new paper.Rectangle(100,100,200,100),'up-left');
+	testArray = initTestArray(points);
+	strictEqual(fly.toString(testArray,2),
+				'[{"x":100,"y":200},{"x":150,"y":175},{"x":200,"y":150},{"x":250,"y":125},{"x":300,"y":100}]',
+				"gridPlot should handle up-left");
+
+	points = fly.gridPlot(4,4,new paper.Rectangle(100,100,100,200),'up-right');
+	testArray = initTestArray(points);
+	strictEqual(fly.toString(testArray,2),
+				'[{"x":200,"y":300},{"x":175,"y":250},{"x":150,"y":200},{"x":125,"y":150},{"x":100,"y":100}]',
+				"gridPlot should handle up-right");
+
 	// test initArray
 });
 

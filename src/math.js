@@ -87,7 +87,7 @@ fly.gridPlot = function (columns,rows,rectangle,direction) {
     // note-to-self: this breaks junkaigo v 0.3.1 !!!
     // TODO: accept both a rectangle and a path.Rectangle?
 
-    var direction = direction || "down-left";
+    direction = direction || "down-left";
     var rect = new paper.Path.Rectangle(rectangle);
     var points = [];
     for (var i=0; i <= columns; i++) {

@@ -195,6 +195,211 @@ paper.view.onFrame = function(event) {
         <dl>
             
 <dt>
+    <h4 class="name" id="gridPlot"><span class="type-signature">&lt;static> </span>gridPlot<span class="signature">(columns, rows, rectangle, direction)</span><span class="type-signature"> &rarr; {Array of Arrays of paper.Point}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Returns an array of array of points.
+It is important to note that the rows and columns of points will
+be one greater than the columns and rows passed in. The additional column
+and row define the bottom and side edges. This allows the rows and columns
+of the rectangles defined by the points to equal the number passed in.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>columns</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Integer</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>number of columns</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>rows</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Integer</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>number of rows</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>rectangle</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">paper.rectangle</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>paper rectangle used to set the bounds</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>direction</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>optional direction for the grid, defaults to &quot;down-left&quot;, can also be
+                           &quot;down-right&quot;,&quot;up-right&quot; and &quot;up-left&quot;</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="flypaper.js.html">flypaper.js</a>, line 2284
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">Array of Arrays of paper.Point</span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
     <h4 class="name" id="init"><span class="type-signature">&lt;static> </span>init<span class="signature">(args)</span><span class="type-signature"> &rarr; {nil}</span></h4>
     
     
@@ -557,7 +762,7 @@ fly.toString(myObject,2);
 fly.grantString(myObject);
 
 // Then call the method directly on the object
-myObject.toString(2)
+myObject.toString(3)
 // returns: '{"a":0,"b":[0,[1,2,3],[4,5,{"six":6,"seven":"seven"}]]}'</code></pre>
 
     
@@ -579,13 +784,13 @@ myObject.toString(2)
 </div>
 
 <nav>
-    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="fly.base.html">base</a></li><li><a href="fly.color.html">color</a></li><li><a href="fly.colorUtil.html">colorUtil</a></li><li><a href="fly.eventCtrlr.html">eventCtrlr</a></li><li><a href="fly.infoCtrlr.html">infoCtrlr</a></li><li><a href="fly.layers.html">layers</a></li></ul><h3>Namespaces</h3><ul><li><a href="colorSets.html">colorSets</a></li><li><a href="fly.html">fly</a></li></ul><h3>Mixins</h3><ul><li><a href="46a31c4082.html">Grant Events</a></li><li><a href="93cf1efcef.html">Grant Info</a></li><li><a href="498b960794.html">Grant String</a></li></ul><h3>Global</h3><ul><li><a href="global.html#flypaper">flypaper</a></li></ul>
+    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="fly.base.html">base</a></li><li><a href="fly.color.html">color</a></li><li><a href="fly.colorUtil.html">colorUtil</a></li><li><a href="fly.eventCtrlr.html">eventCtrlr</a></li><li><a href="fly.infoCtrlr.html">infoCtrlr</a></li><li><a href="fly.layers.html">layers</a></li></ul><h3>Namespaces</h3><ul><li><a href="colorSets.html">colorSets</a></li><li><a href="fly.html">fly</a></li></ul><h3>Mixins</h3><ul><li><a href="Events.html">Grant Events</a></li><li><a href="Info.html">Grant Info</a></li><li><a href="String.html">Grant String</a></li></ul><h3>Global</h3><ul><li><a href="global.html#flypaper">flypaper</a></li></ul>
 </nav>
 
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.1.1</a> on Sun Mar 31 2013 16:07:55 GMT-0400 (EDT)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Tue Apr 23 2013 22:17:09 GMT-0400 (EDT)
 </footer>
 
 <script> prettyPrint(); </script>
