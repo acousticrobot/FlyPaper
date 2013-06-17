@@ -1,7 +1,7 @@
 /**
- * FlyPaper --v 0.5.0-107 alpha
+ * FlyPaper --v 0.5.0-108 alpha
  *
- * Date 2013-04-23 22:16:59
+ * Date 2013-04-24 13:57:27
  *
  * @name flypaper
  * @author Jonathan Gabel
@@ -1182,7 +1182,7 @@ fly.colorUtil = {
      * @param  {Hex Color String} col2 Middle or Last color in the spectrum
      * @param  {Hex Color String} [col3] Last color in the spectrum
      * @param  {Integer} [seg] Number of colors in the spectrum
-     * @return {[type]}
+     * @return {Array}
      *
      * @example
      * fly.colorUtil.spectrum("dark-grey","#000000","#222222",3)

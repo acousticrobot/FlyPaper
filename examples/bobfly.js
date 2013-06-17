@@ -4,8 +4,8 @@ window.onload = function() {
 
     var canvas = document.getElementById('ctx');
     paper.setup(canvas);
-    fly.init({  width : 800, height : 500//,
-               // palette : "sunny day"
+    fly.init({  width : 800, height : 500,
+               palette : "neon"
             });
     fly.debug = true;
 

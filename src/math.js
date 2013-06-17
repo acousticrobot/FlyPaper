@@ -4,14 +4,13 @@
  * Find the built file in dist/flypaper.js
  */
 
-//------------- BEGIN FLYPAPER MATH AND MOTION ------------//
-/*
-*   Math and Motion Methods
-*
-*   versions 0.3 - 0.4
-*/
-//--------------------------------------------------------//
 
+/**
+ * Returns a paper point midway between two paperpoints
+ * @param  {paper Point} p1 a paper.js Point Object
+ * @param  {paper Point} p2 a paper.js Point Object
+ * @return {paper Point}    a paper.js Point Object
+ */
 fly.midpoint = function (p1,p2) {
         // returns the point between two points
     var _p = new paper.Point(p1.add(p2));
@@ -19,9 +18,18 @@ fly.midpoint = function (p1,p2) {
     return _p;
 };
 
+/**
+ * Takes a paper Item, or array of Items and places each of their
+ * centers randomly within the bounds of the rectangle. Primarily used
+ * with Path Items, the obejcts passed in must have the paper `position`
+ * method in order to be scattered.
+ *
+ * @param  {Object or Array} o    paper.js Items or array of Items
+ * @param  {paper Rectangle} rect paper.js Rectangle
+ */
 fly.scatter = function (o,rect) {
-        // takes an object or array of objects o
-        // and places it's center randomly within rectangle rect
+        // takes an paper object or array of objects o
+        // and places their centers randomly within rectangle rect
         // start in lower right corner, multiply x and y by random 0 to 1
         // point will land somewhere in the rect
         // TODO: optional place within rect bounds
@@ -29,15 +37,17 @@ fly.scatter = function (o,rect) {
         o = [o];
     }
     for (var i=0; i < o.length; i++) {
-        var randPoint = new paper.Point(    // point at lower right corner
-            rect.width,rect.height
-        );
-        var randLoc = randPoint.multiply(paper.Size.random()); // point within rect
-        o[i].position = rect.point.add(randLoc);
+        if (o.position === 'function') {
+            var randomPoint = new paper.Point(    // point at lower right corner
+                rect.width,rect.height
+            );
+            var randomLocation = randomPoint.multiply(paper.Size.random()); // point within rect
+            o[i].position = rect.point.add(randomLocation);
+        };
     }
 };
 
-//@TODO change to randPoint?
+//@TODO change to randomPoint?
 fly.randomizePt = function (point,delta,constrain) {
     // adds variance delta to point
     // constrain === "x" or "y" or default none

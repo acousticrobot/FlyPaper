@@ -15,7 +15,6 @@ window.onload = function() {
     };
 
     // Now we can add a FlyPaper object.
-    // fly.Template is a basic example of a FlyPaper object.
     var myGrid = new fly.Grid(
         {name:"My Grid", handle:[0,0,400,400],
         selectable:true, // default: false

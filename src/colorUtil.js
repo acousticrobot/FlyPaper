@@ -195,7 +195,7 @@ fly.colorUtil = {
      * @param  {Hex Color String} col2 Middle or Last color in the spectrum
      * @param  {Hex Color String} [col3] Last color in the spectrum
      * @param  {Integer} [seg] Number of colors in the spectrum
-     * @return {[type]}
+     * @return {Array}
      *
      * @example
      * fly.colorUtil.spectrum("dark-grey","#000000","#222222",3)

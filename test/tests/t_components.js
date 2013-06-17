@@ -295,13 +295,18 @@ test("Paper Tool", function(){
 	// http://forum.jquery.com/topic/simulating-keypress-events
 });
 
-test("Fly Math", 4, function(){
+test("Fly Math", 5, function(){
 
 	function initTestArray (points) {
 		return [points[0][0], points[1][1], points[2][2], points[3][3], points[4][4]];
 	}
 
 	// test midpoint
+	var p1 = new paper.Point(100,100);
+	var p2 = new paper.Point(200,200);
+	var midpoint = fly.toString(fly.midpoint(p1,p2));
+	strictEqual(midpoint, '{"x":150,"y":150}', "midpoint should return correct paper point");
+
 	// test scatter
 	// test randomizePt
 	// test eachCell
