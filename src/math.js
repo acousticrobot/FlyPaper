@@ -43,7 +43,7 @@ fly.scatter = function (o,rect) {
             );
             var randomLocation = randomPoint.multiply(paper.Size.random()); // point within rect
             o[i].position = rect.point.add(randomLocation);
-        };
+        }
     }
 };
 
