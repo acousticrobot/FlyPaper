@@ -44,7 +44,7 @@ fly.colorUtil = {
 
     /**
      * Splits a hex color into an [r,g,b] array
-     * @param  {Hex Color String} hexCol
+     * @param  {Hex-Color-String} hexCol
      * @return {Array}
      *
      * *Note: These rgb values are between 0 and 255,
@@ -69,7 +69,7 @@ fly.colorUtil = {
     /**
      * Splices an RGB array [r,g,b] into a hex color
      * @param  {Array} cola
-     * @return {Hex Color String}
+     * @return {Hex-Color-String}
      *
      * *Note: These rgb values are between 0 and 255,
      * and do not translate into paper.js rgb values
@@ -96,10 +96,10 @@ fly.colorUtil = {
 
     /**
      * mixes 2 hex colors together
-     * @param  {Hex Color String} col1
-     * @param  {Hex Color String} col2
-     * @param  {Float between 0 and 1} [ratio=0.5] Determines ratio color 1 to color 2
-     * @return {Hex Color String}
+     * @param  {Hex-Color-String} col1
+     * @param  {Hex-Color-String} col2
+     * @param  {Float} [ratio=0.5] Between 0 and 1, Determines ratio color 1 to color 2
+     * @return {Hex-Color-String}
      */
     mix : function(col1,col2,ratio){
 
@@ -113,12 +113,12 @@ fly.colorUtil = {
     },
 
     /**
-     * Returns the r g b values (0 -255)
+     * Returns the r g b values (0 - 255)
      * added together for a total value. Useful for
      * comparing color values disregarding the hue
      *
-     * @param  {[type]} col [description]
-     * @return {[type]}     [description]
+     * @param  {Hex-Color-Value} col
+     * @return {Integer}
      */
     totalValue  : function(col) {
         // adds the R,G,B values together
@@ -128,8 +128,8 @@ fly.colorUtil = {
 
     /*
      * Creates a spectrum of hex colors
-     * @param  {Hex Color String} col1 First color in the spectrum
-     * @param  {Hex Color String} col2 Last color in the spectrum
+     * @param  {Hex-Color-String} col1 First color in the spectrum
+     * @param  {Hex-Color-String} col2 Last color in the spectrum
      * @param  {Integer} [seg=5] Number of colors in the spectrum
      * @return {Array}
      *
@@ -160,9 +160,9 @@ fly.colorUtil = {
      * sent colors are first, middle, and last of the array
      * spectrum length defaults to 9, and will always be odd*
      *
-     * @param  {Hex Color String} col1 First color in the spectrum
-     * @param  {Hex Color String} col2 Middle color in the spectrum
-     * @param  {Hex Color String} col2 Last color in the spectrum
+     * @param  {Hex-Color-String} col1 First color in the spectrum
+     * @param  {Hex-Color-String} col2 Middle color in the spectrum
+     * @param  {Hex-Color-String} col2 Last color in the spectrum
      * @param  {Integer} [seg=9] Number of colors in the spectrum
      * @return {Array}
      *
@@ -191,9 +191,9 @@ fly.colorUtil = {
      * spectrum length defaults to 9, and will always be odd*
      *
      * @param  {String} name
-     * @param  {Hex Color String} col1 First color in the spectrum
-     * @param  {Hex Color String} col2 Middle or Last color in the spectrum
-     * @param  {Hex Color String} [col3] Last color in the spectrum
+     * @param  {Hex-Color-String} col1 First color in the spectrum
+     * @param  {Hex-Color-String} col2 Middle or Last color in the spectrum
+     * @param  {Hex-Color-String} [col3] Last color in the spectrum
      * @param  {Integer} [seg] Number of colors in the spectrum
      * @return {Array}
      *

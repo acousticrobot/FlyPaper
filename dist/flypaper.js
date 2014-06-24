@@ -1,14 +1,14 @@
 /**
- * FlyPaper --v 0.5.0-108 alpha
+ * flypaper --v 0.5.0-120 alpha
  *
- * Date 2013-04-24 13:57:27
+ * Date 2014-06-22 16:49:04
  *
  * @name flypaper
  * @author Jonathan Gabel
  * @email post@jonathangabel.com}
  * {@linkplain http://jonathangabel.com}
  * {@linkplain https://github.com/josankapo/FlyPaper}
- * @Copyright (C) 2013
+ * @Copyright (C) 2014
  * @License MIT
  *
  */
@@ -228,7 +228,7 @@ fly.grantInfo = function(o) {
      *
      * @description Add info that the {@link infoCtrlr} will track about your object.
      *
-     * If the property type is `bool`, func`, `val`, these must be callable
+     * If the property type is `bool`, `func`, `val`, these must be callable
      * by your object to obtain the value as a string, number, or boolean.
      * So for the example you need to be able to call:
      *
@@ -948,11 +948,10 @@ fly.color = {
     },
 
     /**
-     *
      * Sets the background color, or returns the current
      * background color if no args sent
-     * @param  {Hex Color String} [col]
-     * @return {Hex Color String}
+     * @param  {Hex-Color-String} [col]
+     * @return {Hex-Color-String}
      *
      * @memberOf fly.color
      */
@@ -1031,7 +1030,7 @@ fly.colorUtil = {
 
     /**
      * Splits a hex color into an [r,g,b] array
-     * @param  {Hex Color String} hexCol
+     * @param  {Hex-Color-String} hexCol
      * @return {Array}
      *
      * *Note: These rgb values are between 0 and 255,
@@ -1056,7 +1055,7 @@ fly.colorUtil = {
     /**
      * Splices an RGB array [r,g,b] into a hex color
      * @param  {Array} cola
-     * @return {Hex Color String}
+     * @return {Hex-Color-String}
      *
      * *Note: These rgb values are between 0 and 255,
      * and do not translate into paper.js rgb values
@@ -1083,10 +1082,10 @@ fly.colorUtil = {
 
     /**
      * mixes 2 hex colors together
-     * @param  {Hex Color String} col1
-     * @param  {Hex Color String} col2
-     * @param  {Float between 0 and 1} [ratio=0.5] Determines ratio color 1 to color 2
-     * @return {Hex Color String}
+     * @param  {Hex-Color-String} col1
+     * @param  {Hex-Color-String} col2
+     * @param  {Float} [ratio=0.5] Between 0 and 1, Determines ratio color 1 to color 2
+     * @return {Hex-Color-String}
      */
     mix : function(col1,col2,ratio){
 
@@ -1100,12 +1099,12 @@ fly.colorUtil = {
     },
 
     /**
-     * Returns the r g b values (0 -255)
+     * Returns the r g b values (0 - 255)
      * added together for a total value. Useful for
      * comparing color values disregarding the hue
      *
-     * @param  {[type]} col [description]
-     * @return {[type]}     [description]
+     * @param  {Hex-Color-Value} col
+     * @return {Integer}
      */
     totalValue  : function(col) {
         // adds the R,G,B values together
@@ -1115,8 +1114,8 @@ fly.colorUtil = {
 
     /*
      * Creates a spectrum of hex colors
-     * @param  {Hex Color String} col1 First color in the spectrum
-     * @param  {Hex Color String} col2 Last color in the spectrum
+     * @param  {Hex-Color-String} col1 First color in the spectrum
+     * @param  {Hex-Color-String} col2 Last color in the spectrum
      * @param  {Integer} [seg=5] Number of colors in the spectrum
      * @return {Array}
      *
@@ -1147,9 +1146,9 @@ fly.colorUtil = {
      * sent colors are first, middle, and last of the array
      * spectrum length defaults to 9, and will always be odd*
      *
-     * @param  {Hex Color String} col1 First color in the spectrum
-     * @param  {Hex Color String} col2 Middle color in the spectrum
-     * @param  {Hex Color String} col2 Last color in the spectrum
+     * @param  {Hex-Color-String} col1 First color in the spectrum
+     * @param  {Hex-Color-String} col2 Middle color in the spectrum
+     * @param  {Hex-Color-String} col2 Last color in the spectrum
      * @param  {Integer} [seg=9] Number of colors in the spectrum
      * @return {Array}
      *
@@ -1178,9 +1177,9 @@ fly.colorUtil = {
      * spectrum length defaults to 9, and will always be odd*
      *
      * @param  {String} name
-     * @param  {Hex Color String} col1 First color in the spectrum
-     * @param  {Hex Color String} col2 Middle or Last color in the spectrum
-     * @param  {Hex Color String} [col3] Last color in the spectrum
+     * @param  {Hex-Color-String} col1 First color in the spectrum
+     * @param  {Hex-Color-String} col2 Middle or Last color in the spectrum
+     * @param  {Hex-Color-String} [col3] Last color in the spectrum
      * @param  {Integer} [seg] Number of colors in the spectrum
      * @return {Array}
      *
@@ -1348,7 +1347,7 @@ fly.colorSets = [
  * fly.color.palette()
  * // returns "my color set"
  *
- * @param  {String, Object} args See examples
+ * @param  {String | Object} args See examples
  *
  * @extends color
  *
@@ -2205,14 +2204,12 @@ fly.init = function (args) {
 
 };
 
-//------------- BEGIN FLYPAPER MATH AND MOTION ------------//
-/*
-*   Math and Motion Methods
-*
-*   versions 0.3 - 0.4
-*/
-//--------------------------------------------------------//
-
+/**
+ * Returns a paper point midway between two paperpoints
+ * @param  {Point} p1 a paper.js Point Object
+ * @param  {Point} p2 a paper.js Point Object
+ * @return {Point}    a paper.js Point Object
+ */
 fly.midpoint = function (p1,p2) {
         // returns the point between two points
     var _p = new paper.Point(p1.add(p2));
@@ -2220,9 +2217,18 @@ fly.midpoint = function (p1,p2) {
     return _p;
 };
 
+/**
+ * Takes a paper Item, or array of Items and places each of their
+ * centers randomly within the bounds of the rectangle. Primarily used
+ * with Path Items, the obejcts passed in must have the paper `position`
+ * method in order to be scattered.
+ *
+ * @param  {Object | Array} o    paper.js Items or array of Items
+ * @param  {Rectangle} rect paper.js Rectangle
+ */
 fly.scatter = function (o,rect) {
-        // takes an object or array of objects o
-        // and places it's center randomly within rectangle rect
+        // takes an paper object or array of objects o
+        // and places their centers randomly within rectangle rect
         // start in lower right corner, multiply x and y by random 0 to 1
         // point will land somewhere in the rect
         // TODO: optional place within rect bounds
@@ -2230,15 +2236,17 @@ fly.scatter = function (o,rect) {
         o = [o];
     }
     for (var i=0; i < o.length; i++) {
-        var randPoint = new paper.Point(    // point at lower right corner
-            rect.width,rect.height
-        );
-        var randLoc = randPoint.multiply(paper.Size.random()); // point within rect
-        o[i].position = rect.point.add(randLoc);
+        if (o.position === 'function') {
+            var randomPoint = new paper.Point(    // point at lower right corner
+                rect.width,rect.height
+            );
+            var randomLocation = randomPoint.multiply(paper.Size.random()); // point within rect
+            o[i].position = rect.point.add(randomLocation);
+        }
     }
 };
 
-//@TODO change to randPoint?
+//@TODO change to randomPoint?
 fly.randomizePt = function (point,delta,constrain) {
     // adds variance delta to point
     // constrain === "x" or "y" or default none
@@ -2273,12 +2281,12 @@ fly.eachCell = function (o,f) {
  * be one greater than the columns and rows passed in. The additional column
  * and row define the bottom and side edges. This allows the rows and columns
  * of the rectangles defined by the points to equal the number passed in.
- * @param  {Integer} columns   number of columns
- * @param  {Integer} rows      number of rows
- * @param  {paper.rectangle} rectangle paper rectangle used to set the bounds
- * @param  {String} direction       optional direction for the grid, defaults to "down-left", can also be
+ * @param  {Integer} columns     number of columns
+ * @param  {Integer} rows        number of rows
+ * @param  {Rectangle} rectangle paper.js Rectangle used to set the bounds
+ * @param  {String} direction    optional direction for the grid, defaults to "down-left", can also be
  *                            "down-right","up-right" and "up-left"
- * @return {Array of Arrays of paper.Point}
+ * @return {Array} Array of Arrays of paper.Point
  */
 
 fly.gridPlot = function (columns,rows,rectangle,direction) {

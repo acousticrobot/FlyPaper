@@ -7,9 +7,9 @@
 
 /**
  * Returns a paper point midway between two paperpoints
- * @param  {paper Point} p1 a paper.js Point Object
- * @param  {paper Point} p2 a paper.js Point Object
- * @return {paper Point}    a paper.js Point Object
+ * @param  {Point} p1 a paper.js Point Object
+ * @param  {Point} p2 a paper.js Point Object
+ * @return {Point}    a paper.js Point Object
  */
 fly.midpoint = function (p1,p2) {
         // returns the point between two points
@@ -24,8 +24,8 @@ fly.midpoint = function (p1,p2) {
  * with Path Items, the obejcts passed in must have the paper `position`
  * method in order to be scattered.
  *
- * @param  {Object or Array} o    paper.js Items or array of Items
- * @param  {paper Rectangle} rect paper.js Rectangle
+ * @param  {Object | Array} o    paper.js Items or array of Items
+ * @param  {Rectangle} rect paper.js Rectangle
  */
 fly.scatter = function (o,rect) {
         // takes an paper object or array of objects o
@@ -82,12 +82,12 @@ fly.eachCell = function (o,f) {
  * be one greater than the columns and rows passed in. The additional column
  * and row define the bottom and side edges. This allows the rows and columns
  * of the rectangles defined by the points to equal the number passed in.
- * @param  {Integer} columns   number of columns
- * @param  {Integer} rows      number of rows
- * @param  {paper.rectangle} rectangle paper rectangle used to set the bounds
- * @param  {String} direction       optional direction for the grid, defaults to "down-left", can also be
+ * @param  {Integer} columns     number of columns
+ * @param  {Integer} rows        number of rows
+ * @param  {Rectangle} rectangle paper.js Rectangle used to set the bounds
+ * @param  {String} direction    optional direction for the grid, defaults to "down-left", can also be
  *                            "down-right","up-right" and "up-left"
- * @return {Array of Arrays of paper.Point}
+ * @return {Array} Array of Arrays of paper.Point
  */
 
 fly.gridPlot = function (columns,rows,rectangle,direction) {

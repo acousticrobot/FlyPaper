@@ -90,7 +90,10 @@ module.exports = function(grunt) {
     jsdoc : {
         dist : {
             src: ['README.md','dist/flypaper.js'],
-            dest: 'docs'
+            dest: 'docs',
+            options: {
+              configure: 'jsdocs_conf.json'
+            }
         }
     },
     bump: {

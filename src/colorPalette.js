@@ -39,7 +39,7 @@
  * fly.color.palette()
  * // returns "my color set"
  *
- * @param  {String, Object} args See examples
+ * @param  {String | Object} args See examples
  *
  * @extends color
  *

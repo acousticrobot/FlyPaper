@@ -85,7 +85,7 @@ fly.grantInfo = function(o) {
      *
      * @description Add info that the {@link infoCtrlr} will track about your object.
      *
-     * If the property type is `bool`, func`, `val`, these must be callable
+     * If the property type is `bool`, `func`, `val`, these must be callable
      * by your object to obtain the value as a string, number, or boolean.
      * So for the example you need to be able to call:
      *

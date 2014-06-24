@@ -1,46 +1,45 @@
 {
-  "name": "flypaper",
-  "libname": "flypaper",
-  "description": "Paper.js piggyback framework adding pub/sub, debug info panel and basic motions",
-  "version": "0.5.0-109",
-  "dev_stage": "alpha",
-  "homepage": "https://github.com/josankapo/FlyPaper",
-  "author": {
-    "name": "Jonathan Gabel",
-    "email": "post@jonathangabel.com",
-    "url": "http://jonathangabel.com"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/josankapo/FlyPaper.git"
-  },
-  "bugs": {
-    "url": "https://github.com/josankapo/FlyPaper/issues"
-  },
-  "licenses": [
-    {
-      "type": "MIT",
-      "url": "https://github.com/josankapo/FlyPaper/blob/master/LICENSE-MIT"
-    }
-  ],
-  "engines": {
-    "node": "*"
-  },
-  "scripts": {
-    "test": "grunt qunit"
-  },
-  "devDependencies": {
-    "grunt": "~0.4.0",
-    "grunt-contrib-uglify": "~0.1.1",
-    "grunt-contrib-qunit": "~0.1.1",
-    "grunt-contrib-concat": "~0.1.2",
-    "grunt-contrib-jshint": "~0.3.0",
-    "grunt-contrib-watch": "~0.2.0",
-    "grunt-contrib-yuidoc": "~0.4.0",
-    "grunt-contrib-clean": "~0.4.0",
-    "grunt-jsdoc": "~0.2.4",
-    "grunt-bumpx": "~0.1.1",
-    "grunt-exec": "~0.4.0"
-  },
-  "keywords": []
+    "name": "flypaper",
+    "libname": "flypaper",
+    "description": "Paper.js piggyback framework adding pub/sub, debug info panel and basic motions",
+    "version": "0.5.0-121",
+    "dev_stage": "alpha",
+    "homepage": "https://github.com/josankapo/FlyPaper",
+    "author": {
+        "name": "Jonathan Gabel",
+        "email": "post@jonathangabel.com",
+        "url": "http://jonathangabel.com"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/josankapo/FlyPaper.git"
+    },
+    "bugs": {
+        "url": "https://github.com/josankapo/FlyPaper/issues"
+    },
+    "licenses": [
+        {
+            "type": "MIT",
+            "url": "https://github.com/josankapo/FlyPaper/blob/master/LICENSE-MIT"
+        }
+    ],
+    "engines": {
+        "node": "*"
+    },
+    "scripts": {
+        "test": "grunt qunit"
+    },
+    "devDependencies": {
+        "grunt": "~0.4.0",
+        "grunt-contrib-uglify": "~0.1.1",
+        "grunt-contrib-qunit": "~0.1.1",
+        "grunt-contrib-concat": "~0.1.2",
+        "grunt-contrib-jshint": "~0.3.0",
+        "grunt-contrib-watch": "~0.2.0",
+        "grunt-contrib-clean": "~0.4.0",
+        "grunt-jsdoc": "~0.3.0",
+        "grunt-bumpx": "~0.1.1",
+        "grunt-exec": "~0.4.0"
+    },
+    "keywords": []
 }

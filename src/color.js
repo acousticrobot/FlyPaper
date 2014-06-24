@@ -52,11 +52,10 @@ fly.color = {
     },
 
     /**
-     *
      * Sets the background color, or returns the current
      * background color if no args sent
-     * @param  {Hex Color String} [col]
-     * @return {Hex Color String}
+     * @param  {Hex-Color-String} [col]
+     * @return {Hex-Color-String}
      *
      * @memberOf fly.color
      */

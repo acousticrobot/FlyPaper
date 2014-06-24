@@ -191,6 +191,6 @@ This object creates it's own fly.Pullbar and uses it to resize the shapes in its
 
 ## License
 
-Copyright (c) 2012 Jonathan Gabel
+Copyright (c) 2014 Jonathan Gabel
 http://jonathangabel.com
 Licensed under the MIT license.
